@@ -1,0 +1,18 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "username": "marlon",
+      "password": "test"
+    },
+    {
+      "id": "f4bc",
+      "username": "mantolin",
+      "password": "prueba",
+      "redirect": "false",
+      "csrfToken": "616ed1eff0fdb8c004ada80f76b3e137ed3cb540012c8abee4cade737b50df5c",
+      "callbackUrl": "http://localhost:3000/login",
+      "json": "true"
+    }
+  ]
+}

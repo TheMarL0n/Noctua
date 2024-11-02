@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.sidebar-links div span.material-symbols-outlined {
+  color: #636672 !important;
+
+}
+.sidebar-links:hover div span.material-symbols-outlined {
+  color: #24EDE7 !important;
+}
+
+.walkthrough .shepherd-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.shepherd-modal-overlay-container.shepherd-modal-is-visible {
+  height: 100vh;
+  opacity: .5;
+  transform: translateZ(0);
+  transition: all .3s ease-out, height 0s 0s, opacity .3s 0s;
+}
+.shepherd-modal-overlay-container {
+  height: 0;
+  left: 0;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  transition: all .3s ease-out, height 0ms .3s, opacity .3s 0ms;
+  width: 100vw;
+  z-index: 9997;
+}
+.walkthrough {
+  flex-direction: column;
+  z-index: 9999;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, .35);
+}
+
+.shepherd-element[data-popper-placement^=right]>.shepherd-arrow {
+  left: -8px;
+}
+.shepherd-arrow, .shepherd-arrow::before {
+  height: 16px;
+  position: absolute;
+  width: 16px;
+  z-index: -1;
+}
+
+.shepherd-arrow::before {
+  content: "";
+  background: #ffffff;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.shepherd-arrow, .shepherd-arrow::before {
+  height: 16px;
+  position: absolute;
+  width: 16px;
+  z-index: -1;
+}
+
+.shepherd-modal-is-visible.shepherd-modal-overlay-container:first-of-type{
+  display: none;
+}
+.accordion-item{
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0, 1, 0, 1);
+}
+.accordion-item.accordion-item-show{
+height: auto;
+max-height: 9999px;
+transition: all 0.5s cubic-bezier(1, 0, 1, 0);
+}
