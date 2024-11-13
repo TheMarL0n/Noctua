@@ -25,7 +25,7 @@ export default function RelevantPointsSS({ preguntas, idProceso }: any) {
     }
 
     useEffect(() => {
-        localStorage.setItem(`firstvisit_${idProceso}`, 'false');
+        localStorage.setItem(`firstvisit_${idProceso}`, 'storaged');
     }, [])
 
     //añadir la consulta como nota
@@ -127,9 +127,7 @@ export default function RelevantPointsSS({ preguntas, idProceso }: any) {
                                                 </span>
                                                 Eliminar pregunta
                                             </button>
-
-
-
+                                            
                                         </div>
                                     </PopoverPanel>
                                 </Popover>

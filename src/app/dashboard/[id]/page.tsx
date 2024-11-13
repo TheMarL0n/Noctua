@@ -3,7 +3,6 @@ import 'material-symbols';
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Modal } from '@/app/components/Modal';
-import { Checkbox } from '@headlessui/react';
 import AddSubjectForm from '@/app/components/AddSubjectForm';
 import SubjectList from '@/app/components/SubjectList';
 import SubjectGrid from '@/app/components/SubjectGrid';
@@ -19,10 +18,14 @@ export default function Folder(asuntos: any) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [order, setOrder] = useState(false);
     const [user, setUser] = useState('');
-    const [enabledConsulta, setEnabledConsulta] = useState(false);
-    const [enabledLicitacion, setEnabledLicitacion] = useState(false);
-    const [enabledResumen, setEnabledResumen] = useState(false)
     const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    const [categories, setCategories] = useState({
+        EIDM: false,
+        Licitaciones: false,
+        Resumen: false,
+        Carga: false
+    });
 
     const changeViewList = () => { setViewType(false) }
     const changeViewGrid = () => { setViewType(true) }
@@ -37,13 +40,12 @@ export default function Folder(asuntos: any) {
     const getFolder = async () => {
         const folderDetailParam = { key: "idCarpeta", paramId: asuntos.params.id, urlSlug: "api/consultaCarpeta" };
         const { data } = await axios.post('/api/auth/endpoint', folderDetailParam);
+
         setsubjects(data.procesos);
         setFolderId(data.id);
         setFolderName(data.carpeta);
         setUser(data.usuario);
         setIsLoading(false);
-
-        console.log(data);
     }
 
     const filterSort = subjects.sort(
@@ -52,6 +54,22 @@ export default function Folder(asuntos: any) {
             : ((a, b) => a.proceso > b.proceso ? 1 : -1)
     );
 
+    //Manejar los checkbox para el filtrado//////////////////////////////////////////
+
+    const handleChange = (e: any) => {
+        setCategories({ ...categories, [e.target.name]: e.target.checked });
+    };
+
+    const checkedSubjects = Object.entries(categories)
+        .filter((category) => category[1])
+        .map((category) => category[0]);
+
+    const filteredSubjects = subjects.filter(({ tipo_proceso }) =>
+        checkedSubjects.includes(tipo_proceso)
+    );
+
+    /////////////////////////////////////////////////////////////////////////////////
+
     return (
         <div className="page-body py-2 px-4 w-full min-h-full">
             <div className="w-full mt-4">
@@ -59,7 +77,7 @@ export default function Folder(asuntos: any) {
                     <h3 className='text-gray-seven dark:text-white-one text-[22px] capitalize'>
                         {user}
                     </h3>
-                    <a className='flex items-center text-custom-regular text-gray-seven dark:text-white-one bg-main-text-color dark:bg-secundary-c rounded-lg py-2 pl-1 pr-6 leading-[16px]' href="#"><span className="material-symbols-outlined text-[30px] font-extralight">add</span> Agregar asunto</a>
+                    <p className='flex items-center text-custom-regular text-gray-seven dark:text-white-one bg-main-text-color dark:bg-secundary-c rounded-lg py-2 pl-1 pr-6 leading-[16px] cursor-pointer' onClick={() => setIsModalOpen(true)}><span className="material-symbols-outlined text-[30px] font-extralight">add</span> Agregar asunto</p>
                 </div>
             </div>
             <div className="breadcumb">
@@ -76,8 +94,8 @@ export default function Folder(asuntos: any) {
                                 file_copy_off
                             </span>
                             <h2 className='text-gray-three text-[36px] my-4'>No hay archivos en esta carpeta</h2>
-                            <p className='text-custom-regular text-white flex items-center gap-2'><span className="material-symbols-outlined text-warning text-[16px]">warning</span> Consulta a tu administrador o carga un documento ahora.</p>
-                            <a onClick={() => setIsModalOpen(true)} className="flex items-center justify-center w-[72px] h-[72px] bg-blue-one rounded-full my-5">
+                            <p className='text-custom-regular text-gray-three dark:text-white flex items-center gap-2'><span className="material-symbols-outlined text-warning text-[16px]">warning</span> Consulta a tu administrador o carga un documento ahora.</p>
+                            <a onClick={() => setIsModalOpen(true)} className="flex items-center justify-center w-[72px] h-[72px] bg-blue-one rounded-full my-5 cursor-pointer">
                                 <span className="material-symbols-outlined text-[30px] text-secundary-c font-light">
                                     add
                                 </span>
@@ -90,38 +108,49 @@ export default function Folder(asuntos: any) {
                             <div className='flex justify-between w-full'>
                                 <form action="">
                                     <div className="flex gap-8">
-                                        <div className="flex gap-4 items-center">
-                                            <label htmlFor="chaeck-query" className="text-gray-seven dark:text-white-one text-[12px] uppercase">Consulta</label>
-                                            <Checkbox
-                                                checked={enabledConsulta}
-                                                onChange={setEnabledConsulta}
-                                                className="group block size-4 rounded border-white-one border bg-transparent data-[checked]:bg-blue-500"  >
-                                                <svg className="stroke-gray-seven dark:stroke-white opacity-0 group-data-[checked]:opacity-100" viewBox="0 0 14 14" fill="none">
-                                                    <path d="M3 8L6 11L11 3.5" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-                                                </svg>
-                                            </Checkbox>
+                                        <div className="flex gap-2 items-center">
+                                            <label htmlFor="chaeck-query" className="text-gray-seven dark:text-white-one text-[12px] uppercase">EIMD</label>
+                                            <input
+                                                id="1"
+                                                className='group block size-4 rounded border-white-one border bg-transparent data-[checked]:bg-blue-500'
+                                                type="checkbox"
+                                                name="EIDM"
+                                                onChange={handleChange}
+                                                checked={categories.EIDM}
+                                            />
                                         </div>
-                                        <div className="flex gap-4 items-center">
+                                        <div className="flex gap-2 items-center">
                                             <label htmlFor="chaeck-tender" className="text-gray-seven dark:text-white-one text-[12px] uppercase">Licitación</label>
-                                            <Checkbox
-                                                checked={enabledLicitacion}
-                                                onChange={setEnabledLicitacion}
-                                                className="group block size-4 rounded border-white-one border bg-transparent data-[checked]:bg-blue-500"  >
-                                                <svg className="stroke-gray-seven dark:stroke-white opacity-0 group-data-[checked]:opacity-100" viewBox="0 0 14 14" fill="none">
-                                                    <path d="M3 8L6 11L11 3.5" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-                                                </svg>
-                                            </Checkbox>
+                                            <input
+                                                id="2"
+                                                className='group block size-4 rounded border-white-one border bg-transparent data-[checked]:bg-blue-500'
+                                                type="checkbox"
+                                                name="Licitaciones"
+                                                onChange={handleChange}
+                                                checked={categories.Licitaciones} />
+
                                         </div>
-                                        <div className="flex gap-4 items-center">
+                                        <div className="flex gap-2 items-center">
                                             <label htmlFor="chaeck-summary" className="text-gray-seven dark:text-white-one text-[12px] uppercase">Resumen</label>
-                                            <Checkbox
-                                                checked={enabledResumen}
-                                                onChange={setEnabledResumen}
-                                                className="group block size-4 rounded border-white-one border bg-transparent data-[checked]:bg-blue-500"  >
-                                                <svg className="stroke-gray-seven dark:stroke-white opacity-0 group-data-[checked]:opacity-100" viewBox="0 0 14 14" fill="none">
-                                                    <path d="M3 8L6 11L11 3.5" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-                                                </svg>
-                                            </Checkbox>
+                                            <input
+                                                id="3"
+                                                className='group block size-4 rounded border-white-one border bg-transparent data-[checked]:bg-blue-500'
+                                                type="checkbox"
+                                                name="Resumen"
+                                                onChange={handleChange}
+                                                checked={categories.Resumen}
+                                            />
+                                        </div>
+                                        <div className="flex gap-2 items-center">
+                                            <label htmlFor="chaeck-summary" className="text-gray-seven dark:text-white-one text-[12px] uppercase">Carga</label>
+                                            <input
+                                                id="4"
+                                                className='group block size-4 rounded border-white-one border bg-transparent data-[checked]:bg-blue-500'
+                                                type="checkbox"
+                                                name="Carga"
+                                                onChange={handleChange}
+                                                checked={categories.Carga}
+                                            />
                                         </div>
                                     </div>
                                 </form>
@@ -134,9 +163,14 @@ export default function Folder(asuntos: any) {
                             {viewType ?
                                 <div className="flex flex-wrap gap-3">
                                     {
-                                        subjects.map(subject => (
-                                            <SubjectGrid key={subject.id_proceso} id={subject.id_proceso} title={subject.proceso} urlSum={`/dashboard/${folderId}/summary/${subject.id_proceso}`} urlRel={`/dashboard/${folderId}/relevant-points/${subject.id_proceso}`} urlNotas={`/dashboard/${folderId}/notas/${subject.id_proceso}`} thefolder={folderName}/>
-                                        ))
+                                        filteredSubjects.length !== 0 ?
+                                            filteredSubjects.map(subject => (
+                                                <SubjectGrid key={subject.id_proceso} id={subject.id_proceso} title={subject.proceso} urlSum={`/dashboard/${folderId}/summary/${subject.id_proceso}`} urlRel={`/dashboard/${folderId}/relevant-points/${subject.id_proceso}`} urlNotas={`/dashboard/${folderId}/notas/${subject.id_proceso}`} thefolder={folderName} />
+                                            ))
+                                            :
+                                            subjects.map(subject => (
+                                                <SubjectGrid key={subject.id_proceso} id={subject.id_proceso} title={subject.proceso} urlSum={`/dashboard/${folderId}/summary/${subject.id_proceso}`} urlRel={`/dashboard/${folderId}/relevant-points/${subject.id_proceso}`} urlNotas={`/dashboard/${folderId}/notas/${subject.id_proceso}`} thefolder={folderName} />
+                                            ))
                                     }
                                     <a onClick={() => setIsModalOpen(true)} className="flex items-center justify-center w-[72px] h-[72px] bg-blue-one rounded-full ml-3 my-auto cursor-pointer">
                                         <span className="material-symbols-outlined text-[30px] text-secundary-c font-light">
@@ -154,20 +188,25 @@ export default function Folder(asuntos: any) {
                                             </span>
                                         </a>
                                         <a className='flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-start leading-[12px] gap-12 cursor-pointer'>
-                                            Fecha
-                                            
+                                            Tipo
                                         </a>
                                         <a className='flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-start leading-[12px] gap-12 cursor-pointer'>
                                             Notas
-                                            
                                         </a>
-                                        <div className='flex-1'></div>
-                                        <div className='flex-1'></div>
+                                        <a className='flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-start leading-[12px] gap-12 cursor-pointer'>
+                                            Fecha
+                                        </a>
                                     </div>
                                     {
-                                        filterSort.map(subject => (
-                                            <SubjectList key={subject.id_proceso} id={subject.id_proceso} title={subject.proceso} urlSum={`/dashboard/${folderId}/summary/${subject.id_proceso}`} urlRel={`/dashboard/${folderId}/relevant-points/${subject.id_proceso}`} urlNotas={`/dashboard/${folderId}/notas/${subject.id_proceso}`} thefolder={folderName}/>
-                                        ))
+
+                                        filteredSubjects.length !== 0 ?
+                                            filteredSubjects.map(subject => (
+                                                <SubjectList key={subject.id_proceso} id={subject.id_proceso} title={subject.proceso} urlSum={`/dashboard/${folderId}/summary/${subject.id_proceso}`} urlRel={`/dashboard/${folderId}/relevant-points/${subject.id_proceso}`} urlNotas={`/dashboard/${folderId}/notas/${subject.id_proceso}`} thefolder={folderName} />
+                                            ))
+                                            :
+                                            filterSort.map(subject => (
+                                                <SubjectList key={subject.id_proceso} id={subject.id_proceso} title={subject.proceso} urlSum={`/dashboard/${folderId}/summary/${subject.id_proceso}`} urlRel={`/dashboard/${folderId}/relevant-points/${subject.id_proceso}`} urlNotas={`/dashboard/${folderId}/notas/${subject.id_proceso}`} thefolder={folderName} />
+                                            ))
                                     }
                                     <a onClick={() => setIsModalOpen(true)} className="flex items-center justify-center w-[72px] h-[72px] bg-blue-one rounded-full ml-3 my-auto cursor-pointer">
                                         <span className="material-symbols-outlined text-[30px] text-secundary-c font-light">
@@ -180,19 +219,8 @@ export default function Folder(asuntos: any) {
                         </div>
             }
             <Modal title="Agregar asunto" isOpen={isModalOpen} onClose={() => { setIsModalOpen(false) }}>
-                <AddSubjectForm />
+                <AddSubjectForm param_folder={folderName} />
             </Modal>
         </div>
     )
 }
-
-//to get the id of the folder
-/*export async function getFolderId(context: any) {
-
-    const folderid = {key: "idCarpeta", paramId: context.query.id, urlSlug: "api/consultaCarpeta" };
-    const { data } = await axios.post('/api/auth/endpoint', folderid);
-    const { asuntos } = data.procesos
-    return {
-        props: asuntos
-    }
-}*/

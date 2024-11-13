@@ -120,7 +120,7 @@ export default function Dashboard() {
                     )
             }
             <Modal title="Crear nota nueva" isOpen={isModalOpen} onClose={() => { setIsModalOpen(false) }}>
-                <AddNotesForm slug={'api/guardarNota/'} />
+                <AddNotesForm slug={'api/guardarNota'} />
             </Modal>
         </div>
     )

@@ -27,7 +27,9 @@ export default function Notes(notas: any) {
     const getSubject = async () => {
         const folderDetailParam = { key: "id_proceso", paramId: notas.params.id_proceso, urlSlug: "api/consultaProceso" };
         const { data } = await axios.post('/api/auth/endpoint', folderDetailParam);
-        setNotes(data.notas);
+        if (data.notas) {
+            setNotes(data.notas);
+        }
         setIsLoading(false);
     }
 
@@ -75,7 +77,7 @@ export default function Notes(notas: any) {
                                 content_paste_off
                             </span>
                             <h2 className='text-gray-three text-[36px] my-4'>No hay notas en este proyecto</h2>
-                            <p className='text-custom-regular text-white flex items-center gap-2'><span className="material-symbols-outlined text-warning text-[16px]">warning</span> Consulta a tu administrador o añade una nota ahora.</p>
+                            <p className='text-custom-regular text-gray-three dark:text-white flex items-center gap-2'><span className="material-symbols-outlined text-warning text-[16px]">warning</span> Consulta a tu administrador o añade una nota ahora.</p>
                             <a onClick={() => setIsModalOpen(true)} className="flex items-center justify-center w-[72px] h-[72px] bg-blue-one rounded-full my-5 cursor-pointer">
                                 <span className="material-symbols-outlined text-[30px] text-secundary-c font-light">
                                     add
@@ -103,7 +105,7 @@ export default function Notes(notas: any) {
                             <div className="flex flex-col gap-3 w-full mt-3">
                                 {
                                     filterSort.map(nota => (
-                                        <NotesList key={nota.id_nota} id={nota.id_nota} text={nota.nota} from={'id_proceso'} fromname={notas.params.id_proceso}/>
+                                        <NotesList key={nota.id_nota} id={nota.id_nota} text={nota.nota} from={'id_proceso'} fromname={notas.params.id_proceso} />
                                     ))
                                 }
                             </div>

@@ -50,7 +50,7 @@ export default function AddNotesForm({ slug, procesoOcarpeta, father }: any) {
                             <span className="material-symbols-outlined text-blue-one text-[90px] text-center">
                                 check
                             </span>
-                            <p className="text-center text-main-text-color text-custom-regular">La nota ha sido añadida satisfactoriamente</p>
+                            <p className="text-center text-main-c dark:text-main-text-color text-custom-regular">La nota ha sido añadida satisfactoriamente</p>
                         </div>
                         :
                         <form onSubmit={handleSubmit}>

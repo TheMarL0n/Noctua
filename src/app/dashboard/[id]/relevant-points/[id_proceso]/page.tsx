@@ -3,16 +3,17 @@ import 'material-symbols';
 import axios from "axios";
 import { useEffect, useState } from "react";
 import RelevantPointsSS from '@/app/components/RelevantPointsSS';
-import RelevantPoints from '@/app/components/RelevantPoints';
 import Link from 'next/link';
 import AiQuestion from '@/app/components/AiQuestion';
 import WorkingLoader from '@/app/components/WorkingLoader';
+import QuestionConcept from '@/app/components/QuestionConcept';
+import RelevantPoints from '@/app/components/RelevantPoints';
 
 
 export default function Subject(resumen: any) {
 
     const [contenido, setContenido] = useState<any[]>([]);
-    const contenidoLS = JSON.parse(localStorage.getItem(`rpoints_${resumen.params.id_proceso}`) ?? '[]');
+    const contenidoSS = JSON.parse(localStorage.getItem(`rpoints_${resumen.params.id_proceso}`) ?? '[]');
     const firstquery = localStorage.getItem(`firstvisit_${resumen.params.id_proceso}`);
 
     const [folder, setFolder] = useState('');
@@ -43,9 +44,10 @@ export default function Subject(resumen: any) {
         const resumeParam = { key: 'id_proceso', paramId: resumen.params.id_proceso, urlSlug: "api/consultaProceso" };
         const { data } = await axios.post('/api/auth/endpoint', resumeParam);
 
-        setContenido(data.contenido);
-        console.log(data);
-        localStorage.setItem(`rpoints_${resumen.params.id_proceso}`, `${JSON.stringify(data.contenido)}`);//guardar la consulta en el localstorage
+        if (data.contenido) {
+            setContenido(data.contenido);
+        }
+        //localStorage.setItem(`rpoints_${resumen.params.id_proceso}`, `${JSON.stringify(data.contenido)}`);//guardar la consulta en el localstorage
     }
 
     //obtener la respuesta segun la pregunta escrita en text input------------------------------------------------------------------------
@@ -63,7 +65,7 @@ export default function Subject(resumen: any) {
                 setAnswer(response.data.respuesta);
                 setTimeout(() => {
                     setLoading(false);
-                }, 900);                
+                }, 900);
                 setQuestion('');
             })
 
@@ -147,14 +149,16 @@ export default function Subject(resumen: any) {
             {
                 firstquery === null ? //si no se ha visitado por primera vez, llamar IA preguntaConcepto
                     contenido.map((cont, index) => (
-                        < RelevantPoints key={index} title={cont.concepto} pregunta={cont.pregunta} idPregunta={cont.id_pregunta} idProceso={resumen.params.id_proceso} />
+                        <QuestionConcept key={index} title={cont.concepto} pregunta={cont.pregunta} idPregunta={cont.id_pregunta} idProceso={resumen.params.id_proceso} />
                     ))
-                    : firstquery === 'true' ? //si ya se consultó a la IA preguntaConcepto, render las respuesta desde el proceso
-                        <RelevantPointsSS preguntas={contenido} idProceso={resumen.params.id_proceso} />
-                        : //cargar desde el localstorage
-                        <RelevantPointsSS preguntas={contenidoLS} idProceso={resumen.params.id_proceso} />
-
-
+                    :
+                    firstquery === 'visited' ? //si ya se consultó a la IA preguntaConcepto, render las respuesta desde el proceso                 
+                        <RelevantPoints idProceso={resumen.params.id_proceso} />
+                        :
+                        firstquery === 'storaged' ? //si ya se consultó a la IA preguntaConcepto, render las respuesta desde el proceso                 
+                            <RelevantPointsSS preguntas={contenidoSS} idProceso={resumen.params.id_proceso} />
+                            :
+                            <></>
             }
         </div>
     )

@@ -4,10 +4,12 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
     const cookieStore = cookies(); //get all the cookies
     const token = cookieStore.get('accessToken'); //save the access cookie from cookies list generated in /api/auth/login/route.tsx
-    const {
-        key, keyQuestion, keyThird, keyFourth,
-        paramId, paramPregunta, paramThird, paramFourth, urlSlug
-    } = await request.json();
+
+    const data = await request.formData();
+    const folderName = data.get('carpeta');
+    const ProcessName = data.get('proceso');
+    const processType = data.get('tipoProceso');
+    const file = data.get('archivos');
 
     //chec if there's token
     if (!token) {
@@ -23,11 +25,15 @@ export async function POST(request: Request) {
 
     const body = new FormData();
 
-    body.append(key, paramId);
-    body.append(keyQuestion, paramPregunta);
-    body.append(keyThird, paramThird);
-    body.append(keyFourth, paramFourth);
- 
+    if(!folderName) return
+    if(!ProcessName) return
+    if(!processType) return
+    if(!file) return
+
+    body.append('carpeta', folderName);
+    body.append('proceso', ProcessName);
+    body.append('tipoProceso', processType);
+    body.append('archivos', file);
 
     const options: RequestInit = {
         method: "POST",
@@ -37,10 +43,12 @@ export async function POST(request: Request) {
         },
     };
 
+    
+
     //Call the endpoint and return the "Subject list" using the Bearer token (access token)
     try {
         const response = await fetch(
-            `https://noctua-app-dev.azurewebsites.net/services/${urlSlug}/`,
+            `https://noctua-app-dev.azurewebsites.net/services/api/creaProceso/`,
             options,
         ).then((res) => res.json());
         return new Response(JSON.stringify(response), {

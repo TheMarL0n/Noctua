@@ -102,7 +102,7 @@ export default function Dashboard() {
                                     {
                                         folders.map(folder => (
 
-                                            <FolderGrid key={folder.id} id={folder.id} title={folder.carpeta} asuntos={folder.procesos.length} notas={folder.notas.length} />
+                                            <FolderGrid key={folder.id} id={folder.id} title={folder.carpeta} asuntos={folder.procesos} notas={folder.notas.length} />
                                         ))
                                     }
                                     <a onClick={() => setIsModalOpen(true)} className="flex items-center justify-center w-[72px] h-[72px] bg-blue-one rounded-full ml-3 my-auto cursor-pointer">
@@ -141,7 +141,7 @@ export default function Dashboard() {
                                     </div>
                                     {
                                         nameSort.map(folder => (
-                                            <FolderList key={folder.id} id={folder.id} title={folder.carpeta} asuntos={folder.procesos.length} fecha={folder.fecha_creacion} notas={folder.notas.length} />
+                                            <FolderList key={folder.id} id={folder.id} title={folder.carpeta} asuntos={folder.procesos} fecha={folder.fecha_creacion} notas={folder.notas.length} />
                                         ))
                                     }
                                     <a onClick={() => setIsModalOpen(true)} className="flex items-center justify-center w-[72px] h-[72px] bg-blue-one rounded-full ml-3 my-auto cursor-pointer">
