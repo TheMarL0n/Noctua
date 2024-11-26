@@ -24,7 +24,10 @@ export default function Folder(asuntos: any) {
         EIDM: false,
         Licitaciones: false,
         Resumen: false,
-        Carga: false
+        Carga: false,
+        Aclaraciones:false,
+        Controversia_Constitucional: false,
+        Proyecto_de_Sentencia: false
     });
 
     const changeViewList = () => { setViewType(false) }
@@ -106,8 +109,10 @@ export default function Folder(asuntos: any) {
                             <hr className='h-[1px] border-0 w-full bg-gray-three my-3' />
 
                             <div className='flex justify-between w-full'>
+                                {/*
                                 <form action="">
-                                    <div className="flex gap-8">
+                                    <div className="flex gap-8">                                    
+                                        
                                         <div className="flex gap-2 items-center">
                                             <label htmlFor="chaeck-query" className="text-gray-seven dark:text-white-one text-[12px] uppercase">EIMD</label>
                                             <input
@@ -152,8 +157,43 @@ export default function Folder(asuntos: any) {
                                                 checked={categories.Carga}
                                             />
                                         </div>
+                                        <div className="flex gap-2 items-center">
+                                            <label htmlFor="chaeck-summary" className="text-gray-seven dark:text-white-one text-[12px] uppercase">Aclaraciones</label>
+                                            <input
+                                                id="4"
+                                                className='group block size-4 rounded border-white-one border bg-transparent data-[checked]:bg-blue-500'
+                                                type="checkbox"
+                                                name="Aclaraciones"
+                                                onChange={handleChange}
+                                                checked={categories.Aclaraciones}
+                                            />
+                                        </div>
+                                        <div className="flex gap-2 items-center">
+                                            <label htmlFor="chaeck-summary" className="text-gray-seven dark:text-white-one text-[12px] uppercase">Controversia Constitucional</label>
+                                            <input
+                                                id="4"
+                                                className='group block size-4 rounded border-white-one border bg-transparent data-[checked]:bg-blue-500'
+                                                type="checkbox"
+                                                name="Controversia Constitucional"
+                                                onChange={handleChange}
+                                                checked={categories.Controversia_Constitucional}
+                                            />
+                                        </div>
+                                        <div className="flex gap-2 items-center">
+                                            <label htmlFor="chaeck-summary" className="text-gray-seven dark:text-white-one text-[12px] uppercase">Proyecto de Sentencia</label>
+                                            <input
+                                                id="4"
+                                                className='group block size-4 rounded border-white-one border bg-transparent data-[checked]:bg-blue-500'
+                                                type="checkbox"
+                                                name="Proyecto de Sentencia"
+                                                onChange={handleChange}
+                                                checked={categories.Proyecto_de_Sentencia}
+                                            />
+                                        </div>
+                                        
                                     </div>
                                 </form>
+                                */}
                                 <div className="flex gap-2">
                                     <button onClick={changeViewList} className={viewType ? 'bg-main-text-color dark:bg-gray-five p-2 flex items-center justify-center text-gray-seven dark:text-white-one hover:text-main-c hover:bg-blue-one' : 'bg-blue-one p-2 flex items-center justify-center text-main-c hover:text-main-c hover:bg-blue-one'}><span className="material-symbols-outlined text-[25px] leading-[24px] font-extralight">reorder</span></button>
                                     <button onClick={changeViewGrid} className={!viewType ? 'bg-main-text-color dark:bg-gray-five p-2 flex items-center justify-center text-gray-seven dark:text-white-one hover:text-main-c hover:bg-blue-one' : 'bg-blue-one p-2 flex items-center justify-center text-main-c hover:text-main-c hover:bg-blue-one'}><span className="material-symbols-outlined text-[25px] leading-[24px] font-extralight">grid_view</span></button>
@@ -161,7 +201,7 @@ export default function Folder(asuntos: any) {
                             </div>
 
                             {viewType ?
-                                <div className="flex flex-wrap gap-3">
+                                <div className="flex flex-wrap gap-3 mt-4">
                                     {
                                         filteredSubjects.length !== 0 ?
                                             filteredSubjects.map(subject => (
@@ -195,6 +235,9 @@ export default function Folder(asuntos: any) {
                                         </a>
                                         <a className='flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-start leading-[12px] gap-12 cursor-pointer'>
                                             Fecha
+                                        </a>
+                                        <a className='flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-start leading-[12px] gap-12 cursor-pointer'>
+                                            Estado
                                         </a>
                                     </div>
                                     {

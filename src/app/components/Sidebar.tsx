@@ -8,7 +8,7 @@ import { deleteCookies } from "../api/auth/logout/route";
 const menuItems = [
   { id: "menu-item-1", label: "Inicio", icon: "home", link: "/desktop" },
   { id: "menu-item-2", label: "Archivo", icon: "hard_drive", link: "/dashboard" },
-  { id: "menu-item-3", label: "Ai", icon: "auto_awesome", link: "/noctua-ai" },
+  { id: "menu-item-3", label: "AI", icon: "auto_awesome", link: "/noctua-ai" },
   { id: "menu-item-4", label: "Historial", icon: "pace", link: "/history" },
   { id: "menu-item-5", label: "Notas", icon: "content_paste", link: "/notes" },
 ];
@@ -111,7 +111,7 @@ const Sidebar = () => {
           type="submit"
           className="flex items-center cursor-pointer hover:bg-light-lighter rounded w-full overflow-hidden whitespace-nowrap px-3 py-2 hover:text-blue-one">
           <div style={{ width: "4rem" }} className="flex items-center">
-            <span className="material-symbols-outlined text-blue-one text-[32px] font-light leading-[30px]">
+            <span className="material-symbols-outlined text-gray-seven hover:text-blue-one text-[32px] font-light leading-[30px]">
               logout
             </span>
           </div>

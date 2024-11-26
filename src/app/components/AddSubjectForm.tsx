@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import axios from "axios";
 import Image from "next/image"
 
@@ -7,9 +7,10 @@ export default function AddSubjectForm({ param_folder }: any) {
     const [success, setSuccess] = useState(false);
     const [enabler, setEnabler] = useState(false);
     const [subject, setSubject] = useState('');
-    const [subjectType, setSubjectType] = useState('');
+    const [subjectType, setSubjectType] = useState('');    
+    const [arrSubjectType, setArrSubjectType] = useState<any[]>([])
     const [theFiles, setTheFiles] = useState<File | null>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);  
 
     const handleName = (e: any) => {
         setSubject(e.target.value);
@@ -25,6 +26,16 @@ export default function AddSubjectForm({ param_folder }: any) {
         }
 
     }
+
+    //get the subject type
+    const getType = async () => {
+        const { data } = await axios.get('/api/auth/type');        
+            setArrSubjectType(data);        
+    }
+
+    useEffect(() => {
+        getType();
+    }, [])
 
     const handleSubmit = async (e: any) => {
         e.preventDefault()
@@ -101,10 +112,9 @@ export default function AddSubjectForm({ param_folder }: any) {
                                     onChange={handleType}
                                 >
                                     <option value="">Selecciona el tipo de asunto</option>
-                                    <option value="Carga">Carga</option>
-                                    <option value="Resumen">Resumen</option>
-                                    <option value="Licitaciones">Licitaciones</option>
-                                    <option value="EIDM">EIDM</option>
+                                    {arrSubjectType.map(stype =>(
+                                        <option key={stype.tipo_proceso} value={stype.tipo_proceso}>{stype.desc_tipo_proceso}</option>
+                                    ))}
                                 </select>
                             </div>
 

@@ -13,9 +13,11 @@ export default function SubjectList({ title, id, urlSum, urlRel, urlNotas, thefo
     const [isDeleted, setIsDeleted] = useState(false);
     const [tipoProceso, setTipoProceso] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [theStatus, setTheStatus] = useState();
 
     useEffect(() => {
         getSubjectInfo();
+        getSubjectStatus();
     }, [])
 
     //get the subject info given the subject id
@@ -27,6 +29,12 @@ export default function SubjectList({ title, id, urlSum, urlRel, urlNotas, thefo
             setNotas(data.notas);
             setTipoProceso(data.tipo_proceso);
         }
+    }
+
+    //get the subject status given the subject id
+    const getSubjectStatus = async () => {
+        const { data } = await axios.get('/api/auth/status', { params: { id } });
+        setTheStatus(data.procesando);
     }
 
     //eliminar proceso
@@ -42,59 +50,78 @@ export default function SubjectList({ title, id, urlSum, urlRel, urlNotas, thefo
     }
 
     return (
-        <div className='bg-main-text-color dark:bg-gray-five rounded-lg px-2 flex justify-between items-center'>
+
+        <Link
+            href={theStatus === false ? urlRel : ''}
+            className={theStatus === false
+                ? `bg-main-text-color dark:bg-gray-five rounded-lg px-2 flex gap-8 justify-between items-center hover:bg-white-one hover:dark:bg-gray-three`
+                : 'bg-main-text-color dark:bg-gray-five rounded-lg px-2 flex gap-8 justify-between items-center cursor-not-allowed'}
+        >
             <div className='p-1 flex gap-2 items-center flex-1'>
                 <span className="material-symbols-outlined text-[25px] leading-[20px] text-gray-two text-center">draft</span>
-                <p className='text-[17px] text-gray-seven dark:text-white-one'>{title}</p>
+                <p className='text-[14px] text-gray-seven dark:text-white-one'>{title}</p>
             </div>
-            <p className='p-1 text-gray-six text-[17px] leading-[16px] flex-1'><span>{tipoProceso}</span></p>
-            <p className='p-1 text-gray-six text-[17px] leading-[16px] flex-1'><span>{notas.length}</span></p>
-            <p className='p-1 text-gray-six text-[17px] leading-[16px] flex-1'><span>{Moment(fecha).format('DD/MM/yy hh:mm')}</span></p>
+            <p className='p-1 text-gray-six text-[14px] leading-[16px] flex-1'><span>{tipoProceso}</span></p>
+            <p className='p-1 text-gray-six text-[14px] leading-[16px] flex-1'><span>{notas.length}</span></p>
+            <p className='p-1 text-gray-six text-[14px] leading-[16px] flex-1'><span>{Moment(fecha).format('DD/MM/yy hh:mm')}</span></p>
+
+            <div className='p-1 flex-1'>
+            {theStatus === false ? 
+                <div className="rounded-lg w-[15px] h-[15px] border-2 border-green flex items-center justify-center">
+                    <div className="rounded-lg w-[7px] h-[7px] bg-green m-auto"></div>
+                </div>
+                : 
+                <div className="rounded-lg w-[15px] h-[15px] border-2 border-error flex items-center justify-center">
+                    <div className="rounded-lg w-[7px] h-[7px] bg-error m-auto"></div>
+                </div>
+                }
+            </div>
 
 
+            {
+                theStatus === false ?
+                    <Popover className="relative">
+                        <PopoverButton className="ml-auto flex flex-col justify-center">
+                            <span className="material-symbols-outlined text-gray-two text-[25px]">more_vert</span>
+                        </PopoverButton>
+                        <PopoverPanel transition
+                            className="absolute right-0 top-6 z-10 mt-1 flex max-w-max min-w-[240px] px-4 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in">
+                            <div className="max-w-md flex-auto overflow-hidden bg-main-text-color dark:bg-gray-two rounded-[3px] text-sm leading-6 shadow-lg">
 
-            <Popover className="relative">
-                <PopoverButton className="ml-auto flex flex-col justify-center">
-                    <span className="material-symbols-outlined text-gray-two text-[25px]">more_vert</span>
-                </PopoverButton>
-                <PopoverPanel transition
-                    className="absolute right-0 top-6 z-10 mt-1 flex max-w-max min-w-[240px] px-4 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in">
-                    <div className="max-w-md flex-auto overflow-hidden bg-main-text-color dark:bg-gray-two rounded-[3px] text-sm leading-6 shadow-lg">
-
-                        <Link href={urlSum} className='w-full hover:bg-blue-one hover:text-main-c px-4 py-2 flex items-center gap-1'>
-                            <span className="material-symbols-outlined text-[16px]">article</span>
-                            Resumen
-                        </Link>
-                        <Link href={urlRel} className='w-full hover:bg-blue-one hover:text-main-c px-4 py-2 flex items-center gap-1'>
-                            <span className="material-symbols-outlined text-[16px]">ballot</span>
-                            Puntos relevantes
-                        </Link>
-                        <Link href={urlNotas} className='w-full hover:bg-blue-one hover:text-main-c px-4 py-2 flex items-center gap-1'>
-                            <span className="material-symbols-outlined text-[16px]">
-                                content_paste
-                            </span>
-                            Notas
-                        </Link>
-                        <hr className='mx-4'/>
-                        <button onClick={() => setIsModalOpen(true)} className='w-full hover:bg-error hover:text-main-text-color px-4 py-2 flex items-center gap-1'>
-                            <span className="material-symbols-outlined text-[16px]">
-                                delete
-                            </span>
-                            Eliminar</button>
-
-                    </div>
-                </PopoverPanel>
-            </Popover>
+                                <Link href={urlSum} className='w-full hover:bg-blue-one hover:text-main-c px-4 py-2 flex items-center gap-1'>
+                                    <span className="material-symbols-outlined text-[16px]">article</span>
+                                    Resumen
+                                </Link>
+                                <Link href={urlNotas} className='w-full hover:bg-blue-one hover:text-main-c px-4 py-2 flex items-center gap-1'>
+                                    <span className="material-symbols-outlined text-[16px]">
+                                        content_paste
+                                    </span>
+                                    Notas
+                                </Link>
+                                <hr className='mx-4' />
+                                <button onClick={() => setIsModalOpen(true)} className='w-full hover:bg-error hover:text-main-text-color px-4 py-2 flex items-center gap-1'>
+                                    <span className="material-symbols-outlined text-[16px]">
+                                        delete
+                                    </span>
+                                    Eliminar</button>
+                            </div>
+                        </PopoverPanel>
+                    </Popover>
+                    :
+                    <span className="material-symbols-rounded animate-spin">
+                        progress_activity
+                    </span>
+            }
 
             <Modal title="Eliminar asunto" isOpen={isModalOpen} onClose={() => { setIsModalOpen(false) }}>
-                <div>                    
+                <div>
                     <p className='text-center mb-2 text-main-c dark:text-main-text-color'>
-                    <span className="material-symbols-outlined">
-                        warning
-                    </span>
-                    <br />
+                        <span className="material-symbols-outlined">
+                            warning
+                        </span>
+                        <br />
                         Está a punto de eliminar el asunto <strong className='italic'>"{title}"</strong><br /> con todo sus elementos
-                        </p>
+                    </p>
                     <div className="flex gap-2 justify-center">
                         <button className="text-secundary-c mt-12 flex justify-center bg-blue-one py-3 px-14 text-[15px] ease-in-out duration-300 hover:bg-main-c hover:text-blue-one" onClick={deleteSubject}>Confirmar</button>
                         <button className="text-blue-one mt-12 flex justify-center bg-secundary-c py-3 px-14 text-[15px] ease-in-out duration-300 hover:bg-blue-one hover:text-main-c" onClick={() => { setIsModalOpen(false) }}>Cancelar</button>
@@ -113,6 +140,6 @@ export default function SubjectList({ title, id, urlSum, urlRel, urlNotas, thefo
                         ''
                     )
             }
-        </div>
+        </Link>
     )
 }

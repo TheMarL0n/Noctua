@@ -36,6 +36,7 @@ module.exports = {
       'gray-ten': '#31303A',
       'warning': '#FFC800',
       'error': '#FF004F',
+      'green':'#13cf00',
       'black': '#000000',
       'overlay': 'rgba(0, 0, 0, 0.7)'
     },
