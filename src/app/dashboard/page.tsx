@@ -19,10 +19,38 @@ export default function Dashboard() {
     const [user, setUser] = useState('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
+    const [question, setQuestion] = useState('');
+    const [enableBtn, setEnableBtn] = useState(true);
+    const [answer, setAnswer] = useState<any[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [showQuestion, setShowQuestion] = useState(false);
+
     useEffect(() => {
         setIsLoading(true);
         getFolders();
     }, [])
+
+    //tomar la pregunta del input
+    const getTheQuestion = (e: any) => {
+        setEnableBtn(false);
+        setQuestion(e.target.value)
+    }
+
+    //enviar la pregunta
+    const sendTheQuestion = () => {
+        setLoading(true);
+        getAnswer();
+    }
+
+    //Obtener las preguntas de la API
+    const getAnswer = async () => {
+        const resumeParam = { key: 'pregunta', paramId: question, urlSlug: "ai/preguntaCarpeta" };
+        const { data } = await axios.post('/api/auth/endpoint', resumeParam);
+
+        setAnswer(answer => [...answer, { pregunta: question, respuesta: data.respuesta }]);
+        setLoading(false);
+        setShowQuestion(true);
+    }
 
     //Obtener el listado de carpetas de la API
     const getFolders = async () => {
@@ -58,6 +86,26 @@ export default function Dashboard() {
     return (
         <div className="page-body py-2 px-4 w-full min-h-full">
             <div className="w-full mt-4">
+
+            <form className="w-full flex items-center" action="">
+                        <input
+                            type="text"
+                            className="w-full bg-main-text-color dark:bg-gray-three text-[17px] rounded-lg text-gray-one py-[17px] px-[10px] leading-[18px] focus:outline-0"
+                            placeholder="Pregunta o da una instrucción a Noctua&reg;, En materia legal"
+                            onChange={getTheQuestion}
+                            value={question} />
+
+
+                        <div className="bg-gray-one dark:bg-secundary-c border border-gray-one dark:border-gray-three rounded-lg h-[52px] p-2 flex items-center justify-center">
+                            <button className="flex items-center justify-center disabled:opacity-15" onClick={sendTheQuestion} disabled={enableBtn}>
+                                <span className="material-symbols-outlined text-[32px] text-gray-four">
+                                    chat
+                                </span>
+                            </button>
+                        </div>
+
+                    </form>
+
                 <div className="flex justify-between items-center">
                     <h3 className='text-gray-seven dark:text-white-one text-[22px] capitalize'>
                         {user}

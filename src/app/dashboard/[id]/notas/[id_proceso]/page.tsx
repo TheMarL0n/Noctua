@@ -53,13 +53,7 @@ export default function Notes(notas: any) {
             <div className="w-full mt-4">
                 <div className="flex justify-between items-center">
                     <h3 className='text-gray-seven dark:text-white-one text-[22px]'>Notas</h3>
-                    <div className="bg-white rounded-full p-2 w-[52px] h-[52px] flex justify-center items-center">
-                        <a className="flex items-center justify-center" href="#">
-                            <span className="material-symbols-outlined text-[30px] text-secundary-c font-light">
-                                notifications
-                            </span>
-                        </a>
-                    </div>
+                    
                 </div>
             </div>
 

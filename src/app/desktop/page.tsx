@@ -46,13 +46,7 @@ export default function Dashboard() {
                     <h3 className='text-gray-seven dark:text-white-one text-[22px] capitalize'>
                         {user}, Bienvenido a Noctua<sup>&reg;</sup> Ai
                     </h3>
-                    <div className="bg-gray-five dark:bg-white rounded-full p-2 w-[52px] h-[52px] flex justify-center items-center">
-                        <a className="flex items-center justify-center" href="#">
-                            <span className="material-symbols-outlined text-[30px] text-white dark:text-secundary-c font-light">
-                                notifications
-                            </span>
-                        </a>
-                    </div>
+                    
                 </div>
                 <h3 className='text-gray-seven dark:text-white-one text-[20px] capitalize'>Resumen de tareas</h3>
                 <p className='text-gray-seven dark:text-white-one text-[14px] capitalize mb-4'>Consulta el status de tu cuenta y actualizaciones de la misma.</p>

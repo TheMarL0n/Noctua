@@ -40,21 +40,15 @@ export default function History() {
             <div className="w-full mt-4">
                 <div className="flex justify-between items-center">
                     <h3 className='text-gray-seven dark:text-white-one text-[22px]'>Historial</h3>
-                    <div className="bg-white rounded-full p-2 w-[52px] h-[52px] flex justify-center items-center">
-                        <a className="flex items-center justify-center" href="#">
-                            <span className="material-symbols-outlined text-[30px] text-secundary-c font-light">
-                                notifications
-                            </span>
-                        </a>
-                    </div>
+                    
                 </div>
             </div>
 
-            <div className="breadcumb">
+            <div className="breadcumb mt-3">
                 <div className='flex items-center text-custom-regular text-gray-seven dark:text-white-one gap-2'><Link href={'/dashboard'}><span className="material-symbols-outlined text-[16px] text-blue-one font-extralight">hard_drive</span> Historial</Link> /</div>
             </div>
 
-            <hr className='h-[1px] border-0 w-full bg-gray-three my-3' />
+            <hr className='h-[1px] border-0 w-full bg-gray-three my-4' />
 
             {
                 historySS.length === 0 ?

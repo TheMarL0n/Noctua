@@ -127,13 +127,7 @@ export default function Subject(resumen: any) {
                     </form>
 
                 </div>
-                <div className=" dark:bg-white bg-secundary-c rounded-full p-2 w-[52px] h-[52px] flex justify-center items-center">
-                    <a className="flex items-center justify-center" href="#">
-                        <span className="material-symbols-outlined text-[30px] text-white dark:text-secundary-c font-light">
-                            notifications
-                        </span>
-                    </a>
-                </div>
+                
             </div>
             {/*******************************************************************************************************************************************************/}
 

@@ -91,32 +91,29 @@ export default function Dashboard() {
             <hr className='h-[1px] border-0 w-full bg-gray-three my-3' />
 
             <div className="w-full flex items-center gap-2">
-                <div className="search-bar bg-main-text-color dark:bg-gray-three rounded-lg flex items-center w-full">
+                <div className="search-bar bg-main-text-color dark:bg-gray-three rounded-lg  w-full">
 
-                    <input
-                        type="text"
-                        className="w-full bg-main-text-color dark:bg-gray-three text-[17px] rounded-lg text-gray-one py-[17px] px-[10px] leading-[18px] focus:outline-0"
-                        placeholder="Pregunta o da una instrucción a Noctua&reg;, En materia legal"
-                        onChange={getTheQuestion}
-                        value={question} />
+                    <form className="w-full flex items-center" action="">
+                        <input
+                            type="text"
+                            className="w-full bg-main-text-color dark:bg-gray-three text-[17px] rounded-lg text-gray-one py-[17px] px-[10px] leading-[18px] focus:outline-0"
+                            placeholder="Pregunta o da una instrucción a Noctua&reg;, En materia legal"
+                            onChange={getTheQuestion}
+                            value={question} />
 
 
-                    <div className="bg-gray-one dark:bg-secundary-c border border-gray-one dark:border-gray-three rounded-lg h-[52px] p-2 flex items-center justify-center">
-                        <button className="flex items-center justify-center disabled:opacity-15" onClick={sendTheQuestion} disabled={enableBtn}>
-                            <span className="material-symbols-outlined text-[32px] text-gray-four">
-                                chat
-                            </span>
-                        </button>
-                    </div>
+                        <div className="bg-gray-one dark:bg-secundary-c border border-gray-one dark:border-gray-three rounded-lg h-[52px] p-2 flex items-center justify-center">
+                            <button className="flex items-center justify-center disabled:opacity-15" onClick={sendTheQuestion} disabled={enableBtn}>
+                                <span className="material-symbols-outlined text-[32px] text-gray-four">
+                                    chat
+                                </span>
+                            </button>
+                        </div>
+
+                    </form>
 
                 </div>
-                <div className=" dark:bg-white bg-secundary-c rounded-full p-2 w-[52px] h-[52px] flex justify-center items-center">
-                    <a className="flex items-center justify-center" href="#">
-                        <span className="material-symbols-outlined text-[30px] text-white dark:text-secundary-c font-light">
-                            notifications
-                        </span>
-                    </a>
-                </div>
+
             </div>
 
             {
@@ -218,7 +215,7 @@ export default function Dashboard() {
                 (
                     <div className='fixed bg-overlay rounded py-4 px-4 text-center w-[150px] top-[30%] left-[50%] mr-[-150px]'>
                         <span className="material-symbols-outlined text-[25px] leading-[25px] text-blue-one text-center cursor-pointer">done_all</span>
-                         <p className='text-main-text-color'>Añadido a las notas</p>
+                        <p className='text-main-text-color'>Añadido a las notas</p>
                     </div>
                 ) : (
                     ''
