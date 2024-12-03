@@ -5,23 +5,34 @@ import { useEffect, useState } from "react";
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react'
 import Link from 'next/link';
 
-export default function AiQuestion({ pregunta, idProceso, respuesta }: any) {
+export default function AiQuestion({ pregunta, idProceso, respuesta, fromFolder }: any) {
 
     const [isAdded, setIsAdded] = useState(false);
   
     //añadir la consulta como nota
     const addToNote = async (nota: any) => {
-        const saveParam = { key: 'nota', keyQuestion: 'proceso_id', paramId: nota, paramPregunta: idProceso, urlSlug: "api/creaNotaProceso/" };
-        await axios.post('/api/auth/endpoint', saveParam).then(response => {
+        const saveParamFromSubject = { key: 'nota', keyQuestion: 'proceso_id', paramId: nota, paramPregunta: idProceso, urlSlug: "api/creaNotaProceso/" };
+        const saveParamFromFolder = { key: 'nota', keyQuestion: 'carpeta', paramId: nota,  paramPregunta: idProceso, urlSlug: "api/creaNotaCarpeta/" };
+        await axios.post('/api/auth/endpoint', saveParamFromFolder).then(response => {
             setIsAdded(true);
             setTimeout(() => {
                 setIsAdded(false);
             }, 1000);
-        });
+        });       
+    }
+
+    //descargar documento
+    const downloadTxtFile = (id: any, e: any) => {
+        const element = document.createElement("a");
+        const file = new Blob([e], { type: 'text/plain' });;
+        element.href = URL.createObjectURL(file);
+        element.download = `${id}.txt`;
+        document.body.appendChild(element); // Required for this to work in FireFox
+        element.click();
     }
 
     return (
-        <div className="loading my-5 bg-main-text-color dark:bg-gray-five rounded-md">
+        <div className="loading my-5 bg-main-text-color dark:bg-gray-five rounded-md w-full">
             <div className="header flex justify-between items-center px-4 py-2">
                 <h2 className='text-[25px] text-bg-gray-five dark:text-main-text-color flex gap-2 items-center'>
                     <span className="material-symbols-outlined text-[32px] text-bg-gray-five dark:text-white font-extralight">
@@ -31,7 +42,7 @@ export default function AiQuestion({ pregunta, idProceso, respuesta }: any) {
 
                 </h2>
                 <div className="flex gap-1 items-center">
-                    <span className="material-symbols-outlined text-[32px] text-gray-nine font-extralight">download</span>
+                    <span onClick={() => downloadTxtFile(idProceso, respuesta)} className="material-symbols-outlined text-[32px] text-gray-nine font-extralight cursor-pointer">download</span>
                     <span className="material-symbols-outlined text-[32px] text-gray-nine font-extralight">bookmark</span>
                     <span className="material-symbols-outlined text-[32px] text-gray-nine font-extralight">print</span>
                     <Popover className="relative">
@@ -48,13 +59,6 @@ export default function AiQuestion({ pregunta, idProceso, respuesta }: any) {
                                     </span>
                                     Agregar a notas
                                 </button>
-
-                                <Link href={``} className='w-full hover:bg-blue-one hover:text-main-c px-4 py-2 flex items-center gap-1'>
-                                    <span className="material-symbols-outlined text-[16px]">
-                                        compress
-                                    </span>
-                                    Sintetiza
-                                </Link>
 
 
                             </div>

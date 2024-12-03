@@ -1,6 +1,6 @@
 export default function WorkingLoader() {
     return (
-        <div className="loading my-5 bg-main-text-color dark:bg-gray-five rounded-md">
+        <div className="loading my-5 bg-main-text-color dark:bg-gray-five rounded-md w-full">
             <div className="header flex justify-between items-center px-4 py-2">
                 <h2 className='text-[20px] text-blue-one flex gap-2 items-center'>
                     <span className="material-symbols-outlined text-[32px] text-gray-nine font-extralight">

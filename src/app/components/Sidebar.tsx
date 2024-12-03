@@ -68,7 +68,7 @@ const Sidebar = () => {
           {menuItems.map(({ ...menu }) => {
             return (
               <div id={menu.id} key={menu.id} className="flex items-center cursor-pointer hover:bg-light-lighter rounded w-full overflow-hidden whitespace-nowrap">
-                <Link className="sidebar-links flex py-8 px-3 items-center w-full h-full dark:text-main-text-color text-gray-seven hover:text-blue-one" href={menu.link}>
+                <Link className="sidebar-links flex py-4 px-3 items-center w-full h-full dark:text-main-text-color text-gray-seven hover:text-blue-one" href={menu.link}>
                   <div style={{ width: "4rem" }} className="flex items-center">
                     <span className="material-symbols-outlined text-[32px] font-light leading-[30px]">
                       {menu.icon}
