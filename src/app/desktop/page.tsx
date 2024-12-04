@@ -32,8 +32,13 @@ export default function Dashboard() {
                 urlSlug: "services/api/listaCarpetas"
             }
         });
-        setFolders(data);
-        setUser(data[0].usuario);
+
+        if (!data.code && data.length !== 0) {
+            setFolders(data);
+            setUser(data[0].usuario);
+          } else {
+            setUser('');
+          }
     }
 
     //ordenar por fecha

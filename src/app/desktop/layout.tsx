@@ -63,9 +63,12 @@ export default function DashboardLayout({
     });
 
     //Checar si el token ha expirado
-    if (!data.code) {
+    if (data.code) {      
+      setModalExpiredOpen(true);
+    } else {
       setRenderChildren(true);
-    } else setModalExpiredOpen(true);
+      //localStorage.setItem('user', JSON.stringify(data)) //almacenar datos en el local storage
+    }
   }
 
   //redireccionar al login cuando el token esté vencido

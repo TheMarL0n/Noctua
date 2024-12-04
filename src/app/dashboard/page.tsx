@@ -31,10 +31,12 @@ export default function Dashboard() {
       },
     });
 
-    //Checar si el token ha expirado
-    if (!data.code) {
+    //Checar si el token no ha expirado y si existe data
+    if (!data.code && data.length !== 0) {
       setFolders(data);
       setUser(data[0].usuario);
+    } else {
+      setUser('');
     }
     setIsLoading(false);
   };

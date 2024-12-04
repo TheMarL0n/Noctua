@@ -15,15 +15,16 @@ export default function Dashboard() {
     const [enableBtn, setEnableBtn] = useState(true);
     const [showQuestion, setShowQuestion] = useState(false);
     const [isAdded, setIsAdded] = useState(false);
+    const [user, setUser] = useState("");
 
     useEffect(() => {
-        const answerSS = JSON.parse(localStorage.getItem("history") ?? '[]');
+        const answerSS = JSON.parse(localStorage.getItem(`history`) ?? '[]');
         setAnswer(answerSS);
     }, [])
 
     useEffect(() => {
         if (answer.length !== 0) {
-            localStorage.setItem("history", JSON.stringify(answer)) //almacenar datos en el local storage
+            localStorage.setItem(`history`, JSON.stringify(answer)) //almacenar datos en el local storage
         }
     }, [answer])
 
@@ -34,7 +35,8 @@ export default function Dashboard() {
     }
 
     //enviar la pregunta
-    const sendTheQuestion = () => {
+    const sendTheQuestion = (e:any) => {
+        e.preventDefault();
         setLoading(true);
         getAnswer();
     }
@@ -70,7 +72,7 @@ export default function Dashboard() {
         itemClone[dragItem.current] = itemClone[dragOverItem.current];
         itemClone[dragOverItem.current] = temp;
         setAnswer(itemClone);
-        localStorage.setItem("history", JSON.stringify(itemClone));
+        localStorage.setItem(`history`, JSON.stringify(itemClone));
     }
 
 
