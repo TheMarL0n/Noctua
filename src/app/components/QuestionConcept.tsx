@@ -25,6 +25,8 @@ export default function QuestionConcept({ title, idPregunta, idProceso }: any) {
         setPoints(data.respuesta);
         localStorage.setItem(`firstvisit_${idProceso}`, 'visited');
         setLoading(false);
+
+        console.log("update")
     }
 
     //añadir la consulta como nota
