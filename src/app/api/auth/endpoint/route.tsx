@@ -1,6 +1,5 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import fetch from 'node-fetch';
 
 export async function POST(request: Request) {
     const cookieStore = cookies(); //get all the cookies
@@ -30,7 +29,7 @@ export async function POST(request: Request) {
     body.append(keyFourth, paramFourth);
  
 
-    const options = {
+    const options: RequestInit = {
         method: "POST",
         body,
         signal: AbortSignal.timeout(70000),
