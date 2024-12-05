@@ -14,7 +14,7 @@ export default function QuestionConcept({ title, idPregunta, idProceso }: any) {
     useEffect(() => {
         setLoading(true);
         getPoints(); // despues de obtener pregunta, obtengo puntos relevantes    
-        console.log("update")    
+        console.log("update 50 000")    
     }, [])
 
 
