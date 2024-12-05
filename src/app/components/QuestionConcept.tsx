@@ -13,7 +13,8 @@ export default function QuestionConcept({ title, idPregunta, idProceso }: any) {
 
     useEffect(() => {
         setLoading(true);
-        getPoints(); // despues de obtener pregunta, obtengo puntos relevantes        
+        getPoints(); // despues de obtener pregunta, obtengo puntos relevantes    
+        console.log("update")    
     }, [])
 
 
@@ -25,8 +26,6 @@ export default function QuestionConcept({ title, idPregunta, idProceso }: any) {
         setPoints(data.respuesta);
         localStorage.setItem(`firstvisit_${idProceso}`, 'visited');
         setLoading(false);
-
-        console.log("update")
     }
 
     //añadir la consulta como nota
