@@ -1,14 +1,15 @@
 "use client";
+
 import "material-symbols";
 import axios from "axios";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import FolderGrid from "../components/FolderGrid";
 import FolderList from "../components/FolderList";
 import AddFolderForm from "../components/AddFolderForm";
-import Link from "next/link";
-
-import { useEffect, useState } from "react";
 import { Modal } from "../components/Modal";
 import WorkingLoader from "../components/WorkingLoader";
+import UserInfo from "../components/UserInfo";
 
 export default function Dashboard() {
   const [folders, setFolders] = useState<any[]>([]);
@@ -36,7 +37,7 @@ export default function Dashboard() {
       setFolders(data);
       setUser(data[0].usuario);
     } else {
-      setUser('');
+      setUser("");
     }
     setIsLoading(false);
   };
@@ -64,8 +65,9 @@ export default function Dashboard() {
     <div className="page-body py-2 px-4 w-full min-h-full">
       <div className="w-full mt-4">
         <div className="flex justify-between items-center">
-          <h3 className="text-gray-seven dark:text-white-one text-[22px] capitalize">
-            {user}
+          <h3 className="text-gray-seven dark:text-white-one text-[22px] capitalize flex items-center gap-2">
+            <span className="material-symbols-outlined">account_circle</span>
+            <UserInfo />
           </h3>
           <a
             className="flex items-center text-custom-regular text-gray-seven dark:text-white-one bg-main-text-color dark:bg-secundary-c rounded-lg py-2 pl-1 pr-6 leading-[16px] cursor-pointer"
@@ -86,11 +88,11 @@ export default function Dashboard() {
           <span className="material-symbols-outlined text-[16px] text-blue-one font-extralight">
             hard_drive
           </span>{" "}
-          Archivo /
+          Archivo
         </Link>
       </div>
 
-      <hr className="h-[1px] border-0 w-full bg-gray-three my-3" />
+      <hr className="h-[1px] border-0 w-full bg-gray-three my-[15px]" />
 
       {isLoading ? (
         <WorkingLoader />
@@ -102,7 +104,7 @@ export default function Dashboard() {
           <h2 className="text-gray-three text-[36px] my-4">
             No hay carpetas en este proyecto
           </h2>
-          <p className="text-custom-regular text-white flex items-center gap-2">
+          <p className="text-custom-regular dark:text-white text-gray-five flex items-center gap-2">
             <span className="material-symbols-outlined text-warning text-[16px]">
               warning
             </span>{" "}
@@ -147,8 +149,6 @@ export default function Dashboard() {
               </button>
             </div>
           </div>
-
-
 
           {viewType ? (
             <div className="flex flex-wrap gap-3">

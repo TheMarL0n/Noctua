@@ -32,7 +32,6 @@ export async function POST(request: Request) {
     const options: RequestInit = {
         method: "POST",
         body,
-        signal: AbortSignal.timeout(70000),
         headers: {
             Authorization: `Bearer ${token.value}`,
         },

@@ -9,6 +9,7 @@ import SubjectGrid from "@/app/components/SubjectGrid";
 import Link from "next/link";
 import WorkingLoader from "@/app/components/WorkingLoader";
 import AiQuestion from "@/app/components/AiQuestion";
+import UserInfo from "@/app/components/UserInfo";
 
 export default function Folder(asuntos: any) {
   const [subjects, setsubjects] = useState<any[]>([]);
@@ -17,7 +18,6 @@ export default function Folder(asuntos: any) {
   const [viewType, setViewType] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [order, setOrder] = useState(false);
-  const [user, setUser] = useState("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [question, setQuestion] = useState("");
@@ -65,7 +65,6 @@ export default function Folder(asuntos: any) {
     setsubjects(data.procesos);
     setFolderId(data.id);
     setFolderName(data.carpeta);
-    setUser(data.usuario);
     setIsLoading(false);
   };
 
@@ -128,8 +127,9 @@ export default function Folder(asuntos: any) {
     <div className="page-body py-2 px-4 w-full min-h-full">
       <div className="w-full mt-4">
         <div className="flex justify-between items-center">
-          <h3 className="text-gray-seven dark:text-white-one text-[22px] capitalize">
-            {user}
+          <h3 className="text-gray-seven dark:text-white-one text-[22px] capitalize flex items-center gap-2">
+            <span className="material-symbols-outlined">account_circle</span>
+            <UserInfo />
           </h3>
           <p
             className="flex items-center text-custom-regular text-gray-seven dark:text-white-one bg-main-text-color dark:bg-secundary-c rounded-lg py-2 pl-1 pr-6 leading-[16px] cursor-pointer"
@@ -145,17 +145,23 @@ export default function Folder(asuntos: any) {
 
       <div className="breadcumb">
         <div className="flex items-center text-custom-regular text-gray-seven dark:text-white-one gap-2">
-          <Link href={"/dashboard"}>
+          <Link className="flex gap-1 items-center" href={"/dashboard"}>
             <span className="material-symbols-outlined text-[16px] text-blue-one font-extralight">
               hard_drive
             </span>{" "}
             Archivo
           </Link>{" "}
-          / <Link href={`/dashboard/${folderId}`}>{folderName}</Link>
+          /
+          <Link className="flex gap-1 items-center" href={`/dashboard/${folderId}`}>
+            <span className="material-symbols-outlined text-[16px] text-blue-one font-extralight">
+              folder
+            </span>{" "}
+            {folderName}
+          </Link>
         </div>
       </div>
 
-      <hr className="h-[1px] border-0 w-full bg-gray-three my-3" />
+      <hr className="h-[1px] border-0 w-full bg-gray-three my-[15px]" />
 
       <div className="search-bar bg-main-text-color dark:bg-gray-three rounded-lg  w-full">
         <form className="w-full flex items-center mb-3" action="">
@@ -212,7 +218,12 @@ export default function Folder(asuntos: any) {
             isLoadingAi ? (
               <WorkingLoader />
             ) : (
-              <AiQuestion pregunta={questionTitle} idProceso={folderName} respuesta={answer} fromFolder={true} />
+              <AiQuestion
+                pregunta={questionTitle}
+                idProceso={folderName}
+                respuesta={answer}
+                fromFolder={true}
+              />
             )
           ) : (
             ""
