@@ -172,7 +172,7 @@ export default function Dashboard() {
             </div>
           ) : (
             <div className="flex flex-col gap-3 w-full mt-3">
-              <div className="p-2 flex justify-between">
+              <div className="py-2 pl-2 pr-8 flex justify-between">
                 <a
                   onClick={() => changeOrder()}
                   className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-center leading-[12px] gap-4 cursor-pointer"
@@ -182,24 +182,18 @@ export default function Dashboard() {
                     sort_by_alpha
                   </span>
                 </a>
-                <a className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-center leading-[12px] gap-4 cursor-pointer">
+                <p className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-center leading-[12px] gap-4 cursor-pointer">
                   Asuntos
-                  <span className="material-symbols-outlined text-[16px] text-gray-seven dark:text-white-one">
-                    sort_by_alpha
-                  </span>
-                </a>
-                <a className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-center leading-[12px] gap-4 cursor-pointer">
+                  
+                </p>
+                <p className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-center leading-[12px] gap-4 cursor-pointer">
                   Notas
-                  <span className="material-symbols-outlined text-[16px] text-gray-seven dark:text-white-one">
-                    sort_by_alpha
-                  </span>
-                </a>
-                <a className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-center leading-[12px] gap-4 cursor-pointer">
+                  
+                </p>
+                <p className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-center leading-[12px] gap-4 cursor-pointer">
                   Fecha
-                  <span className="material-symbols-outlined text-[16px] text-gray-seven dark:text-white-one">
-                    sort_by_alpha
-                  </span>
-                </a>
+                  
+                </p>
               </div>
               {nameSort.map((folder) => (
                 <FolderList

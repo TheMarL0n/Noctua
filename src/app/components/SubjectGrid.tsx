@@ -34,10 +34,21 @@ export default function SubjectGrid({ title, id, urlSum, urlRel, urlNotas, thefo
     }
 
     //get the subject status given the subject id
-    const getSubjectStatus = async () => {
-        const { data } = await axios.get('/api/auth/status', { params: { id } });
-        setTheStatus(data.procesando);
-    }
+  const getSubjectStatus = async () => {
+    const { data } = await axios.get("/api/auth/status", { params: { id } });
+    setTheStatus(data.procesando);
+
+    let interval = setInterval(async () => {
+      const { data } = await axios.get("/api/auth/status", { params: { id } });
+      setTheStatus(data.procesando);
+      console.log("calling");
+
+      if (data.procesando === false) {
+        clearInterval(interval);
+      }
+    }, 30000);
+
+  };
 
     //eliminar proceso
     const deleteSubject = async () => {

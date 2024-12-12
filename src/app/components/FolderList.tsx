@@ -2,11 +2,11 @@
 
 import 'material-symbols';
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react'
+import { useState } from 'react';
+import { Modal } from './Modal';
 import Moment from 'moment';
 import Link from 'next/link';
 import axios from "axios";
-import { useState } from 'react';
-import { Modal } from './Modal';
 
 export default function FolderList({ id, title, asuntos, notas, fecha }: any) {
     const [isModalOpen, setIsModalOpen] = useState(false);

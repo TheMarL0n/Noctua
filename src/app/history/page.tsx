@@ -51,13 +51,13 @@ export default function History() {
 
       <div className="breadcumb mt-3">
         <div className="flex items-center text-custom-regular text-gray-seven dark:text-white-one gap-2">
-          <Link href={"/dashboard"}>
+          <Link className="flex gap-2 items-center" href={"/dashboard"}>
             <span className="material-symbols-outlined text-[16px] text-blue-one font-extralight">
               hard_drive
             </span>{" "}
             Historial
           </Link>{" "}
-          /
+          
         </div>
       </div>
 

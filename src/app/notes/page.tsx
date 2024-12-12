@@ -10,7 +10,6 @@ import { Modal } from "../components/Modal";
 import UserInfo from "../components/UserInfo";
 
 export default function Dashboard() {
-  const [folders, setFolders] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [order, setOrder] = useState(false);
   const [notas, setNotas] = useState<any[]>([]);
@@ -18,22 +17,9 @@ export default function Dashboard() {
 
   useEffect(() => {
     setIsLoading(true);
-    getFolders();
     getNotes();
   }, []);
 
-  //Obtener el listado de carpetas de la API para el nombre del usuario
-  const getFolders = async () => {
-    const { data } = await axios.get("/api/auth/folders", {
-      params: {
-        urlSlug: "services/api/listaCarpetas",
-      },
-    });
-
-    //Checar si el token ha expirado
-    if (!data.code) {
-    }
-  };
 
   //obtener el listado general de notas
   const getNotes = async () => {
@@ -82,11 +68,12 @@ export default function Dashboard() {
         </Link>
       </div>
 
-      <hr className="h-[1px] border-0 w-full bg-gray-three my-[15px]" />
+      <hr className="h-[1px] border-0 w-full bg-gray-three my-3" />
+
 
       {isLoading ? (
         <WorkingLoader />
-      ) : folders.length === 0 ? (
+      ) : notas.length === 0 ? (
         <div className="folders-list flex flex-col items-center justify-center mt-40">
           <span className="material-symbols-outlined text-[128px] text-gray-three">
             folder_off
@@ -111,10 +98,9 @@ export default function Dashboard() {
         </div>
       ) : (
         <div className="folders-list flex flex-col items-start justify-start">
-          <hr className="h-[1px] border-0 w-full bg-gray-three my-3" />
-
+          
           <div className="flex flex-col gap-3 w-full mt-3">
-            <div className="p-2 flex justify-between gap-16">
+            <div className="p-2 grid grid-cols-3">
               <a
                 onClick={() => changeOrder()}
                 className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-start leading-[12px] gap-12 cursor-pointer"
@@ -124,16 +110,12 @@ export default function Dashboard() {
                   sort_by_alpha
                 </span>
               </a>
-              <a
-                onClick={() => changeOrder()}
+              <p
                 className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-start leading-[12px] gap-12 cursor-pointer"
               >
                 Fecha
-                <span className="material-symbols-outlined text-[16px] text-gray-seven dark:text-white-one">
-                  sort_by_alpha
-                </span>
-              </a>
-              <p className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-start leading-[12px] gap-12 cursor-pointer"></p>
+              </p>
+              <p className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-start leading-[12px] gap-12 cursor-pointer">Acciones</p>
             </div>
             {filterSort.map((nota, index) => (
               <NotesList

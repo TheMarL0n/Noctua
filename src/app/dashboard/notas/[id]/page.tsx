@@ -85,16 +85,24 @@ export default function Notes(notas: any) {
             {folderName}
           </Link>
           /{" "}
-         <p className="flex gap-1 items-center">
-         <span className="material-symbols-outlined text-[16px] text-blue-one font-extralight">
-            content_paste
-          </span>
-          Notas
-         </p>
+          <p className="flex gap-1 items-center">
+            <span className="material-symbols-outlined text-[16px] text-blue-one font-extralight">
+              content_paste
+            </span>
+            Notas
+          </p>
         </div>
       </div>
 
       <hr className="h-[1px] border-0 w-full bg-gray-three my-[15px]" />
+
+      <div className="w-full my-4">
+        <div className="flex justify-between items-center">
+          <h3 className="text-gray-seven dark:text-white-one text-[22px]">
+            Notas
+          </h3>
+        </div>
+      </div>
 
       {isLoading ? (
         <WorkingLoader />
@@ -123,28 +131,23 @@ export default function Notes(notas: any) {
         </div>
       ) : (
         <>
-          <hr className="h-[1px] border-0 w-full bg-gray-three my-3" />
-          <div className="p-2 flex justify-between  gap-16">
-            <a
-              onClick={() => changeOrder()}
-              className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-start leading-[12px] gap-12 cursor-pointer"
-            >
-              Nombre
-              <span className="material-symbols-outlined text-[16px] text-gray-seven dark:text-white-one">
-                sort_by_alpha
-              </span>
-            </a>
-            <a
-              onClick={() => changeOrder()}
-              className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-start leading-[12px] gap-12 cursor-pointer"
-            >
-              Fecha
-              <span className="material-symbols-outlined text-[16px] text-gray-seven dark:text-white-one">
-                sort_by_alpha
-              </span>
-            </a>
-            <p className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-start leading-[12px] gap-12 cursor-pointer"></p>
-          </div>
+          <div className="p-2 grid grid-cols-3">
+              <a
+                onClick={() => changeOrder()}
+                className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-start leading-[12px] gap-12 cursor-pointer"
+              >
+                Nombre
+                <span className="material-symbols-outlined text-[16px] text-gray-seven dark:text-white-one">
+                  sort_by_alpha
+                </span>
+              </a>
+              <p
+                className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-start leading-[12px] gap-12 cursor-pointer"
+              >
+                Fecha
+              </p>
+              <p className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-start leading-[12px] gap-12 cursor-pointer">Acciones</p>
+            </div>
           <div className="flex flex-col gap-3 w-full mt-3">
             {filterSort.map((nota) => (
               <NotesList

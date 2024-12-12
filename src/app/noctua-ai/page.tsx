@@ -14,10 +14,13 @@ export default function Dashboard() {
   const [enableBtn, setEnableBtn] = useState(true);
   const [showQuestion, setShowQuestion] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
-  const user = localStorage.getItem('current-user');
+  const [selected, setSelected] = useState(null);
+  const user = localStorage.getItem("current-user");
 
   useEffect(() => {
-    const answerSS = JSON.parse(localStorage.getItem(`history-${user}`) ?? "[]");
+    const answerSS = JSON.parse(
+      localStorage.getItem(`history-${user}`) ?? "[]"
+    );
     setAnswer(answerSS);
   }, []);
 
@@ -62,7 +65,7 @@ export default function Dashboard() {
     const saveParam = {
       key: "nota",
       paramId: nota,
-      urlSlug: "api/guardarNota/",
+      urlSlug: "api/guardarNota",
     };
     await axios.post("/api/auth/endpoint", saveParam).then((response) => {
       setIsAdded(true);
@@ -83,6 +86,14 @@ export default function Dashboard() {
     itemClone[dragOverItem.current] = temp;
     setAnswer(itemClone);
     localStorage.setItem(`history-${user}`, JSON.stringify(itemClone));
+  };
+
+  //colapsar o no la carta
+  const handleToggle = (index: any) => {
+    if (selected === index) {
+      return setSelected(null);
+    }
+    setSelected(index);
   };
 
   return (
@@ -151,17 +162,34 @@ export default function Dashboard() {
                 onDragEnd={handleSort}
                 onDragOver={(e) => e.preventDefault()}
               >
-                <div className="header flex justify-between items-center px-4 py-2">
-                  <h2 className="text-[25px] text-gray-seven dark:text-white-one flex gap-2 items-center">
-                    <span className="material-symbols-outlined text-[25px] leading-[20px] text-gray-seven dark:text-white-one text-center cursor-pointer">
+                <button
+                  onClick={() => handleToggle(idx)}
+                  className={`header flex justify-between items-center px-4 py-2 cursor-pointer rounded-md hover:bg-gray-one w-full gap-2 ${
+                    selected === idx ? "bg-gray-one" : ""
+                  }`}
+                >
+                  <h2 className="text-[25px] text-bg-gray-five dark:text-main-text-color flex gap-2 items-center text-left">
+                    <span className="cursor-pointer material-symbols-outlined text-[25px] leading-[20px] text-gray-seven dark:text-white-one text-center">
                       drag_indicator
                     </span>
-                    <span className="material-symbols-outlined text-[32px] text-gray-seven dark:text-white-one font-extralight">
+                    <span className="material-symbols-outlined text-[32px] text-bg-gray-five dark:text-white font-extralight">
                       mark_chat_read
                     </span>
                     {res.pregunta}
                   </h2>
-                  <div className="flex gap-1 items-center">
+                  <span className="material-symbols-outlined text-[32px] text-bg-gray-five dark:text-white font-extralight">
+                    {selected === idx
+                      ? "keyboard_arrow_up"
+                      : "keyboard_arrow_down"}
+                  </span>
+                </button>
+
+                <div
+                  className={`body px-12 accordion-item ${
+                    selected === idx ? "accordion-item-show" : ""
+                  }`}
+                >
+                  <div className="flex gap-1 items-center justify-end my-3">
                     <span className="material-symbols-outlined text-[32px] text-gray-nine font-extralight">
                       download
                     </span>
@@ -184,7 +212,7 @@ export default function Dashboard() {
                       >
                         <div className="max-w-md flex-auto overflow-hidden bg-gray-two rounded-[3px] text-sm leading-6 shadow-lg">
                           <button
-                            onClick={() => addToNote(res.pregunta)}
+                            onClick={() => addToNote(res.respuesta)}
                             className="w-full hover:bg-blue-one hover:text-main-c px-4 py-2 flex items-center gap-1"
                           >
                             <span className="material-symbols-outlined text-[16px]">
@@ -205,23 +233,23 @@ export default function Dashboard() {
                       </PopoverPanel>
                     </Popover>
                   </div>
-                </div>
 
-                <hr className="h-[1px] border-0 w-full bg-gray-three mb-3" />
+                  <hr className="h-[1px] border-0 w-full bg-gray-three mb-3" />
 
-                <div className="body px-12 pt-2 pb-6">
-                  {res.respuesta
-                    .split("\n\n")
-                    .map(function (item: any, idx: any) {
-                      return (
-                        <div key={idx}>
-                          <ReactMarkdown className="text-[18px] leading-{18px} text-gray-seven dark:text-white-one">
-                            {item}
-                          </ReactMarkdown>
-                          <br />
-                        </div>
-                      );
-                    })}
+                  <div className="body pt-2 pb-6">
+                    {res.respuesta
+                      .split("\n\n")
+                      .map(function (item: any, idx: any) {
+                        return (
+                          <div key={idx}>
+                            <ReactMarkdown className="text-[18px] leading-{18px} text-gray-seven dark:text-white-one">
+                              {item}
+                            </ReactMarkdown>
+                            <br />
+                          </div>
+                        );
+                      })}
+                  </div>
                 </div>
               </div>
             ))

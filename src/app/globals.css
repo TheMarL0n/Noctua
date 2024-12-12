@@ -2,13 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.sidebar-links div span.material-symbols-outlined {
-  color: #636672 !important;
-}
-.sidebar-links:hover div span.material-symbols-outlined {
-  color: #24ede7 !important;
-}
-
 .walkthrough .shepherd-footer {
   display: flex;
   flex-direction: row;

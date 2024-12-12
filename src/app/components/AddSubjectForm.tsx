@@ -104,10 +104,10 @@ export default function AddSubjectForm({ param_folder }: any) {
 
                             <div className="mb-6 flex bg-main-text-color dark:bg-main-c items-center pr-4 rounded max-w-full">
                                 <select
-                                    id="name"
-                                    name="name"
+                                    id="sub-type"
+                                    name="sub-type"
                                     required
-                                    autoComplete="name"
+                                    autoComplete="sub-type"
                                     className="block w-full border-0 rounded p-4 text-main-c dark:text-main-text-color text-custom-regular shadow-sm bg-main-text-color dark:bg-main-c placeholder:text-main-text-color focus:outline-0 focus:ring-0"
                                     onChange={handleType}
                                 >

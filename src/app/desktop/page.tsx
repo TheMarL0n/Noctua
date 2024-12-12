@@ -159,40 +159,6 @@ export default function Dashboard() {
               </div>
             ))}
           </div>
-
-          <div className="p-4 rounded-md bg-main-text-color dark:bg-gray-five gap-4 lg: min-w-[476px]">
-            <div className="flex justify-between">
-              <p className="text-gray-seven dark:text-white-one text-[18px]">
-                Balance
-              </p>
-              <Link
-                href={`/dashboard`}
-                className="uppercase text-main-text-color text-[12px] flex gap-2 items-center"
-              >
-                ver detalle{" "}
-                <span className="material-symbols-outlined font-light">
-                  chevron_right
-                </span>
-              </Link>
-            </div>
-          </div>
-
-          <div className="p-4 rounded-md bg-main-text-color dark:bg-gray-five gap-4 lg: min-w-[476px]">
-            <div className="flex justify-between">
-              <p className="text-gray-seven dark:text-white-one text-[18px]">
-                Balance
-              </p>
-              <Link
-                href={`/dashboard`}
-                className="uppercase text-main-text-color text-[12px] flex gap-2 items-center"
-              >
-                ver detalle{" "}
-                <span className="material-symbols-outlined font-light">
-                  chevron_right
-                </span>
-              </Link>
-            </div>
-          </div>
         </div>
       </div>
     </div>

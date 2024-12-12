@@ -45,6 +45,17 @@ export default function SubjectList({
   const getSubjectStatus = async () => {
     const { data } = await axios.get("/api/auth/status", { params: { id } });
     setTheStatus(data.procesando);
+
+    let interval = setInterval(async () => {
+      const { data } = await axios.get("/api/auth/status", { params: { id } });
+      setTheStatus(data.procesando);
+      console.log("calling");
+
+      if (data.procesando === false) {
+        clearInterval(interval);
+      }
+    }, 30000);
+
   };
 
   //eliminar proceso
@@ -67,15 +78,16 @@ export default function SubjectList({
   };
 
   return (
-    <div 
-    className={
+    <div
+      className={
         theStatus === false
           ? `bg-main-text-color dark:bg-gray-five rounded-lg px-2 flex gap-8 justify-between items-center hover:bg-white-one hover:dark:bg-gray-three`
           : "bg-main-text-color dark:bg-gray-five rounded-lg px-2 flex gap-8 justify-between items-center cursor-not-allowed"
-      }>
+      }
+    >
       <Link
         href={theStatus === false ? urlRel : ""}
-        className='flex flex-1 justify-between items-center'
+        className="flex flex-1 justify-between items-center"
       >
         <div className="p-1 flex gap-2 items-center flex-1">
           <span className="material-symbols-outlined text-[25px] leading-[20px] text-gray-two text-center">

@@ -379,7 +379,7 @@ export default function Folder(asuntos: any) {
             </div>
           ) : (
             <div className="flex flex-col gap-3 w-full mt-3">
-              <div className="p-2 flex justify-between">
+              <div className="py-2 pl-2 pr-14 flex justify-between">
                 <a
                   onClick={() => changeOrder()}
                   className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-center leading-[12px] gap-4 cursor-pointer"
