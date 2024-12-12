@@ -1,6 +1,6 @@
 
 "use client"
-import Image from "next/image"
+
 import LoginForm from "../components/LoginForm"
 import RecoverPassForm from "../components/RecoverPassForm"
 import { Modal } from "../components/Modal"
@@ -13,12 +13,11 @@ export default function LoginPage() {
     return (
         <div className="xl:flex lg:flex h-screen relative">
             <div className="absolute top-2 right-2 z-10">
-                <Image
+                <img
                     src="/imgs/black.png"
                     alt="Black Logo"
                     width={100}
                     height={30}
-                    priority
                     className="mb-16"
                 />
             </div>
@@ -32,20 +31,20 @@ export default function LoginPage() {
 
             <div className="bg-white dark:bg-secundary-c flex flex-col justify-center items-center p-24 relative xl:w-2/5 w-full">
                 <div>
-                    <Image
+                    <img
                         src="/logo.svg"
                         alt="Logo"
                         width={254}
                         height={53}
-                        priority
+                        
                         className="mb-16 hidden dark:block"
                     />
-                    <Image
+                    <img
                         src="/logo-dark.svg"
                         alt="Logo"
                         width={254}
                         height={53}
-                        priority
+                        
                         className="mb-16 block dark:hidden"
                     />
                     <h3 className="text-main-c dark:text-main-text-color text-custom-medium">Inicia Sesión</h3>
