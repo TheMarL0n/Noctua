@@ -14,7 +14,7 @@ export default function LoginPage() {
         <div className="xl:flex lg:flex h-screen relative">
             <div className="absolute top-2 right-2 z-10">
                 <img
-                    src="/imgs/black.png"
+                    src="./imgs/black.png"
                     alt="Black Logo"
                     width={100}
                     height={30}
@@ -22,7 +22,7 @@ export default function LoginPage() {
                 />
             </div>
 
-            <div className="bg-left-hero-pattern bg-no-repeat bg-cover flex flex-col justify-center items-center p-24 xl:w-3/5 w-full">
+            <div className="bg-no-repeat bg-cover flex flex-col justify-center items-center p-24 xl:w-3/5 w-full" style={{background: 'url(./imgs/left-hero-pattern.png)'}}>
                 <div>
                     <h1 className="text-main-text-color text-custom-large/[60px]">La chispa que enciende<br /> <strong>infinitas posibilidades</strong><br /> en materia legal.</h1>
                     <p className="text-main-text-color text-custom-medium mt-16">Un mundo más inteligente, impulsado por la IA</p>
@@ -32,7 +32,7 @@ export default function LoginPage() {
             <div className="bg-white dark:bg-secundary-c flex flex-col justify-center items-center p-24 relative xl:w-2/5 w-full">
                 <div>
                     <img
-                        src="/logo.svg"
+                        src="./logo.svg"
                         alt="Logo"
                         width={254}
                         height={53}
@@ -40,7 +40,7 @@ export default function LoginPage() {
                         className="mb-16 hidden dark:block"
                     />
                     <img
-                        src="/logo-dark.svg"
+                        src="./logo-dark.svg"
                         alt="Logo"
                         width={254}
                         height={53}
