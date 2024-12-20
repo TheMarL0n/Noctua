@@ -23,7 +23,7 @@ export async function GET(init: RequestInit | undefined, request: any) {
     //Call the endpoint and return the "Folders list" using the Bearer token (access token)
     try {
 
-        const response = await fetch('https://noctua-app-dev.azurewebsites.net/services/api/listaNotas/', {
+        const response = await fetch(`${process.env.DEV_ENDPOINT}/services/api/listaNotas/`, {
             headers: {
                 Authorization: `Bearer ${token.value}`,
             },

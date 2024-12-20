@@ -17,6 +17,7 @@ const menuItems = [
   { id: "menu-item-3", label: "AI", icon: "auto_awesome", link: "/noctua-ai" },
   { id: "menu-item-4", label: "Historial", icon: "pace", link: "/history" },
   { id: "menu-item-5", label: "Notas", icon: "content_paste", link: "/notes" },
+  { id: "menu-item-6", label: "CVs", icon: "clinical_notes", link: "/noctua-cv" },
 ];
 
 const Sidebar = () => {

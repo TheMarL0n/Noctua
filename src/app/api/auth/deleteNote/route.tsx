@@ -34,7 +34,7 @@ export async function DELETE(request: Request) {
     //Call the endpoint and return the "Subject list" using the Bearer token (access token)
     try {
         const response = await fetch(
-             `https://noctua-app-dev.azurewebsites.net/services/api/eliminarNota/?id_nota=${paramId}`,
+             `${process.env.DEV_ENDPOINT}/services/api/eliminarNota/?id_nota=${paramId}`,
             options,
         ).then((res) => res.json());
         return new Response(JSON.stringify(response), {

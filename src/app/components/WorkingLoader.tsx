@@ -24,9 +24,9 @@ export default function WorkingLoader() {
             <hr className='h-[1px] border-0 w-full bg-gray-three mb-3' />
 
             <div className="body px-12 py-2">
-                <div className='bg-gray-one dark:bg-gray-nine h-[12px] w-full rounded-full mb-2'></div>
-                <div className='bg-gray-one dark:bg-gray-nine h-[12px] w-2/3 rounded-full mb-2'></div>
-                <div className='bg-gray-one dark:bg-gray-nine h-[12px] w-4/5 rounded-full mb-2'></div>
+                <div className='bg-gray-one dark:bg-gray-nine h-[12px] w-full rounded-full mb-2 loading-animation-4s'></div>
+                <div className='bg-gray-one dark:bg-gray-nine h-[12px] w-2/3 rounded-full mb-2 loading-animation-2s'></div>
+                <div className='bg-gray-one dark:bg-gray-nine h-[12px] w-4/5 rounded-full mb-2 loading-animation-3s'></div>
             </div>
         </div>
     )

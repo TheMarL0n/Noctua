@@ -18,7 +18,7 @@ export async function POST(request: Request) {
 
     // make the request to authenticate the user
     const tokensResponse: SignInResponse = await fetch(
-        "https://noctua-app-dev.azurewebsites.net/services/token/",
+        `${process.env.DEV_ENDPOINT}/services/token/`,
         options,
     ).then((res) => res.json());
 

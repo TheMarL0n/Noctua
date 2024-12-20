@@ -28,7 +28,7 @@ export async function GET(request: Request) {
 
     //Call the endpoint and return the "Folders list" using the Bearer token (access token)
     try {
-        const response = await fetch('https://noctua-app-dev.azurewebsites.net/cat/tipoProceso/',
+        const response = await fetch(`${process.env.DEV_ENDPOINT}/cat/tipoProceso/`,
             options,
         ).then((res) => res.json());
 
