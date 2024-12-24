@@ -34,7 +34,7 @@ export async function DELETE(request: Request) {
     //Call the endpoint and return the "Subject list" using the Bearer token (access token)
     try {
         const response = await fetch(
-             `${process.env.DEV_ENDPOINT}/services/api/eliminarNotaProceso/`,
+             `${process.env.ENDPOINT}/services/api/eliminarNotaProceso/`,
             options,
         ).then((res) => res.json());
         return new Response(JSON.stringify(response), {

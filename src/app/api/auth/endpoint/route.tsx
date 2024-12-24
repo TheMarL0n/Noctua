@@ -32,6 +32,7 @@ export async function POST(request: Request) {
     const options: RequestInit = {
         method: "POST",
         body,
+        signal: AbortSignal.timeout(300000), //5 minutos max
         headers: {
             Authorization: `Bearer ${token.value}`,
         },
@@ -40,7 +41,7 @@ export async function POST(request: Request) {
     //Call the endpoint and return the "Subject list" using the Bearer token (access token)
     try {
         const response = await fetch(
-            `${process.env.DEV_ENDPOINT}/services/${urlSlug}/`,
+            `${process.env.ENDPOINT}/services/${urlSlug}/`,
             options,
         ).then((res) => res.json());
         return new Response(JSON.stringify(response), {

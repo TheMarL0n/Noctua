@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
 
     //Call the endpoint and return the "Folders list" using the Bearer token (access token)
     try {
-        const response = await fetch(`${process.env.DEV_ENDPOINT}/cat/proceso/status/?id_proceso=${id}`,
+        const response = await fetch(`${process.env.ENDPOINT}/cat/proceso/status/?id_proceso=${id}`,
             options,
         ).then((res) => res.json());
 

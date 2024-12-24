@@ -1,0 +1,5 @@
+docker build . --tag noctua-app-frontend:241213 --platform linux/amd64
+
+docker tag noctua-app-frontend:241213 noctuacontainereg.azurecr.io/noctua-app-frontend:241213
+
+docker push noctuacontainereg.azurecr.io/noctua-app-frontend:241213

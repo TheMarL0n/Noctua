@@ -7,10 +7,12 @@ import WorkingLoader from "../components/WorkingLoader";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import { useEffect, useRef, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
+import { Modal } from "../components/Modal";
 
 export default function Dashboard() {
   const [answer, setAnswer] = useState("");
   const [isCopied, setIsCopied] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [description, setDescription] = useState("");
   const [driveUrl, setDriveUrl] = useState("");
@@ -54,13 +56,19 @@ export default function Dashboard() {
       urlSlug: "test/procesaCVS",
     };
 
-    await axios.post("/api/auth/endpoint", resumeParam).then((response) => {
-      setAnswer(response.data.respuesta);
-      setLoading(false);
-      setDescription("");
-      setDriveUrl("");
-      setAmount("");
-    });
+    await axios
+      .post("/api/auth/endpoint", resumeParam)
+      .then((response) => {
+        setAnswer(response.data.respuesta);
+        setLoading(false);
+        setDescription("");
+        setDriveUrl("");
+        setAmount("");
+      })
+      .catch((err) => {
+        setIsModalOpen(true);
+        //console.log(`ERROR: ${err.message}`);
+      });
   };
 
   //añadir la consulta como nota
@@ -262,6 +270,30 @@ export default function Dashboard() {
       ) : (
         ""
       )}
+
+      <Modal
+        title="Tiempo de espera agotado"
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+        }}
+      >
+        <div>
+          <p className=" text-white text-[18px] text-center flex flex-col items-center gap-2">
+            <span className="material-symbols-outlined text-warning text-[18px]">
+              warning
+            </span>{" "}
+            El tiempo de espera de la solicitud ha sido agotado, <br />
+            por favor, intente nuevamente más tarde
+          </p>
+        </div>
+        <button
+          onClick={() => window.location.reload()}
+          className="text-secundary-c mt-12 mx-auto flex justify-center bg-blue-one py-3 px-14 text-[15px] ease-in-out duration-300 hover:bg-main-c hover:text-blue-one"
+        >
+          Aceptar
+        </button>
+      </Modal>
     </div>
   );
 }

@@ -31,7 +31,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="flex flex-col justify-between h-full">
+    <div className="flex flex-col justify-between h-full overflow-auto">
       <div className="flex flex-col">
         <div className="flex items-center justify-between relative mb-8 pb-8 border-b border-gray-two">
           <div className="flex items-end pl-1 gap-4">

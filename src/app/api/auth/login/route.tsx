@@ -18,7 +18,7 @@ export async function POST(request: Request) {
 
     // make the request to authenticate the user
     const tokensResponse: SignInResponse = await fetch(
-        `${process.env.DEV_ENDPOINT}/services/token/`,
+        `${process.env.ENDPOINT}/services/token/`,
         options,
     ).then((res) => res.json());
 

@@ -35,7 +35,7 @@ export async function PUT(request: Request) {
     //Call the endpoint and return the "Subject list" using the Bearer token (access token)
     try {
         const response = await fetch(
-             `${process.env.DEV_ENDPOINT}/services/api/actualizaNotaCarpeta/`,
+             `${process.env.ENDPOINT}/services/api/actualizaNotaCarpeta/`,
             options,
         ).then((res) => res.json());
         return new Response(JSON.stringify(response), {
