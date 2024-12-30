@@ -8,9 +8,12 @@ import Link from "next/link";
 
 export default function Dashboard() {
   const [folders, setFolders] = useState<any[]>([]);
-  const [user, setUser] = useState('');
+  const [user, setUser] = useState("");
   const firstimer = window.localStorage.getItem("firstimer");
   const { tour } = dashboardTour();
+  const historySS: [] = JSON.parse(
+    localStorage.getItem(`history-${user}`) ?? "[]"
+  );
 
   const getUser = async () => {
     const { data } = await axios.get("/api/auth/user");
@@ -132,7 +135,7 @@ export default function Dashboard() {
               </p>
               <Link
                 href={`/dashboard`}
-                className="uppercase text-main-text-color text-[12px] flex gap-2 items-center"
+                className="uppercase text-blue-one text-[12px] flex gap-2 items-center"
               >
                 ver detalle{" "}
                 <span className="material-symbols-outlined font-light">
@@ -156,6 +159,38 @@ export default function Dashboard() {
                 <p className="text-gray-seven dark:text-white-one text-custom-regular">
                   {Moment(folder.fecha_creacion).format("DD/MM/yy hh:mm")}
                 </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="p-4 rounded-md bg-main-text-color dark:bg-gray-five gap-4 lg: min-w-[476px]">
+            <div className="flex justify-between mb-4">
+              <p className="text-gray-seven dark:text-white-one text-[18px]">
+                Resumen de consultas a la IA
+              </p>
+              <Link
+                href={`/history`}
+                className="uppercase text-blue-one text-[12px] flex gap-2 items-center"
+              >
+                ver detalle{" "}
+                <span className="material-symbols-outlined font-light">
+                  chevron_right
+                </span>
+              </Link>
+            </div>
+
+            {historySS.slice(0, 3).map((history, idx) => (
+              <div
+                key={idx}
+                className="flex justify-between border-b border-b-gray-three pb-2 mb-2"
+              >
+                <p className="text-gray-seven dark:text-white-one text-custom-regular flex gap-2 items-center">
+                  <span className="material-symbols-outlined text-[20px] leading-[20px] text-gray-seven dark:text-white-one text-center">
+                    auto_awesome
+                  </span>
+                  {history.pregunta}
+                </p>
+                <p className="text-gray-seven dark:text-white-one text-custom-regular"></p>
               </div>
             ))}
           </div>

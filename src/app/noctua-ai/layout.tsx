@@ -78,7 +78,7 @@ export default function DashboardLayout({
   return (
     <main className="min-h-screen flex flex-row justify-start items-start bg-white dark:bg-main-c">
       <div
-        className={wrapperClasses}
+        className={`${wrapperClasses} overflow-auto`}
         style={{ transition: "width 300ms cubic-bezier(0.2, 0, 0, 1) 0s" }}
       >
         <div className="flex items-center justify-between relative pb-6 ">

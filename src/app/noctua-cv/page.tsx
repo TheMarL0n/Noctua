@@ -235,10 +235,10 @@ export default function Dashboard() {
           <span className="material-symbols-outlined text-[128px] text-gray-three">
             clinical_notes
           </span>
-          <h2 className="text-gray-three text-[36px] my-4">
+          <h2 className="text-gray-three text-center text-[36px] my-4">
             Encuentra los mejores candidatos para la vacante con Noctua
           </h2>
-          <p className="text-custom-regular text-white flex items-center gap-2">
+          <p className="text-custom-regular text-gray-three dark:text-white flex items-center gap-2">
             <span className="material-symbols-outlined text-warning text-[16px]">
               warning
             </span>{" "}
@@ -279,7 +279,7 @@ export default function Dashboard() {
         }}
       >
         <div>
-          <p className=" text-white text-[18px] text-center flex flex-col items-center gap-2">
+          <p className="text-gray-three dark:text-white text-[18px] text-center flex flex-col items-center gap-2">
             <span className="material-symbols-outlined text-warning text-[18px]">
               warning
             </span>{" "}

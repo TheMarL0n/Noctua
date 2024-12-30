@@ -1,13 +1,14 @@
 "use client";
 import "material-symbols";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
-import axios from "axios";
+import ReactMarkdown from "react-markdown";
 
 export default function History() {
-  
-  const user = localStorage.getItem('current-user');
-  const historySS: [] = JSON.parse(localStorage.getItem(`history-${user}`) ?? "[]");
+  const user = localStorage.getItem("current-user");
+  const historySS: [] = JSON.parse(
+    localStorage.getItem(`history-${user}`) ?? "[]"
+  );
   const [items, setItems] = useState(historySS);
   const [isSorted, setIsSorted] = useState<boolean>(false);
   const [order, setOrder] = useState(false);
@@ -57,7 +58,6 @@ export default function History() {
             </span>{" "}
             Historial
           </Link>{" "}
-          
         </div>
       </div>
 
@@ -97,7 +97,7 @@ export default function History() {
               ? items.map((item, idx) => (
                   <div
                     key={idx}
-                    className="bg-main-text-color dark:bg-gray-five rounded-lg px-2 flex justify-between items-center"
+                    className="bg-main-text-color dark:bg-gray-five rounded-lg px-8 py-4 flex flex-col justify-between items-start"
                     draggable
                     onDragStart={() => (dragItem.current = idx)}
                     onDragEnter={() => (dragOverItem.current = idx)}
@@ -115,12 +115,29 @@ export default function History() {
                         {item.pregunta}
                       </p>
                     </div>
+
+                    <hr className="h-[1px] bg-gray-two w-full border-0 my-3" />
+
+                    <p className="text-[17px] text-gray-seven dark:text-white-one">
+                      {item.respuesta
+                        .split("\n\n")
+                        .map(function (item: any, idx: any) {
+                          return (
+                            <div key={idx}>
+                              <ReactMarkdown className="text-[18px] leading-{18px} text-gray-seven dark:text-white-one">
+                                {item}
+                              </ReactMarkdown>
+                              <br />
+                            </div>
+                          );
+                        })}
+                    </p>
                   </div>
                 ))
               : sortedList.map((item, idx) => (
                   <div
                     key={idx}
-                    className="bg-main-text-color dark:bg-gray-five rounded-lg px-2 flex justify-between items-center"
+                    className="bg-main-text-color dark:bg-gray-five rounded-lg px-8 py-4 flex flex-col justify-between items-start"
                   >
                     <div className="p-1 flex gap-2 items-center flex-1">
                       <span className="material-symbols-outlined text-[25px] leading-[20px] text-gray-seven dark:text-white-one text-center">
@@ -130,6 +147,23 @@ export default function History() {
                         {item.pregunta}
                       </p>
                     </div>
+
+                    <hr className="h-[1px] bg-gray-two w-full border-0 my-3" />
+
+                    <p className="text-[17px] text-gray-seven dark:text-white-one">
+                      {item.respuesta
+                        .split("\n\n")
+                        .map(function (item: any, idx: any) {
+                          return (
+                            <div key={idx}>
+                              <ReactMarkdown className="text-[18px] leading-{18px} text-gray-seven dark:text-white-one">
+                                {item}
+                              </ReactMarkdown>
+                              <br />
+                            </div>
+                          );
+                        })}
+                    </p>
                   </div>
                 ))}
           </div>
