@@ -131,7 +131,17 @@ export default function Dashboard() {
 
       <div className="w-full flex items-center gap-2">
         <form className="w-full flex flex-col items-center" action="">
-          <div className="flex gap-2 mb-2 rounded-lg  w-full">
+          <div className="flex mb-2 rounded-lg w-full">
+            <textarea
+              rows={6}
+              className="w-full bg-main-text-color dark:bg-gray-three text-[17px] rounded-lg text-gray-one py-[17px] px-[10px] leading-[18px] focus:outline-0"
+              placeholder="Descripción de la vacante"
+              onChange={getTheDescription}
+              value={description}
+            />
+          </div>
+
+          <div className="flex rounded-lg gap-2 w-full">
             <input
               type="text"
               className="w-[70%] bg-main-text-color dark:bg-gray-three text-[17px] rounded-lg text-gray-one py-[17px] px-[10px] leading-[18px] focus:outline-0"
@@ -146,16 +156,6 @@ export default function Dashboard() {
               placeholder="Cantidad de candidatos"
               onChange={getTheNumber}
               value={amount}
-            />
-          </div>
-
-          <div className="flex bg-main-text-color dark:bg-gray-three rounded-lg  w-full">
-            <input
-              type="text"
-              className="w-full bg-main-text-color dark:bg-gray-three text-[17px] rounded-lg text-gray-one py-[17px] px-[10px] leading-[18px] focus:outline-0"
-              placeholder="Descripción de la vacante"
-              onChange={getTheDescription}
-              value={description}
             />
 
             <div className="bg-gray-one dark:bg-secundary-c border border-gray-one dark:border-gray-three rounded-lg h-[52px] p-2 flex items-center justify-center">
