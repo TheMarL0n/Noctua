@@ -74,7 +74,7 @@ export default function RelevantPoints({ idProceso }: any) {
     return (
         <>        
             {
-                items.map((preg: any, index: any) => (
+                items.toReversed().map((preg: any, index: any) => (
 
                     <div
                         key={index}

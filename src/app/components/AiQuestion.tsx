@@ -65,7 +65,7 @@ export default function AiQuestion({
   const showCopied = () => {
     setIsAdded(true);
     setTimeout(() => {
-        setIsAdded(false);
+      setIsAdded(false);
     }, 1000);
   };
 

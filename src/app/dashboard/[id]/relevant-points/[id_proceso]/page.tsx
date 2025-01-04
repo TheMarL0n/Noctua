@@ -89,6 +89,7 @@ export default function Subject(resumen: any) {
         setLoading(false);
       }, 900);
       setQuestion("");
+      localStorage.setItem(`firstvisit_${resumen.params.id_proceso}`, "visited");
     });
   };
 
@@ -199,7 +200,7 @@ export default function Subject(resumen: any) {
         loading ? (
           <WorkingLoader />
         ) : (
-          <AiQuestion pregunta={title} respuesta={answer} />
+          ""
         )
       ) : (
         ""
