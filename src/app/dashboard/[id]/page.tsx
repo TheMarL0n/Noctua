@@ -10,6 +10,7 @@ import Link from "next/link";
 import WorkingLoader from "@/app/components/WorkingLoader";
 import AiQuestion from "@/app/components/AiQuestion";
 import UserInfo from "@/app/components/UserInfo";
+import PlusToggler from "@/app/components/PlusToggler";
 
 export default function Folder(asuntos: any) {
   const [subjects, setsubjects] = useState<any[]>([]);
@@ -103,17 +104,39 @@ export default function Folder(asuntos: any) {
     e.preventDefault();
     setShowQuestion(true);
     setIsLoadingAi(true);
-    getAnswer();
+
+    if (localStorage.getItem("modeplus") === "plus-on") {
+      alert('modo plus');
+      //getAnswerPlus();
+    } else getAnswer();
   };
 
   //Obtener las preguntas de la API
   const getAnswer = async () => {
+
     const resumeParam = {
       key: "carpeta",
       keyQuestion: "pregunta",
       paramId: folderName,
       paramPregunta: question,
-      urlSlug: "ai/preguntaCarpeta",
+      urlSlug: 'ai/preguntaCarpeta',
+    };
+    await axios.post("/api/auth/endpoint", resumeParam).then((response) => {
+      setAnswer(response.data.respuesta);
+      setQuestion("");
+      setIsLoadingAi(false);
+    });
+  };
+
+  //Obtener las preguntas PLUS de la API
+  const getAnswerPlus = async () => {
+
+    const resumeParam = {
+      key: "carpeta",
+      keyQuestion: "pregunta",
+      paramId: folderName,
+      paramPregunta: question,
+      urlSlug: 'ai/preguntaCarpetaPlus',
     };
     await axios.post("/api/auth/endpoint", resumeParam).then((response) => {
       setAnswer(response.data.respuesta);
@@ -152,7 +175,10 @@ export default function Folder(asuntos: any) {
             Archivo
           </Link>{" "}
           /
-          <Link className="flex gap-1 items-center" href={`/dashboard/${folderId}`}>
+          <Link
+            className="flex gap-1 items-center"
+            href={`/dashboard/${folderId}`}
+          >
             <span className="material-symbols-outlined text-[16px] text-blue-one font-extralight">
               folder
             </span>{" "}
@@ -163,17 +189,20 @@ export default function Folder(asuntos: any) {
 
       <hr className="h-[1px] border-0 w-full bg-gray-three my-[15px]" />
 
-      <div className="search-bar bg-main-text-color dark:bg-gray-three rounded-lg  w-full">
-        <form className="w-full flex items-center mb-3" action="">
+      <div className="search-bar bg-main-text-color dark:bg-gray-three rounded-lg w-full ia-bg">
+        <form
+          className="w-full flex items-center mb-3 border border-gray-three ia-border rounded-lg"
+          action=""
+        >
           <input
             type="text"
-            className="w-full bg-main-text-color dark:bg-gray-three text-[17px] rounded-lg text-gray-one py-[17px] px-[10px] leading-[18px] focus:outline-0"
+            className="ia-bg w-full plus-on:bg-gray-three bg-main-text-color dark:bg-gray-three text-[17px] rounded-lg text-gray-one py-[17px] px-[10px] leading-[18px] focus:outline-0"
             placeholder="Pregunta o da una instrucción a Noctua&reg;, En relación al contenido de carpetas"
             onChange={getTheQuestion}
             value={question}
           />
 
-          <div className="bg-gray-one dark:bg-secundary-c border border-gray-one dark:border-gray-three rounded-lg h-[52px] p-2 flex items-center justify-center">
+          <div className="bg-gray-one dark:bg-secundary-c rounded-lg h-[52px] p-2 flex items-center justify-center mr-1">
             <button
               className="flex items-center justify-center disabled:opacity-15"
               onClick={sendTheQuestion}
@@ -184,6 +213,7 @@ export default function Folder(asuntos: any) {
               </span>
             </button>
           </div>
+          <PlusToggler />
         </form>
       </div>
 

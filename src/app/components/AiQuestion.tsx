@@ -1,6 +1,6 @@
 import ReactMarkdown from "react-markdown";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import CopyToClipboard from "react-copy-to-clipboard";
 

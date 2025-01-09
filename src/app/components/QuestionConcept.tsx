@@ -13,18 +13,17 @@ export default function QuestionConcept({ title, idPregunta, idProceso }: any) {
 
     useEffect(() => {
         setLoading(true);
-        getPoints(); // despues de obtener pregunta, obtengo puntos relevantes    
-        console.log("update 2")    
+        getPoints(); // despues de obtener pregunta, obtengo puntos relevantes      
     }, [])
 
 
     //get relevant point
     const getPoints = async () => {
-        const resumeParam = { key: 'id_proceso', keyQuestion: 'id_concepto', paramId: idProceso, paramPregunta: idPregunta, urlSlug: "ai/preguntaIAConcepto" };
+        const resumeParam = { key: 'id_proceso', keyQuestion: 'id_concepto', paramId: idProceso, paramPregunta: idPregunta, urlSlug: "ai/preguntaIAConceptoPlus" };
         const { data } = await axios.post('/api/auth/endpoint', resumeParam);
 
         setPoints(data.respuesta);
-        localStorage.setItem(`firstvisit_${idProceso}`, 'visited');
+        localStorage.setItem('modeplus', 'plus-of');
         setLoading(false);
     }
 

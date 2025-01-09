@@ -8,15 +8,14 @@ import AiQuestion from "@/app/components/AiQuestion";
 import WorkingLoader from "@/app/components/WorkingLoader";
 import QuestionConcept from "@/app/components/QuestionConcept";
 import RelevantPoints from "@/app/components/RelevantPoints";
+import PlusToggler from "@/app/components/PlusToggler";
 
 export default function Subject(resumen: any) {
   const [contenido, setContenido] = useState<any[]>([]);
   const contenidoSS = JSON.parse(
     localStorage.getItem(`rpoints_${resumen.params.id_proceso}`) ?? "[]"
   );
-  const firstquery = localStorage.getItem(
-    `firstvisit_${resumen.params.id_proceso}`
-  );
+  const modeplus = localStorage.getItem("modeplus");
 
   const [folder, setFolder] = useState("");
   const [subject, setSubject] = useState("");
@@ -27,6 +26,7 @@ export default function Subject(resumen: any) {
 
   const [loading, setLoading] = useState<boolean>(false);
   const [user, setUser] = useState("");
+
   const getUser = async () => {
     const { data } = await axios.get("/api/auth/user");
     localStorage.setItem("current-user", data.nombre_usuario); //crear el firstimer en localstorage
@@ -62,19 +62,39 @@ export default function Subject(resumen: any) {
     const { data } = await axios.post("/api/auth/endpoint", resumeParam);
 
     if (data.contenido) {
+      //checar si ya el proceso cuenta con respuesta y si es la primera vez que se visita en un navegador
+      let visited = localStorage.getItem(
+        `firstvisit_${resumen.params.id_proceso}`
+      );
+      if ("respuesta" in data.contenido[0] && visited === null) {
+        localStorage.setItem(
+          `firstvisit_${resumen.params.id_proceso}`,
+          "visited"
+        );
+      }
+
       setContenido(data.contenido);
     }
-    //localStorage.setItem(`rpoints_${resumen.params.id_proceso}`, `${JSON.stringify(data.contenido)}`);//guardar la consulta en el localstorage
   };
 
   //obtener la respuesta segun la pregunta escrita en text input------------------------------------------------------------------------
   const getQuestionFromInput = (e: any) => {
     setQuestion(e.target.value);
   };
-  const sendTheQuestion = async (e: any) => {
+
+  const sendTheQuestion = (e: any) => {
     e.preventDefault();
-    setLoading(!loading);
+    setLoading(true);
+
+    if (modeplus === "plus-on") {
+      getAnswerPlus();
+    } else getAnswer();
+  };
+
+  //Obtener las preguntas de la API
+  const getAnswer = async () => {
     setTitle(question);
+    console.log("not-plus");
     const resumeParam = {
       key: "id_proceso",
       keyQuestion: "pregunta",
@@ -85,12 +105,45 @@ export default function Subject(resumen: any) {
 
     await axios.post("/api/auth/endpoint", resumeParam).then((response) => {
       setAnswer(response.data.respuesta);
-      setTimeout(() => {
-        setLoading(false);
-      }, 900);
+      setLoading(false);
       setQuestion("");
-      localStorage.setItem(`firstvisit_${resumen.params.id_proceso}`, "visited");
     });
+  };
+
+  //Obtener las preguntas PLUS de la API
+  const getAnswerPlus = async () => {
+    setTitle(question);
+    console.log("plus");
+    const resumeParam = {
+      key: "id_proceso",
+      keyQuestion: "pregunta",
+      paramId: resumen.params.id_proceso,
+      paramPregunta: question,
+      urlSlug: "ai/preguntaIAPlus",
+    };
+
+    await axios.post("/api/auth/endpoint", resumeParam).then((response) => {
+      setAnswer(response.data.respuesta);
+      setLoading(false);
+      setQuestion("");
+    });
+  };
+
+  //get relevant point
+  const getPoints = async (e: any) => {
+    e.preventDefault();
+    setLoading(true);
+    for (let i = 0; i < contenido.length; i++) {
+      const resumeParam = {
+        key: "id_proceso",
+        keyQuestion: "id_concepto",
+        paramId: resumen.params.id_proceso,
+        paramPregunta: contenido[i].id_pregunta,
+        urlSlug: "ai/preguntaIAConceptoPlus",
+      };
+      const { data } = await axios.post("/api/auth/endpoint", resumeParam);
+    }
+    setLoading(false);
   };
 
   return (
@@ -139,7 +192,7 @@ export default function Subject(resumen: any) {
           /
           <p className="flex gap-1 items-center">
             <span className="material-symbols-outlined text-[16px] text-blue-one font-extralight">
-            format_list_bulleted
+              format_list_bulleted
             </span>
             Puntos relevantes
           </p>
@@ -149,38 +202,31 @@ export default function Subject(resumen: any) {
       <hr className="h-[1px] border-0 w-full bg-gray-three my-3" />
 
       {/***************************************************************SEARCHBAR****************************************************************************************/}
-      <div className="w-full flex items-center gap-2">
-        <div className="search-bar bg-gray-one dark:bg-gray-three rounded-lg flex items-center w-full">
-          <div className="relative inline-block text-left">
-            <div className="inline-flex w-full justify-center items-center gap-x-1.5 bg-gray-one dark:bg-secundary-c border border-gray-one dark:border-gray-three rounded-lg px-2 py-[9px] ring-gray-300 hover:bg-gray-50">
-              <span className="material-symbols-outlined text-[32px] text-gray-four">
-                gavel
-              </span>
-            </div>
-          </div>
 
-          <form className="w-full" action="">
-            <div className="flex">
-              <input
-                type="text"
-                className="w-full bg-main-text-color dark:bg-gray-three text-[17px] text-gray-one py-[17px] px-[10px] leading-[18px] outline-0"
-                placeholder="Da una instrucción a Noctua&reg;, sobre este asunto"
-                onChange={getQuestionFromInput}
-                value={question}
-              />
-              <div className="bg-gray-one dark:bg-secundary-c border border-gray-one dark:border-gray-three rounded-lg h-[52px] p-2 flex items-center justify-center">
-                <button
-                  className="flex items-center justify-center"
-                  onClick={sendTheQuestion}
-                >
-                  <span className="material-symbols-outlined text-[32px] text-gray-four">
-                    chat
-                  </span>
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
+      <div className="search-bar bg-main-text-color dark:bg-gray-three rounded-lg w-full ia-bg">
+        <form
+          className="w-full flex items-center mb-3 border border-gray-three ia-border rounded-lg"
+          action=""
+        >
+          <input
+            type="text"
+            className="ia-bg w-full plus-on:bg-gray-three bg-main-text-color dark:bg-gray-three text-[17px] rounded-lg text-gray-one py-[17px] px-[10px] leading-[18px] focus:outline-0"
+            placeholder="Da una instrucción a Noctua&reg;, sobre este asunto"
+            onChange={getQuestionFromInput}
+            value={question}
+          />
+          <div className="bg-gray-one dark:bg-secundary-c rounded-lg h-[52px] p-2 flex items-center justify-center mr-1">
+            <button
+              className="flex items-center justify-center"
+              onClick={sendTheQuestion}
+            >
+              <span className="material-symbols-outlined text-[32px] text-gray-four">
+                chat
+              </span>
+            </button>
+          </div>
+          <PlusToggler idProceso={resumen.params.id_proceso} />
+        </form>
       </div>
       {/*******************************************************************************************************************************************************/}
 
@@ -192,38 +238,28 @@ export default function Subject(resumen: any) {
             </h3>
           </div>
 
-          <div className="flex gap-3 items-center"></div>
+          <div className="flex items-center">
+            <button
+              className={`text-gray-seven dark:text-white-one text-[12px] uppercase flex items-center gap-2 bg-gray-one dark:bg-secundary-c rounded-lg px-4 py-3 ${
+                modeplus === "plus-on"
+                  ? ""
+                  : "hidden"
+              }`}
+              onClick={getPoints}
+            >
+              <span className="material-symbols-outlined text-[14px] text-blue-one">
+              quickreply
+              </span>{" "}
+              Respuestas modo plus
+            </button>
+          </div>
         </div>
       </div>
 
-      {answer !== "" ? (
-        loading ? (
-          <WorkingLoader />
-        ) : (
-          ""
-        )
+      {loading ? (
+        <WorkingLoader />
       ) : (
-        ""
-      )}
-      {firstquery === null ? ( //si no se ha visitado por primera vez, llamar IA preguntaConcepto
-        contenido.map((cont, index) => (
-          <QuestionConcept
-            key={index}
-            title={cont.concepto}
-            pregunta={cont.pregunta}
-            idPregunta={cont.id_pregunta}
-            idProceso={resumen.params.id_proceso}
-          />
-        ))
-      ) : firstquery === "visited" ? ( //si ya se consultó a la IA preguntaConcepto, render las respuesta desde el proceso
         <RelevantPoints idProceso={resumen.params.id_proceso} />
-      ) : firstquery === "storaged" ? ( //si ya se consultó a la IA preguntaConcepto, render las respuesta desde el proceso
-        <RelevantPointsSS
-          preguntas={contenidoSS}
-          idProceso={resumen.params.id_proceso}
-        />
-      ) : (
-        <></>
       )}
     </div>
   );

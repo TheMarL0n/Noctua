@@ -5,6 +5,7 @@ import Image from "next/image";
 export default function AddSubjectForm({ param_folder }: any) {
   const [success, setSuccess] = useState(false);
   const [enabler, setEnabler] = useState(false);
+  const [notif, setNotif] = useState(false);
   const [subject, setSubject] = useState("");
   const [subjectType, setSubjectType] = useState("");
   const [arrSubjectType, setArrSubjectType] = useState<any[]>([]);
@@ -19,11 +20,19 @@ export default function AddSubjectForm({ param_folder }: any) {
   };
 
   const handleFiles = (e: any) => {
-    setEnabler(true);
     if (e.target.files) {
       //convert `FileList` to `File[]`
-      const _files = Array.from(e.target.files);
+      const _files: File[] = Array.from(e.target.files);
       setTheFiles(_files);
+      let fileSize: number = _files.reduce((a, v) => (a = a + v.size), 0);
+
+      if (_files.length < 20 && fileSize < 100000000) { //20 archivos o 100MB
+        setEnabler(true);
+        setNotif(false);
+      } else {
+        setEnabler(false);
+        setNotif(true);
+      }
     }
   };
 
@@ -46,11 +55,8 @@ export default function AddSubjectForm({ param_folder }: any) {
 
     for (let i = 0; i < theFiles.length; i++) {
       formData.append("archivos", theFiles[i]);
+      console.log("archivos", theFiles[i]);
     }
-
-    /*theFiles.forEach((file, i) => {
-      formData.append("archivos", file);
-    });*/
 
     formData.append("carpeta", param_folder);
     formData.append("proceso", subject);
@@ -66,6 +72,7 @@ export default function AddSubjectForm({ param_folder }: any) {
         window.location.reload();
       }, 1000);
     });
+
   };
 
   return (
@@ -124,7 +131,14 @@ export default function AddSubjectForm({ param_folder }: any) {
               ))}
             </select>
           </div>
-
+          <input
+            id="dropzone-file"
+            multiple
+            type="file"
+            accept="application/pdf"
+            className="hidden"
+            onChange={handleFiles}
+          />
           <div className="flex items-center justify-center w-full">
             <label
               htmlFor="dropzone-file"
@@ -140,11 +154,20 @@ export default function AddSubjectForm({ param_folder }: any) {
                       theFiles.length > 0 &&
                       theFiles.map((item: any, index: any) => {
                         return (
-                          <div key={index}>
+                          <li key={index}>
                             {index + 1} - {item.name}
-                          </div>
+                          </li>
                         );
                       })}
+                    <br />
+                    <li>Total de archivos: {theFiles.length}</li>
+                    <li>
+                      Peso total de archivos:{" "}
+                      {Math.round(
+                        theFiles.reduce((a, v) => (a = a + v.size), 0) / 1048576
+                      ).toFixed(2)}{" "}
+                      MB
+                    </li>
                   </ul>
                 </div>
               ) : (
@@ -154,26 +177,31 @@ export default function AddSubjectForm({ param_folder }: any) {
                       note_add
                     </span>
                     <p className="text-main-c dark:text-main-text-color text-custom-regular text-center">
-                      Selecciona archivos desde tu <br /> computadora{" "}
-                      <span className="text-blue-one">aquí</span>
+                      Selecciona uno o varios archivos desde tu <br />{" "}
+                      computadora <span className="text-blue-one">aquí</span>
                     </p>
                     <hr className="h-[1px] bg-gray-two w-full border-0 my-3" />
                     <p className="text-main-c dark:text-main-text-color text-[12px] text-center">
-                      Puedes subir archivos de Word, Txt y PDF no mayores a 30MB
+                      Puedes subir una cantidad máxima de 20 archivos PDF que no
+                      excedan los 100MB
                     </p>
                   </div>
-                  <input
-                    id="dropzone-file"
-                    multiple
-                    type="file"
-                    accept="application/pdf"
-                    className="hidden"
-                    onChange={handleFiles}
-                  />
                 </>
               )}
             </label>
           </div>
+
+          {notif ? (
+            <p className="mt-4 text-custom-regular text-gray-three dark:text-white flex items-center gap-4">
+              <span className="material-symbols-outlined text-warning text-[20px]">
+                warning
+              </span>{" "}
+              A excedido el límite permitido en subida archivos, por favor
+              vuelva a hacer su selección
+            </p>
+          ) : (
+            ""
+          )}
 
           <div className="flex justify-between">
             {enabler ? (
@@ -181,7 +209,7 @@ export default function AddSubjectForm({ param_folder }: any) {
                 type="submit"
                 className="text-secundary-c mt-12 ml-auto flex justify-center bg-blue-one py-3 px-14 text-[15px] ease-in-out duration-300 hover:bg-main-c hover:text-blue-one"
               >
-                Enviar
+                Crear Asunto
               </button>
             ) : (
               <button

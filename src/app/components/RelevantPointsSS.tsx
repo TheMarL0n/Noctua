@@ -46,6 +46,7 @@ export default function RelevantPointsSS({ preguntas, idProceso }: any) {
         setIsDeleted(true);
         setTimeout(() => {
             window.location.reload();
+            localStorage.setItem(`firstvisit_${id_proc}`, "visited");
         }, 1000);
 
     }
@@ -80,7 +81,7 @@ export default function RelevantPointsSS({ preguntas, idProceso }: any) {
                                 <span className="material-symbols-outlined text-[32px] text-bg-gray-five dark:text-white font-extralight">
                                     mark_chat_read
                                 </span>
-                                {preg.pregunta}
+                                {preg.type === 'noctuaIA' ? preg.pregunta : preg.concepto}
                             </h2>
                             <span className="material-symbols-outlined text-[32px] text-bg-gray-five dark:text-white font-extralight">
                                 {

@@ -6,6 +6,7 @@ import ReactMarkdown from "react-markdown";
 import WorkingLoader from "../components/WorkingLoader";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import { useEffect, useRef, useState } from "react";
+import PlusToggler from "../components/PlusToggler";
 
 export default function Dashboard() {
   const [answer, setAnswer] = useState<any[]>([]);
@@ -121,30 +122,32 @@ export default function Dashboard() {
 
       <hr className="h-[1px] border-0 w-full bg-gray-three my-3" />
 
-      <div className="w-full flex items-center gap-2">
-        <div className="search-bar bg-main-text-color dark:bg-gray-three rounded-lg  w-full">
-          <form className="w-full flex items-center" action="">
-            <input
-              type="text"
-              className="w-full bg-main-text-color dark:bg-gray-three text-[17px] rounded-lg text-gray-one py-[17px] px-[10px] leading-[18px] focus:outline-0"
-              placeholder="Pregunta o da una instrucción a Noctua&reg;, En materia legal"
-              onChange={getTheQuestion}
-              value={question}
-            />
+      <div className="search-bar bg-main-text-color dark:bg-gray-three rounded-lg w-full ia-bg">
+        <form
+          className="w-full flex items-center mb-3 border border-gray-three ia-border rounded-lg"
+          action=""
+        >
+          <input
+            type="text"
+            className="w-full bg-main-text-color dark:bg-gray-three text-[17px] rounded-lg text-gray-one py-[17px] px-[10px] leading-[18px] focus:outline-0"
+            placeholder="Pregunta o da una instrucción a Noctua&reg;, En materia legal"
+            onChange={getTheQuestion}
+            value={question}
+          />
 
-            <div className="bg-gray-one dark:bg-secundary-c border border-gray-one dark:border-gray-three rounded-lg h-[52px] p-2 flex items-center justify-center">
-              <button
-                className="flex items-center justify-center disabled:opacity-15"
-                onClick={sendTheQuestion}
-                disabled={enableBtn}
-              >
-                <span className="material-symbols-outlined text-[32px] text-gray-four">
-                  chat
-                </span>
-              </button>
-            </div>
-          </form>
-        </div>
+          <div className="bg-gray-one dark:bg-secundary-c border border-gray-one dark:border-gray-three rounded-lg h-[52px] p-2 flex items-center justify-center">
+            <button
+              className="flex items-center justify-center disabled:opacity-15"
+              onClick={sendTheQuestion}
+              disabled={enableBtn}
+            >
+              <span className="material-symbols-outlined text-[32px] text-gray-four">
+                chat
+              </span>
+            </button>
+          </div>
+          <PlusToggler />
+        </form>
       </div>
 
       {loading === true ? (
