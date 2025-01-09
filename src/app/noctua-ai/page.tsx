@@ -17,6 +17,7 @@ export default function Dashboard() {
   const [isAdded, setIsAdded] = useState(false);
   const [selected, setSelected] = useState(null);
   const user = localStorage.getItem("current-user");
+  const modeplus = localStorage.getItem("modeplus");
 
   useEffect(() => {
     const answerSS = JSON.parse(
@@ -122,14 +123,14 @@ export default function Dashboard() {
 
       <hr className="h-[1px] border-0 w-full bg-gray-three my-3" />
 
-      <div className="search-bar bg-main-text-color dark:bg-gray-three rounded-lg w-full ia-bg">
+      <div className="search-bar bg-main-text-color dark:bg-gray-three rounded-lg w-full">
         <form
-          className="w-full flex items-center mb-3 border border-gray-three ia-border rounded-lg"
+          className="w-full flex items-center mb-3 border border-gray-three rounded-lg"
           action=""
         >
           <input
             type="text"
-            className="w-full bg-main-text-color dark:bg-gray-three text-[17px] rounded-lg text-gray-one py-[17px] px-[10px] leading-[18px] focus:outline-0"
+            className="w-full plus-on:bg-gray-three bg-main-text-color dark:bg-gray-three text-[17px] rounded-lg text-gray-one py-[17px] px-[10px] leading-[18px] focus:outline-0"
             placeholder="Pregunta o da una instrucción a Noctua&reg;, En materia legal"
             onChange={getTheQuestion}
             value={question}
@@ -146,7 +147,6 @@ export default function Dashboard() {
               </span>
             </button>
           </div>
-          <PlusToggler />
         </form>
       </div>
 

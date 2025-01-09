@@ -94,7 +94,6 @@ export default function Subject(resumen: any) {
   //Obtener las preguntas de la API
   const getAnswer = async () => {
     setTitle(question);
-    console.log("not-plus");
     const resumeParam = {
       key: "id_proceso",
       keyQuestion: "pregunta",
@@ -113,7 +112,6 @@ export default function Subject(resumen: any) {
   //Obtener las preguntas PLUS de la API
   const getAnswerPlus = async () => {
     setTitle(question);
-    console.log("plus");
     const resumeParam = {
       key: "id_proceso",
       keyQuestion: "pregunta",
@@ -215,7 +213,7 @@ export default function Subject(resumen: any) {
             onChange={getQuestionFromInput}
             value={question}
           />
-          <div className="bg-gray-one dark:bg-secundary-c rounded-lg h-[52px] p-2 flex items-center justify-center mr-1">
+          <div className="ia-btn bg-gray-one dark:bg-secundary-c rounded-lg h-[52px] p-2 flex items-center justify-center mr-1">
             <button
               className="flex items-center justify-center"
               onClick={sendTheQuestion}
@@ -240,7 +238,7 @@ export default function Subject(resumen: any) {
 
           <div className="flex items-center">
             <button
-              className={`text-gray-seven dark:text-white-one text-[12px] uppercase flex items-center gap-2 bg-gray-one dark:bg-secundary-c rounded-lg px-4 py-3 ${
+              className={`sheen ia-border text-gray-seven dark:text-white-one text-[12px] relative overflow-hidden uppercase flex items-center gap-2 bg-gray-one dark:bg-secundary-c rounded-lg px-4 py-3 ${
                 modeplus === "plus-on"
                   ? ""
                   : "hidden"

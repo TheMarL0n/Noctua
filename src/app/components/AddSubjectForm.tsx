@@ -6,6 +6,7 @@ export default function AddSubjectForm({ param_folder }: any) {
   const [success, setSuccess] = useState(false);
   const [enabler, setEnabler] = useState(false);
   const [notif, setNotif] = useState(false);
+  const [notifMessage, setNotifMessage] = useState('');
   const [subject, setSubject] = useState("");
   const [subjectType, setSubjectType] = useState("");
   const [arrSubjectType, setArrSubjectType] = useState<any[]>([]);
@@ -32,6 +33,13 @@ export default function AddSubjectForm({ param_folder }: any) {
       } else {
         setEnabler(false);
         setNotif(true);
+        setNotifMessage('Ha excedido el límite permitido en subida archivos');
+      }
+
+      if (_files.length > 20) { //20 archivos o 100MB
+        setNotifMessage('Cantidad máxima de archivos exedida');
+      } else if(fileSize > 100000000){
+        setNotifMessage('Peso máximo en archivos exedido');
       }
     }
   };
@@ -195,7 +203,7 @@ export default function AddSubjectForm({ param_folder }: any) {
               <span className="material-symbols-outlined text-warning text-[20px]">
                 warning
               </span>{" "}
-              A excedido el límite permitido en subida archivos, por favor
+              {notifMessage}, por favor
               vuelva a hacer su selección
             </p>
           ) : (
