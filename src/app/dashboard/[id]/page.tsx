@@ -202,7 +202,7 @@ export default function Folder(asuntos: any) {
             value={question}
           />
 
-          <div className="bg-gray-one dark:bg-secundary-c rounded-lg h-[52px] p-2 flex items-center justify-center mr-1">
+          <div className="bg-gray-one dark:bg-secundary-c rounded-lg h-[52px] p-2 flex items-center justify-center">
             <button
               className="flex items-center justify-center disabled:opacity-15"
               onClick={sendTheQuestion}
@@ -213,7 +213,6 @@ export default function Folder(asuntos: any) {
               </span>
             </button>
           </div>
-          <PlusToggler />
         </form>
       </div>
 

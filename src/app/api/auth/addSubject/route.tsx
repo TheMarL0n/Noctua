@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     const folderName = data.get('carpeta');
     const ProcessName = data.get('proceso');
     const processType = data.get('tipoProceso');
-    const file = data.get('archivos');
+    const file = data.getAll('archivos');
 
     //chec if there's token
     if (!token) {
@@ -33,7 +33,10 @@ export async function POST(request: Request) {
     body.append('carpeta', folderName);
     body.append('proceso', ProcessName);
     body.append('tipoProceso', processType);
-    body.append('archivos', file);
+
+    for (let i = 0; i < file.length; i++) {
+        body.append('archivos', file[i]);
+      }
 
     const options: RequestInit = {
         method: "POST",

@@ -55,7 +55,6 @@ export default function AddSubjectForm({ param_folder }: any) {
 
     for (let i = 0; i < theFiles.length; i++) {
       formData.append("archivos", theFiles[i]);
-      console.log("archivos", theFiles[i]);
     }
 
     formData.append("carpeta", param_folder);
