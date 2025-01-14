@@ -90,7 +90,7 @@ export default function DashboardLayout({
             </span>
           </button>
         </div>
-        <Sidebar />
+        {toggleCollapse ? <Sidebar collapsed="" notCollapsed="hidden" /> : <Sidebar collapsed="hidden" notCollapsed="" />}
       </div>
       <div className={bodyClasses} style={{ transition: "padding 300ms cubic-bezier(0.2, 0, 0, 1) 0s" }}>
         {

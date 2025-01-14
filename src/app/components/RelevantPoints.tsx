@@ -3,12 +3,15 @@ import axios from "axios";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import WorkingLoader from "./WorkingLoader";
 
 export default function RelevantPoints({ idProceso }: any) {
   const [isAdded, setIsAdded] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
   const [items, setItems] = useState<any[]>([]);
   const [selected, setSelected] = useState(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const modeplus = localStorage.getItem("modeplus");
   //const [contenido, setContenido] = useState<any[]>([]);
 
   //para el drag and drop-------------------------------
@@ -87,42 +90,96 @@ export default function RelevantPoints({ idProceso }: any) {
     setSelected(index);
   };
 
+  //volver a hacer la pregunta
+  const callBack = async (id_proc: any, id_preg: any) => {
+    const deleteParam = {
+      key: "id_proceso",
+      keyTwo: "id_pregunta",
+      paramId: id_proc,
+      paramTwo: id_preg,
+    };
+    await axios.delete("/api/auth/deleteQuestion", { data: deleteParam });
+  };
+  const reloadQuestion = async (
+    pregunta: any,
+    idProceso: any,
+    idPregunta: any
+  ) => {
+    
+    setLoading(true);
+    let url = "";
+
+    if (modeplus === "plus-on") {
+      url= "ai/preguntaIAPlus";
+    } else url = "ai/preguntaIA";
+
+    const resumeParam = {
+      key: "id_proceso",
+      keyQuestion: "pregunta",
+      paramId: idProceso,
+      paramPregunta: pregunta,
+      urlSlug: url,
+    };
+
+
+
+    await axios.post("/api/auth/endpoint", resumeParam).then((response) => {
+      callBack(idProceso, idPregunta);
+      window.location.reload();
+    });
+  };
+
   return (
     <>
-      {items.toReversed().map((preg: any, index: any) => (
-        <div
-          key={index}
-          className={`loading my-5 rounded-md ${
-            preg.modoPlus
-              ? "bg-[#212A2A] dark:bg-[#212A2A]"
-              : "bg-main-text-color dark:bg-gray-five"
-          }`}
-          draggable
-          onDragStart={() => (dragItem.current = index)}
-          onDragEnter={() => (dragOverItem.current = index)}
-          onDragEnd={handleSort}
-          onDragOver={(e) => e.preventDefault()}
-        >
-          <button
-            onClick={() => handleToggle(index)}
-            className={`header flex justify-between items-center px-4 py-2 cursor-pointer rounded-md hover:bg-gray-one w-full gap-2`}
+      {loading ? (
+        <WorkingLoader />
+      ) : (
+        items.toReversed().map((preg: any, index: any) => (
+          <div
+            key={index}
+            className={`loading my-5 rounded-md ${
+              preg.modoPlus
+                ? "bg-[#E1FFFE] dark:bg-[#212A2A]"
+                : "bg-main-text-color dark:bg-gray-five"
+            }`}
+            draggable
+            onDragStart={() => (dragItem.current = index)}
+            onDragEnter={() => (dragOverItem.current = index)}
+            onDragEnd={handleSort}
+            onDragOver={(e) => e.preventDefault()}
           >
-            <h2
-              className={`text-[25px] flex gap-2 items-center text-left ${
-                preg.modoPlus
-                  ? "text-[#24EDE7] dark:text-[#24EDE7]"
-                  : "text-bg-gray-five dark:text-main-text-color"
-              }`}
+            <button
+              onClick={() => handleToggle(index)}
+              className={`header flex justify-between items-center px-4 py-2 cursor-pointer rounded-md hover:bg-gray-one w-full gap-2`}
             >
-              <span
-                className={`cursor-pointer material-symbols-outlined text-[25px] leading-[20px] text-center ${
+              <h2
+                className={`text-[25px] flex gap-2 items-center text-left ${
                   preg.modoPlus
                     ? "text-[#24EDE7] dark:text-[#24EDE7]"
                     : "text-bg-gray-five dark:text-main-text-color"
                 }`}
               >
-                drag_indicator
-              </span>
+                <span
+                  className={`cursor-pointer material-symbols-outlined text-[25px] leading-[20px] text-center ${
+                    preg.modoPlus
+                      ? "text-[#24EDE7] dark:text-[#24EDE7]"
+                      : "text-bg-gray-five dark:text-main-text-color"
+                  }`}
+                >
+                  drag_indicator
+                </span>
+                <span
+                  className={`material-symbols-outlined text-[32px] font-extralight ${
+                    preg.modoPlus
+                      ? "text-[#24EDE7] dark:text-[#24EDE7]"
+                      : "text-bg-gray-five dark:text-main-text-color"
+                  }`}
+                >
+                  mark_chat_read
+                </span>
+                {preg.type === "noctuaIA" ? preg.pregunta : preg.concepto}
+              </h2>
+
               <span
                 className={`material-symbols-outlined text-[32px] font-extralight ${
                   preg.modoPlus
@@ -130,104 +187,117 @@ export default function RelevantPoints({ idProceso }: any) {
                     : "text-bg-gray-five dark:text-main-text-color"
                 }`}
               >
-                mark_chat_read
+                {selected === index
+                  ? "keyboard_arrow_up"
+                  : "keyboard_arrow_down"}
               </span>
-              {preg.type === "noctuaIA" ? preg.pregunta : preg.concepto}
-            </h2>
+            </button>
 
-            <span
-              className={`material-symbols-outlined text-[32px] font-extralight ${
-                preg.modoPlus
-                  ? "text-[#24EDE7] dark:text-[#24EDE7]"
-                  : "text-bg-gray-five dark:text-main-text-color"
+            <div
+              className={`body px-12 accordion-item ${
+                selected === index ? "accordion-item-show" : ""
               }`}
             >
-              {selected === index ? "keyboard_arrow_up" : "keyboard_arrow_down"}
-            </span>
-          </button>
+              <div className="flex gap-1 items-center justify-end my-3">
+                <span className="material-symbols-outlined text-[32px] text-gray-nine font-extralight">
+                  download
+                </span>
+                <span className="material-symbols-outlined text-[32px] text-gray-nine font-extralight">
+                  bookmark
+                </span>
+                <span className="material-symbols-outlined text-[32px] text-gray-nine font-extralight">
+                  print
+                </span>
 
-          <div
-            className={`body px-12 accordion-item ${
-              selected === index ? "accordion-item-show" : ""
-            }`}
-          >
-            <div className="flex gap-1 items-center justify-end my-3">
-              <span className="material-symbols-outlined text-[32px] text-gray-nine font-extralight">
-                download
-              </span>
-              <span className="material-symbols-outlined text-[32px] text-gray-nine font-extralight">
-                bookmark
-              </span>
-              <span className="material-symbols-outlined text-[32px] text-gray-nine font-extralight">
-                print
-              </span>
+                <Popover className="relative">
+                  <PopoverButton className="ml-auto flex flex-col justify-center">
+                    <span className="material-symbols-outlined text-gray-two text-[25px]">
+                      more_vert
+                    </span>
+                  </PopoverButton>
+                  <PopoverPanel
+                    transition
+                    className="absolute right-0 top-6 z-10 mt-1 flex max-w-max min-w-[200px] px-4 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"
+                  >
+                    <div className="max-w-md flex-auto overflow-hidden bg-main-text-color dark:bg-gray-two rounded-[3px] text-sm leading-6 shadow-lg">
+                      <button
+                        onClick={() =>
+                          reloadQuestion(
+                            preg.pregunta,
+                            idProceso,
+                            preg.id_pregunta
+                          )
+                        }
+                        className="w-full hover:bg-blue-one hover:text-main-c px-4 py-2 flex items-center gap-1"
+                      >
+                        <span className="material-symbols-outlined text-[16px]">
+                          refresh
+                        </span>
+                        Volver a preguntar
+                      </button>
 
-              <Popover className="relative">
-                <PopoverButton className="ml-auto flex flex-col justify-center">
-                  <span className="material-symbols-outlined text-gray-two text-[25px]">
-                    more_vert
-                  </span>
-                </PopoverButton>
-                <PopoverPanel
-                  transition
-                  className="absolute right-0 top-6 z-10 mt-1 flex max-w-max min-w-[200px] px-4 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"
-                >
-                  <div className="max-w-md flex-auto overflow-hidden bg-main-text-color dark:bg-gray-two rounded-[3px] text-sm leading-6 shadow-lg">
-                    <button
-                      onClick={() => addToNote(preg.respuesta)}
-                      className="w-full hover:bg-blue-one hover:text-main-c px-4 py-2 flex items-center gap-1"
+                      <button
+                        onClick={() => addToNote(preg.respuesta)}
+                        className="w-full hover:bg-blue-one hover:text-main-c px-4 py-2 flex items-center gap-1"
+                      >
+                        <span className="material-symbols-outlined text-[16px]">
+                          note_add
+                        </span>
+                        Agregar a notas
+                      </button>
+
+                      <Link
+                        href={``}
+                        className="w-full hover:bg-blue-one hover:text-main-c px-4 py-2 flex items-center gap-1"
+                      >
+                        <span className="material-symbols-outlined text-[16px]">
+                          compress
+                        </span>
+                        Sintetiza
+                      </Link>
+
+                      <button
+                        onClick={() =>
+                          deleteQuestion(idProceso, preg.id_pregunta)
+                        }
+                        className="w-full hover:bg-blue-one hover:text-main-c px-4 py-2 flex items-center gap-1"
+                      >
+                        <span className="material-symbols-outlined text-[16px]">
+                          delete
+                        </span>
+                        Eliminar pregunta
+                      </button>
+                    </div>
+                  </PopoverPanel>
+                </Popover>
+              </div>
+
+              <hr
+                className={`h-[1px] w-full border-0 mb-5 ${
+                  preg.modoPlus ? "bg-[#24EDE7]" : "bg-gray-eight"
+                }`}
+              />
+              {preg.respuesta.split("\n\n").map(function (item: any, idx: any) {
+                return (
+                  <div key={idx}>
+                    <ReactMarkdown
+                      className={`text-[18px] leading-{18px} ${
+                        preg.modoPlus
+                          ? "text-[#22212A] dark:text-white-one"
+                          : "text-gray-seven dark:text-white-one"
+                      }`}
                     >
-                      <span className="material-symbols-outlined text-[16px]">
-                        note_add
-                      </span>
-                      Agregar a notas
-                    </button>
-
-                    <Link
-                      href={``}
-                      className="w-full hover:bg-blue-one hover:text-main-c px-4 py-2 flex items-center gap-1"
-                    >
-                      <span className="material-symbols-outlined text-[16px]">
-                        compress
-                      </span>
-                      Sintetiza
-                    </Link>
-
-                    <button
-                      onClick={() =>
-                        deleteQuestion(idProceso, preg.id_pregunta)
-                      }
-                      className="w-full hover:bg-blue-one hover:text-main-c px-4 py-2 flex items-center gap-1"
-                    >
-                      <span className="material-symbols-outlined text-[16px]">
-                        delete
-                      </span>
-                      Eliminar pregunta
-                    </button>
+                      {item}
+                    </ReactMarkdown>
+                    <br />
                   </div>
-                </PopoverPanel>
-              </Popover>
+                );
+              })}
             </div>
-
-            <hr
-              className={`h-[1px] w-full border-0 mb-5 ${
-                preg.modoPlus ? "bg-[#24EDE7]" : "bg-gray-eight"
-              }`}
-            />
-
-            {preg.respuesta.split("\n\n").map(function (item: any, idx: any) {
-              return (
-                <div key={idx}>
-                  <ReactMarkdown className="text-[18px] leading-{18px} text-gray-seven dark:text-white-one">
-                    {item}
-                  </ReactMarkdown>
-                  <br />
-                </div>
-              );
-            })}
           </div>
-        </div>
-      ))}
+        ))
+      )}
+
       {isAdded ? (
         <div className="fixed bg-overlay rounded py-4 px-4 text-center w-[150px] top-[30%] left-[50%] mr-[-150px]">
           <span className="material-symbols-outlined text-[25px] leading-[25px] text-blue-one text-center cursor-pointer">

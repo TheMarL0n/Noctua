@@ -142,7 +142,7 @@ export default function Subject(resumen: any) {
       const { data } = await axios.post("/api/auth/endpoint", resumeParam);
     }
     setLoading(false);
-  };
+  };  
 
   return (
     <div className="page-body py-2 px-4 w-full min-h-full">
@@ -238,7 +238,7 @@ export default function Subject(resumen: any) {
 
           <div className="flex items-center">
             <button
-              className={`sheen ia-border text-gray-seven dark:text-white-one text-[12px] relative overflow-hidden uppercase flex items-center gap-2 bg-gray-one dark:bg-secundary-c rounded-lg px-4 py-3 ${
+              className={`sheen ia-border text-gray-seven dark:text-white-one text-[12px] relative overflow-hidden uppercase flex items-center gap-2 bg-white dark:bg-secundary-c rounded-lg px-4 py-3 ${
                 modeplus === "plus-on"
                   ? ""
                   : "hidden"

@@ -130,8 +130,12 @@
 }
 
 /*-----------------------PLUS MODE------------------------------------*/
-.plus-on .ia-bg {
+.plus-on.dark .ia-bg {
   background: #273834 !important;
+}
+
+.plus-on .ia-bg {
+  background: #E1FFFE !important;
 }
 
 .plus-on .ia-border {
@@ -155,22 +159,4 @@
 
 .plus-on .ia-bg .ia-btn button span{
   color: #273834 !important;
-}
-
-.sheen:after {
-  animation: sheen 3s 4s infinite;
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: -20em;
-  background: linear-gradient(to bottom, transparent, rgba(36,237,231,0.5) 50%, transparent);
-  transform: rotateZ(60deg) translate(-1em, 4em);
-}
-
-@keyframes sheen {
-  100% {
-    transform: rotateZ(60deg) translate(0, -20em);
-  }
 }

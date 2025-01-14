@@ -19,11 +19,14 @@ export default function SubjectList({
   const [isDeleted, setIsDeleted] = useState(false);
   const [tipoProceso, setTipoProceso] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [theStatus, setTheStatus] = useState();
+  const [fileUrl, setFileUrl] = useState("");
+  const [theStatus, setTheStatus] = useState("");
+  const [procesando, setProcesando] = useState();
 
   useEffect(() => {
     getSubjectInfo();
     getSubjectStatus();
+    getSubjectFiles();
   }, []);
 
   //get the subject info given the subject id
@@ -44,18 +47,28 @@ export default function SubjectList({
   //get the subject status given the subject id
   const getSubjectStatus = async () => {
     const { data } = await axios.get("/api/auth/status", { params: { id } });
-    setTheStatus(data.procesando);
+    setProcesando(data.procesando);
 
     let interval = setInterval(async () => {
       const { data } = await axios.get("/api/auth/status", { params: { id } });
-      setTheStatus(data.procesando);
-      console.log("calling");
+      setProcesando(data.procesando);
+      setTheStatus(data.estatus);
 
       if (data.procesando === false) {
         clearInterval(interval);
       }
-    }, 30000);
+    }, 10000);
+  };
 
+  //get the subject files
+  const getSubjectFiles = async () => {
+    const folderDetailParam = {
+      key: "id_proceso",
+      paramId: id,
+      urlSlug: "ai/obtenArchivo",
+    };
+    const { data } = await axios.post("/api/auth/endpoint", folderDetailParam);
+    setFileUrl(data.url);
   };
 
   //eliminar proceso
@@ -80,13 +93,13 @@ export default function SubjectList({
   return (
     <div
       className={
-        theStatus === false
+        procesando === false
           ? `bg-main-text-color dark:bg-gray-five rounded-lg px-2 flex gap-8 justify-between items-center hover:bg-white-one hover:dark:bg-gray-three`
           : "bg-main-text-color dark:bg-gray-five rounded-lg px-2 flex gap-8 justify-between items-center cursor-not-allowed"
       }
     >
       <Link
-        href={theStatus === false ? urlRel : ""}
+        href={procesando === false ? urlRel : ""}
         className="flex flex-1 justify-between items-center"
       >
         <div className="p-1 flex gap-2 items-center flex-1">
@@ -108,19 +121,24 @@ export default function SubjectList({
         </p>
 
         <div className="p-1 flex-1">
-          {theStatus === false ? (
+          {procesando === false ? (
             <div className="rounded-lg w-[15px] h-[15px] border-2 border-green flex items-center justify-center">
               <div className="rounded-lg w-[7px] h-[7px] bg-green m-auto"></div>
             </div>
           ) : (
-            <div className="rounded-lg w-[15px] h-[15px] border-2 border-error flex items-center justify-center">
-              <div className="rounded-lg w-[7px] h-[7px] bg-error m-auto"></div>
+            <div className="flex gap-2 items-center">
+              <div className="rounded-lg w-[15px] h-[15px] border-2 border-error flex items-center justify-center">
+                <div className="rounded-lg w-[7px] h-[7px] bg-error m-auto"></div>
+              </div>
+              <p className="text-[12px] text-blue-one font-extralight">
+                {theStatus}
+              </p>
             </div>
           )}
         </div>
       </Link>
 
-      {theStatus === false ? (
+      {procesando === false ? (
         <Popover className="relative">
           <PopoverButton className="ml-auto flex flex-col justify-center">
             <span className="material-symbols-outlined text-gray-two text-[25px]">
@@ -149,6 +167,15 @@ export default function SubjectList({
                   content_paste
                 </span>
                 Notas
+              </Link>
+              <Link
+                href={fileUrl}
+                className="w-full hover:bg-blue-one hover:text-main-c px-4 py-2 flex items-center gap-1"
+              >
+                <span className="material-symbols-outlined text-[16px]">
+                  download
+                </span>
+                Descargar archivos
               </Link>
               <hr className="mx-4" />
               <button

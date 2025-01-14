@@ -1,12 +1,12 @@
 "use client";
 import Sidebar from "../components/Sidebar";
 import axios from "axios";
-import 'material-symbols';
+import "material-symbols";
 import classNames from "classnames";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { deleteCookies } from "../api/auth/logout/route";
-import { Notification } from '../components/Notification';
+import { Notification } from "../components/Notification";
 import ThemeToggler from "../components/ThemeToggler";
 import HelpButton from "../components/HelpButton";
 
@@ -15,15 +15,15 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-
   const [renderChildren, setRenderChildren] = useState<boolean>(false);
   const [modalExpiredOpen, setModalExpiredOpen] = useState<boolean>(false);
   const [toggleCollapse, setToggleCollapse] = useState(false);
+  const [propClasses, setPropCalsses] = useState("");
   const router = useRouter();
 
   useEffect(() => {
     getFolders();
-  }, [])
+  }, []);
 
   //SIDEBAR TOGGLE AND COLLAPSED----------------------------------------------
   const wrapperClasses = classNames(
@@ -56,22 +56,22 @@ export default function DashboardLayout({
 
   //Obtener el listado de carpetas de la API
   const getFolders = async () => {
-    const { data } = await axios.get('/api/auth/folders', {
+    const { data } = await axios.get("/api/auth/folders", {
       params: {
-        urlSlug: "services/api/listaCarpetas"
-      }
+        urlSlug: "services/api/listaCarpetas",
+      },
     });
 
     //Checar si el token ha expirado
-    if (data.code) {      
+    if (data.code) {
       setModalExpiredOpen(true);
     } else setRenderChildren(true);
-  }
+  };
 
   //redireccionar al login cuando el token esté vencido
   const logOut = async () => {
     deleteCookies();
-    router.push('/login'); //redireccionar al dashboard
+    router.push("/login"); //redireccionar al dashboard
   };
 
   return (
@@ -81,43 +81,48 @@ export default function DashboardLayout({
         style={{ transition: "width 300ms cubic-bezier(0.2, 0, 0, 1) 0s" }}
       >
         <div className="flex items-center justify-between relative pb-6 ">
-          <button
-            className={collapseIconClasses}
-            onClick={handleSidebarToggle}
-          >
+          <button className={collapseIconClasses} onClick={handleSidebarToggle}>
             <span className="material-symbols-outlined dark:text-main-text-color text-gray-seven hover:text-blue-one text-[17px] font-light">
               keyboard_tab_rtl
             </span>
           </button>
         </div>
-        <Sidebar />
+        {toggleCollapse ? <Sidebar collapsed="" notCollapsed="hidden" /> : <Sidebar collapsed="hidden" notCollapsed="" />}
       </div>
-      <div className={bodyClasses} style={{ transition: "padding 300ms cubic-bezier(0.2, 0, 0, 1) 0s" }}>
-        {
-          renderChildren ?
-            children
-            :
-            <div className="page-body py-2 px-4 w-full min-h-full"></div>
-        }
+      <div
+        className={bodyClasses}
+        style={{ transition: "padding 300ms cubic-bezier(0.2, 0, 0, 1) 0s" }}
+      >
+        {renderChildren ? (
+          children
+        ) : (
+          <div className="page-body py-2 px-4 w-full min-h-full"></div>
+        )}
 
         <div className="flex justify-end items-center px-4 gap-3">
-
           <ThemeToggler />
           <HelpButton />
-
         </div>
-
       </div>
 
-      <Notification isOpen={modalExpiredOpen} onClose={() => { setModalExpiredOpen(false) }}>
+      <Notification
+        isOpen={modalExpiredOpen}
+        onClose={() => {
+          setModalExpiredOpen(false);
+        }}
+      >
         <div>
           <div className="flex gap-4">
             <span className="material-symbols-outlined text-error text-[45px]">
               warning
             </span>
             <div>
-              <h3 className='text-secundary-c dark:text-main-text-color text-[20px] mb-2 font-bold'>Tu sesión ha expirado</h3>
-              <p className='text-secundary-c dark:text-main-text-color text-[14px]'>Por favor inicia sesión nuevamente</p>
+              <h3 className="text-secundary-c dark:text-main-text-color text-[20px] mb-2 font-bold">
+                Tu sesión ha expirado
+              </h3>
+              <p className="text-secundary-c dark:text-main-text-color text-[14px]">
+                Por favor inicia sesión nuevamente
+              </p>
             </div>
           </div>
           <button
@@ -128,8 +133,6 @@ export default function DashboardLayout({
           </button>
         </div>
       </Notification>
-
     </main>
-
   );
 }

@@ -17,10 +17,15 @@ const menuItems = [
   { id: "menu-item-3", label: "AI", icon: "auto_awesome", link: "/noctua-ai" },
   { id: "menu-item-4", label: "Historial", icon: "pace", link: "/history" },
   { id: "menu-item-5", label: "Notas", icon: "content_paste", link: "/notes" },
-  { id: "menu-item-6", label: "CVs", icon: "clinical_notes", link: "/noctua-cv" },
+  {
+    id: "menu-item-6",
+    label: "CVs",
+    icon: "clinical_notes",
+    link: "/noctua-cv",
+  },
 ];
 
-const Sidebar = () => {
+const Sidebar = ({ collapsed, notCollapsed }: any) => {
   const [toggleCollapse, setToggleCollapse] = useState(false);
   const router = useRouter();
   const pathName = usePathname();
@@ -41,15 +46,9 @@ const Sidebar = () => {
               width={34}
               height={34}
               priority
-              className={classNames("", {
-                hidden: !toggleCollapse,
-              })}
+              className={collapsed}
             />
-            <span
-              className={classNames("text-lg font-medium text-text", {
-                hidden: toggleCollapse,
-              })}
-            >
+            <span className={`text-lg font-medium text-text ${notCollapsed}`}>
               <Image
                 src="/logo.svg"
                 alt="button"
@@ -80,7 +79,7 @@ const Sidebar = () => {
                 className="flex items-center cursor-pointer hover:bg-light-lighter rounded w-full overflow-hidden whitespace-nowrap"
               >
                 <Link
-                  className={`sidebar-links flex py-4 px-3 items-center w-full h-full ${
+                  className={`sidebar-links flex gap-2 py-4 px-3 items-center w-full h-full ${
                     isActive
                       ? "text-blue-one"
                       : "text-gray-seven hover:text-blue-one"
@@ -94,11 +93,11 @@ const Sidebar = () => {
                       {menu.icon}
                     </span>
                   </div>
-                  {!toggleCollapse && (
-                    <span className={classNames("text-md font-medium")}>
-                      {menu.label}
-                    </span>
-                  )}
+                  <span
+                    className={`text-md font-medium text-text ${notCollapsed}`}
+                  >
+                    {menu.label}
+                  </span>
                 </Link>
               </div>
             );
@@ -109,7 +108,7 @@ const Sidebar = () => {
       <div className="flex flex-col">
         <Link
           id="menu-item-6"
-          className="sidebar-links flex items-center cursor-pointer hover:text-blue-one text-gray-seven rounded w-full overflow-hidden whitespace-nowrap px-3 py-4"
+          className="sidebar-links flex gap-2 items-center cursor-pointer hover:text-blue-one text-gray-seven rounded w-full overflow-hidden whitespace-nowrap px-3 py-4"
           href="#"
         >
           <div style={{ width: "4rem" }} className="flex items-center">
@@ -117,36 +116,24 @@ const Sidebar = () => {
               settings
             </span>
           </div>
-          {!toggleCollapse && (
-            <span
-              className={classNames(
-                "text-md font-medium"
-              )}
-            >
-              Preferencias
-            </span>
-          )}
+          <span className={`text-md font-medium text-text ${notCollapsed}`}>
+            Preferencias
+          </span>
         </Link>
 
         <button
           onClick={() => logOut()}
           type="submit"
-          className="flex items-center cursor-pointer hover:text-blue-one text-gray-seven rounded w-full overflow-hidden whitespace-nowrap px-3 py-2"
+          className="flex gap-2 items-center cursor-pointer hover:text-blue-one text-gray-seven rounded w-full overflow-hidden whitespace-nowrap px-3 py-2"
         >
           <div style={{ width: "4rem" }} className="flex items-center">
             <span className="material-symbols-outlined text-[32px] font-light leading-[30px]">
               logout
             </span>
           </div>
-          {!toggleCollapse && (
-            <span
-              className={classNames(
-                "text-md font-medium"
-              )}
-            >
-              Cerrar sesión
-            </span>
-          )}
+          <span className={`text-md font-medium text-text ${notCollapsed}`}>
+            Cerrar sesión
+          </span>
         </button>
       </div>
     </div>
