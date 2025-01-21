@@ -142,7 +142,7 @@ export default function AddSubjectForm({ param_folder }: any) {
             id="dropzone-file"
             multiple
             type="file"
-            accept="application/pdf"
+            accept="application/pdf, .docx, .doc"
             className="hidden"
             onChange={handleFiles}
           />

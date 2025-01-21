@@ -105,10 +105,7 @@ export default function Folder(asuntos: any) {
     setShowQuestion(true);
     setIsLoadingAi(true);
 
-    if (localStorage.getItem("modeplus") === "plus-on") {
-      alert('modo plus');
-      //getAnswerPlus();
-    } else getAnswer();
+    getAnswer();
   };
 
   //Obtener las preguntas de la API
