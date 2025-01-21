@@ -10,7 +10,7 @@ import Link from "next/link";
 import WorkingLoader from "@/app/components/WorkingLoader";
 import AiQuestion from "@/app/components/AiQuestion";
 import UserInfo from "@/app/components/UserInfo";
-import PlusToggler from "@/app/components/PlusToggler";
+import ErrorScreen from "@/app/components/ErrorScreen";
 
 export default function Folder(asuntos: any) {
   const [subjects, setsubjects] = useState<any[]>([]);
@@ -24,7 +24,7 @@ export default function Folder(asuntos: any) {
   const [question, setQuestion] = useState("");
   const [questionTitle, setQuestionTitle] = useState("");
   const [enableBtn, setEnableBtn] = useState(true);
-  const [answer, setAnswer] = useState<string>("");
+  const [answer, setAnswer] = useState<any[]>([]);
   const [isLoadingAi, setIsLoadingAi] = useState<boolean>(false);
 
   const [showQuestion, setShowQuestion] = useState(false);
@@ -104,41 +104,23 @@ export default function Folder(asuntos: any) {
     e.preventDefault();
     setShowQuestion(true);
     setIsLoadingAi(true);
-
     getAnswer();
   };
 
   //Obtener las preguntas de la API
   const getAnswer = async () => {
-
     const resumeParam = {
       key: "carpeta",
       keyQuestion: "pregunta",
       paramId: folderName,
       paramPregunta: question,
-      urlSlug: 'ai/preguntaCarpeta',
+      urlSlug: "ai/preguntaCarpeta",
     };
     await axios.post("/api/auth/endpoint", resumeParam).then((response) => {
       setAnswer(response.data.respuesta);
       setQuestion("");
       setIsLoadingAi(false);
-    });
-  };
-
-  //Obtener las preguntas PLUS de la API
-  const getAnswerPlus = async () => {
-
-    const resumeParam = {
-      key: "carpeta",
-      keyQuestion: "pregunta",
-      paramId: folderName,
-      paramPregunta: question,
-      urlSlug: 'ai/preguntaCarpetaPlus',
-    };
-    await axios.post("/api/auth/endpoint", resumeParam).then((response) => {
-      setAnswer(response.data.respuesta);
-      setQuestion("");
-      setIsLoadingAi(false);
+      console.log(response.data.respuesta);
     });
   };
   /////////////////////////////////////////////////////////////////////////////////
@@ -244,12 +226,18 @@ export default function Folder(asuntos: any) {
             isLoadingAi ? (
               <WorkingLoader />
             ) : (
-              <AiQuestion
-                pregunta={questionTitle}
-                idProceso={folderName}
-                respuesta={answer}
-                fromFolder={true}
-              />
+              answer === undefined ?
+              <ErrorScreen/>
+              :
+              answer.map((res) => (
+                <AiQuestion
+                  key={res.id_proceso}
+                  pregunta={questionTitle}
+                  idProceso={folderName}
+                  respuesta={res.respuesta}
+                  fromFolder={true}
+                />
+              ))
             )
           ) : (
             ""
