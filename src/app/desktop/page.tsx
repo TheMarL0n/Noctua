@@ -55,15 +55,15 @@ export default function Dashboard() {
     <div className="page-body py-2 px-4 w-full min-h-full">
       <div className="w-full mt-4">
         <div className="flex justify-between items-center">
-          <h3 className="text-gray-seven dark:text-white-one text-[22px] capitalize">
-            {user}, Bienvenido a Noctua<sup>&reg;</sup> Ai
+          <h3 className="text-gray-seven dark:text-white-one text-[22px]">
+            <span className="capitalize">{user}</span>, Bienvenido a Noctua<sup>&reg;</sup> Ai
           </h3>
         </div>
-        <h3 className="text-gray-seven dark:text-white-one text-[20px] capitalize">
+        <h3 className="text-gray-seven dark:text-white-one text-[20px]">
           Resumen de tareas
         </h3>
-        <p className="text-gray-seven dark:text-white-one text-[14px] capitalize mb-4">
-          Consulta el status de tu cuenta y actualizaciones de la misma.
+        <p className="text-gray-seven dark:text-white-one text-[14px] mb-4">
+          Consulta el estatus de tu cuenta y actualizaciones de la misma.
         </p>
 
         <div className="flex flex-wrap gap-3">
@@ -119,10 +119,10 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <h3 className="text-gray-seven dark:text-white-one text-[20px] capitalize mt-12">
+        <h3 className="text-gray-seven dark:text-white-one text-[20px] mt-12">
           Resumen de tu cuenta
         </h3>
-        <p className="text-gray-seven dark:text-white-one text-[14px] capitalize mb-4">
+        <p className="text-gray-seven dark:text-white-one text-[14px] mb-4">
           Revisa el balance de tu presupuesto, agrega fondos, revisa tus
           comparativa de actividades en Noctua<sup>&reg;</sup>.
         </p>

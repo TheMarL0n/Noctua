@@ -8,8 +8,8 @@ import FolderGrid from "../components/FolderGrid";
 import FolderList from "../components/FolderList";
 import AddFolderForm from "../components/AddFolderForm";
 import { Modal } from "../components/Modal";
-import WorkingLoader from "../components/WorkingLoader";
 import UserInfo from "../components/UserInfo";
+import MyLoader from "../components/SkeletonLoader";
 
 export default function Dashboard() {
   const [folders, setFolders] = useState<any[]>([]);
@@ -95,7 +95,7 @@ export default function Dashboard() {
       <hr className="h-[1px] border-0 w-full bg-gray-three my-[15px]" />
 
       {isLoading ? (
-        <WorkingLoader />
+        <MyLoader />
       ) : folders.length === 0 ? (
         <div className="folders-list flex flex-col items-center justify-center mt-40">
           <span className="material-symbols-outlined text-[128px] text-gray-three">

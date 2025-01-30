@@ -11,6 +11,7 @@ import WorkingLoader from "@/app/components/WorkingLoader";
 import AiQuestion from "@/app/components/AiQuestion";
 import UserInfo from "@/app/components/UserInfo";
 import ErrorScreen from "@/app/components/ErrorScreen";
+import MyLoader from "@/app/components/SkeletonLoader";
 
 export default function Folder(asuntos: any) {
   const [subjects, setsubjects] = useState<any[]>([]);
@@ -196,7 +197,7 @@ export default function Folder(asuntos: any) {
       </div>
 
       {isLoading ? (
-        <WorkingLoader />
+        <MyLoader />
       ) : subjects.length === 0 ? (
         <div className="folders-list flex flex-col items-center justify-center mt-40">
           <span className="material-symbols-outlined text-[128px] text-gray-three">

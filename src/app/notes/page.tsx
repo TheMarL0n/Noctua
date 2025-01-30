@@ -8,6 +8,7 @@ import WorkingLoader from "../components/WorkingLoader";
 import { useEffect, useState } from "react";
 import { Modal } from "../components/Modal";
 import UserInfo from "../components/UserInfo";
+import MyLoader from "../components/SkeletonLoader";
 
 export default function Dashboard() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -72,7 +73,7 @@ export default function Dashboard() {
 
 
       {isLoading ? (
-        <WorkingLoader />
+        <MyLoader />
       ) : notas.length === 0 ? (
         <div className="folders-list flex flex-col items-center justify-center mt-40">
           <span className="material-symbols-outlined text-[128px] text-gray-three">

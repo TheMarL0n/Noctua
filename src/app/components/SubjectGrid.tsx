@@ -24,6 +24,7 @@ export default function SubjectGrid({
   const [fileUrl, setFileUrl] = useState("");
   const [theStatus, setTheStatus] = useState();
   const [procesando, setProcesando] = useState();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     getSubjectInfo();
@@ -48,8 +49,11 @@ export default function SubjectGrid({
 
   //get the subject status given the subject id
   const getSubjectStatus = async () => {
-    const { data } = await axios.get("/api/auth/status", { params: { id } });
-    setProcesando(data.procesando);
+    setLoading(true);
+    await axios.get("/api/auth/status", { params: { id } }).then((response) => {
+      setLoading(false);
+      setProcesando(response.data.procesando);
+    });
 
     let interval = setInterval(async () => {
       const { data } = await axios.get("/api/auth/status", { params: { id } });
@@ -228,7 +232,10 @@ export default function SubjectGrid({
           <p className="text-[12px] text-gray-seven dark:text-white-one">
             <strong>Estado:</strong>
           </p>
-          {procesando === false ? (
+
+          {loading ? (
+            ""
+          ) : procesando === false ? (
             <div className="rounded-lg w-[15px] h-[15px] border-2 border-green flex items-center justify-center">
               <div className="rounded-lg w-[7px] h-[7px] bg-green m-auto"></div>
             </div>

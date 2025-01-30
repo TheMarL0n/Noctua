@@ -17,6 +17,7 @@ export default function Dashboard() {
   const [description, setDescription] = useState("");
   const [driveUrl, setDriveUrl] = useState("");
   const [amount, setAmount] = useState("");
+  const [name, setName] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [enableBtn, setEnableBtn] = useState(true);
@@ -37,6 +38,10 @@ export default function Dashboard() {
     setAmount(e.target.value);
   };
 
+  const getTheProName = (e: any) => {
+    setName(e.target.value);
+  };
+
   //enviar la pregunta
   const sendTheInfo = (e: any) => {
     e.preventDefault();
@@ -53,7 +58,9 @@ export default function Dashboard() {
       paramPregunta: driveUrl,
       keyThird: "numCandidatos",
       paramThird: amount,
-      urlSlug: "test/procesaCVS",
+      keyFourd: "nombre_consulta",
+      paramFour: name,
+      urlSlug: "api/procesaCVS",
     };
 
     await axios
@@ -156,6 +163,14 @@ export default function Dashboard() {
               placeholder="Cantidad de candidatos"
               onChange={getTheNumber}
               value={amount}
+            />
+
+            <input
+              type="text"
+              className="w-[70%] bg-main-text-color dark:bg-gray-three text-[17px] rounded-lg text-gray-one py-[17px] px-[10px] leading-[18px] focus:outline-0"
+              placeholder="Nombre del proceso"
+              onChange={getTheProName}
+              value={name}
             />
 
             <div className="bg-gray-one dark:bg-secundary-c border border-gray-one dark:border-gray-three rounded-lg h-[52px] p-2 flex items-center justify-center">

@@ -8,6 +8,7 @@ import NotesList from "@/app/components/NotesList";
 import AddNotesForm from "@/app/components/AddNotesForm";
 import WorkingLoader from "@/app/components/WorkingLoader";
 import UserInfo from "@/app/components/UserInfo";
+import MyLoader from "@/app/components/SkeletonLoader";
 
 export default function Notes(notas: any) {
   const [notes, setNotes] = useState<any[]>([]);
@@ -105,7 +106,7 @@ export default function Notes(notas: any) {
       </div>
 
       {isLoading ? (
-        <WorkingLoader />
+        <MyLoader />
       ) : notes.length === 0 ? (
         <div className="folders-list flex flex-col items-center justify-center mt-40">
           <span className="material-symbols-outlined text-[128px] text-gray-three">

@@ -27,7 +27,7 @@ export default function AddSubjectForm({ param_folder }: any) {
       setTheFiles(_files);
       let fileSize: number = _files.reduce((a, v) => (a = a + v.size), 0);
 
-      if (_files.length < 20 && fileSize < 100000000) { //20 archivos o 100MB
+      if (fileSize < 100000000) { //20 archivos o 100MB
         setEnabler(true);
         setNotif(false);
       } else {
@@ -36,9 +36,7 @@ export default function AddSubjectForm({ param_folder }: any) {
         setNotifMessage('Ha excedido el límite permitido en subida archivos');
       }
 
-      if (_files.length > 20) { //20 archivos o 100MB
-        setNotifMessage('Cantidad máxima de archivos exedida');
-      } else if(fileSize > 100000000){
+      if(fileSize > 100000000){
         setNotifMessage('Peso máximo en archivos exedido');
       }
     }
