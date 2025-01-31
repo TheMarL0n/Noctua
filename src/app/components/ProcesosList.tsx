@@ -45,14 +45,14 @@ export default function ProcesosList({ id, nombre, perfil, respuesta }: any) {
           Proceso {nombre}
         </h3>
 
-        <p className="flex gap-1">
-          Perfil del puesto{" "}
-          <span>
-            <hr className="h-[1px] border-0 w-52 bg-gray-three my-3" />
-          </span>
-        </p>
+        <div className="flex gap-1">
+          <p className="w-fit text-gray-seven dark:text-white-one font-semibold">
+            Perfil del puesto
+          </p>
+          <hr className="h-[1px] flex-1 w-full border-0 bg-gray-three my-3" />
+        </div>
 
-        {perfil.split("\n\n{").map(function (item: any, idx: any) {
+        {perfil.split("\n").map(function (item: any, idx: any) {
           return (
             <div key={idx}>
               <ReactMarkdown className="text-[14px] leading-{14px} text-gray-seven dark:text-white-one">
@@ -63,14 +63,15 @@ export default function ProcesosList({ id, nombre, perfil, respuesta }: any) {
           );
         })}
 
-        <p className="flex gap-1">
-          Respuesta de la IA{" "}
-          <span>
-            <hr className="h-[1px] border-0 w-52 bg-gray-three my-3" />
-          </span>
-        </p>
+        <div className="flex gap-1">
+          <p className="w-fit text-gray-seven dark:text-white-one font-semibold">
+          Respuesta de la IA
+          </p>
+          <hr className="h-[1px] flex-1 w-full border-0 bg-gray-three my-3" />
+        </div>
 
-        {respuesta.split("\n\n{").map(function (item: any, idx: any) {
+        {
+        respuesta.split("\n\n").map(function (item: any, idx: any) {
           return (
             <div key={idx}>
               <ReactMarkdown className="text-[14px] leading-{14px} text-gray-seven dark:text-white-one">

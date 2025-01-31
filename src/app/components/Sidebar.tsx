@@ -23,6 +23,12 @@ const menuItems = [
     icon: "clinical_notes",
     link: "/noctua-cv",
   },
+  {
+    id: "menu-item-7",
+    label: "Histórico de CVs",
+    icon: "overview",
+    link: "/procesos-cv",
+  },
 ];
 
 const Sidebar = ({ collapsed, notCollapsed }: any) => {

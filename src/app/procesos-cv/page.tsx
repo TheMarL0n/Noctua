@@ -8,7 +8,6 @@ import UserInfo from "../components/UserInfo";
 import MyLoader from "../components/SkeletonLoader";
 
 export default function Dashboard() {
-  const [order, setOrder] = useState(false);
   const [procesos, setProcesos] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -45,7 +44,7 @@ export default function Dashboard() {
           <span className="material-symbols-outlined text-[16px] text-blue-one font-extralight">
             hard_drive
           </span>{" "}
-          Procesos de CV
+          Histórico de CVs
         </Link>
       </div>
 
@@ -79,11 +78,7 @@ export default function Dashboard() {
               >
                 Procesos
               </p>
-              <p
-                className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-start leading-[12px] gap-12 cursor-pointer"
-              >
-              </p>
-              <p className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-start leading-[12px] gap-12 cursor-pointer">Acciones</p>
+              <p className="text-[12px] text-gray-seven dark:text-white-one flex items-start leading-[12px] gap-12 cursor-pointer">Acciones</p>
             </div>
             {
             procesos.map((proceso, index) => (
