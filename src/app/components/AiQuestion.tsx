@@ -9,6 +9,7 @@ export default function AiQuestion({
   idProceso,
   respuesta,
   fromFolder,
+  proceso, //en caso de ser una pregunta desde carpeta
 }: any) {
   const [isAdded, setIsAdded] = useState(false);
 
@@ -76,6 +77,8 @@ export default function AiQuestion({
           <span className="material-symbols-outlined text-[32px] text-bg-gray-five dark:text-white font-extralight">
             mark_chat_read
           </span>
+          {proceso !== "" ? proceso : ""}
+          {proceso !== "" ? ": " : ""}
           {pregunta}
         </h2>
         <div className="flex gap-1 items-center">

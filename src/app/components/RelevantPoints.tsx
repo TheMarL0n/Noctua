@@ -105,12 +105,11 @@ export default function RelevantPoints({ idProceso }: any) {
     idProceso: any,
     idPregunta: any
   ) => {
-    
     setLoading(true);
     let url = "";
 
     if (modeplus === "plus-on") {
-      url= "ai/preguntaIAPlus";
+      url = "ai/preguntaIAPlus";
     } else url = "ai/preguntaIA";
 
     const resumeParam = {
@@ -120,8 +119,6 @@ export default function RelevantPoints({ idProceso }: any) {
       paramPregunta: pregunta,
       urlSlug: url,
     };
-
-
 
     await axios.post("/api/auth/endpoint", resumeParam).then((response) => {
       callBack(idProceso, idPregunta);
@@ -134,6 +131,7 @@ export default function RelevantPoints({ idProceso }: any) {
       {loading ? (
         <WorkingLoader />
       ) : (
+        
         items.toReversed().map((preg: any, index: any) => (
           <div
             key={index}
@@ -277,22 +275,26 @@ export default function RelevantPoints({ idProceso }: any) {
                   preg.modoPlus ? "bg-[#24EDE7]" : "bg-gray-eight"
                 }`}
               />
-              {preg.respuesta.split("\n\n").map(function (item: any, idx: any) {
-                return (
-                  <div key={idx}>
-                    <ReactMarkdown
-                      className={`text-[18px] leading-{18px} ${
-                        preg.modoPlus
-                          ? "text-[#22212A] dark:text-white-one"
-                          : "text-gray-seven dark:text-white-one"
-                      }`}
-                    >
-                      {item}
-                    </ReactMarkdown>
-                    <br />
-                  </div>
-                );
-              })}
+              {preg.respuesta !== undefined
+                ? preg.respuesta
+                    .split("\n\n")
+                    .map(function (item: any, idx: any) {
+                      return (
+                        <div key={idx}>
+                          <ReactMarkdown
+                            className={`text-[18px] leading-{18px} ${
+                              preg.modoPlus
+                                ? "text-[#22212A] dark:text-white-one"
+                                : "text-gray-seven dark:text-white-one"
+                            }`}
+                          >
+                            {item}
+                          </ReactMarkdown>
+                          <br />
+                        </div>
+                      );
+                    })
+                : ""}
             </div>
           </div>
         ))

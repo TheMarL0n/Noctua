@@ -121,7 +121,9 @@ export default function SubjectList({
           <span>{notas.length}</span>
         </p>
         <p className="p-1 text-gray-six text-[14px] leading-[16px] flex-1">
-          <span>{Moment(fecha).format("DD/MM/yy hh:mm")}</span>
+          <span>
+            {fecha !== "" ? Moment(fecha).format("DD/MM/yy hh:mm") : ""}
+          </span>
         </p>
 
         <div className="p-1 flex-1">

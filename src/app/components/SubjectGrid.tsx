@@ -226,7 +226,7 @@ export default function SubjectGrid({
           <strong>Notas:</strong> {notas.length}
         </p>
         <p className="text-[12px] text-gray-seven dark:text-white-one flex gap-2 justify-between">
-          <strong>Fecha:</strong> {Moment(fecha).format("DD/MM/yy hh:mm")}
+          <strong>Fecha:</strong>  {fecha !== "" ? Moment(fecha).format("DD/MM/yy hh:mm") : ""}
         </p>
         <div className="flex gap-2 justify-between">
           <p className="text-[12px] text-gray-seven dark:text-white-one">

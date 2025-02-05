@@ -65,6 +65,7 @@ export default function Folder(asuntos: any) {
     const { data } = await axios.post("/api/auth/endpoint", folderDetailParam);
 
     setsubjects(data.procesos);
+    console.log(data.procesos);
     setFolderId(data.id);
     setFolderName(data.carpeta);
     setIsLoading(false);
@@ -76,21 +77,6 @@ export default function Folder(asuntos: any) {
       : (a, b) => (a.proceso > b.proceso ? 1 : -1)
   );
 
-  //Manejar los checkbox para el filtrado//////////////////////////////////////////
-
-  const handleChange = (e: any) => {
-    setCategories({ ...categories, [e.target.name]: e.target.checked });
-  };
-
-  const checkedSubjects = Object.entries(categories)
-    .filter((category) => category[1])
-    .map((category) => category[0]);
-
-  const filteredSubjects = subjects.filter(({ tipo_proceso }) =>
-    checkedSubjects.includes(tipo_proceso)
-  );
-
-  /////////////////////////////////////////////////////////////////////////////////
 
   //AI QUESTION////////////////////////////////////////////////////////////////////
   //tomar la pregunta del input
@@ -121,7 +107,6 @@ export default function Folder(asuntos: any) {
       setAnswer(response.data.respuesta);
       setQuestion("");
       setIsLoadingAi(false);
-      console.log(response.data.respuesta);
     });
   };
   /////////////////////////////////////////////////////////////////////////////////
@@ -235,6 +220,7 @@ export default function Folder(asuntos: any) {
                   key={res.id_proceso}
                   pregunta={questionTitle}
                   idProceso={folderName}
+                  proceso={res.proceso}
                   respuesta={res.respuesta}
                   fromFolder={true}
                 />
@@ -245,91 +231,7 @@ export default function Folder(asuntos: any) {
           )}
 
           <div className="flex w-full justify-end">
-            {/*
-                                <form action="">
-                                    <div className="flex gap-8">                                    
-                                        
-                                        <div className="flex gap-2 items-center">
-                                            <label htmlFor="chaeck-query" className="text-gray-seven dark:text-white-one text-[12px] uppercase">EIMD</label>
-                                            <input
-                                                id="1"
-                                                className='group block size-4 rounded border-white-one border bg-transparent data-[checked]:bg-blue-500'
-                                                type="checkbox"
-                                                name="EIDM"
-                                                onChange={handleChange}
-                                                checked={categories.EIDM}
-                                            />
-                                        </div>
-                                        <div className="flex gap-2 items-center">
-                                            <label htmlFor="chaeck-tender" className="text-gray-seven dark:text-white-one text-[12px] uppercase">Licitación</label>
-                                            <input
-                                                id="2"
-                                                className='group block size-4 rounded border-white-one border bg-transparent data-[checked]:bg-blue-500'
-                                                type="checkbox"
-                                                name="Licitaciones"
-                                                onChange={handleChange}
-                                                checked={categories.Licitaciones} />
-
-                                        </div>
-                                        <div className="flex gap-2 items-center">
-                                            <label htmlFor="chaeck-summary" className="text-gray-seven dark:text-white-one text-[12px] uppercase">Resumen</label>
-                                            <input
-                                                id="3"
-                                                className='group block size-4 rounded border-white-one border bg-transparent data-[checked]:bg-blue-500'
-                                                type="checkbox"
-                                                name="Resumen"
-                                                onChange={handleChange}
-                                                checked={categories.Resumen}
-                                            />
-                                        </div>
-                                        <div className="flex gap-2 items-center">
-                                            <label htmlFor="chaeck-summary" className="text-gray-seven dark:text-white-one text-[12px] uppercase">Carga</label>
-                                            <input
-                                                id="4"
-                                                className='group block size-4 rounded border-white-one border bg-transparent data-[checked]:bg-blue-500'
-                                                type="checkbox"
-                                                name="Carga"
-                                                onChange={handleChange}
-                                                checked={categories.Carga}
-                                            />
-                                        </div>
-                                        <div className="flex gap-2 items-center">
-                                            <label htmlFor="chaeck-summary" className="text-gray-seven dark:text-white-one text-[12px] uppercase">Aclaraciones</label>
-                                            <input
-                                                id="4"
-                                                className='group block size-4 rounded border-white-one border bg-transparent data-[checked]:bg-blue-500'
-                                                type="checkbox"
-                                                name="Aclaraciones"
-                                                onChange={handleChange}
-                                                checked={categories.Aclaraciones}
-                                            />
-                                        </div>
-                                        <div className="flex gap-2 items-center">
-                                            <label htmlFor="chaeck-summary" className="text-gray-seven dark:text-white-one text-[12px] uppercase">Controversia Constitucional</label>
-                                            <input
-                                                id="4"
-                                                className='group block size-4 rounded border-white-one border bg-transparent data-[checked]:bg-blue-500'
-                                                type="checkbox"
-                                                name="Controversia Constitucional"
-                                                onChange={handleChange}
-                                                checked={categories.Controversia_Constitucional}
-                                            />
-                                        </div>
-                                        <div className="flex gap-2 items-center">
-                                            <label htmlFor="chaeck-summary" className="text-gray-seven dark:text-white-one text-[12px] uppercase">Proyecto de Sentencia</label>
-                                            <input
-                                                id="4"
-                                                className='group block size-4 rounded border-white-one border bg-transparent data-[checked]:bg-blue-500'
-                                                type="checkbox"
-                                                name="Proyecto de Sentencia"
-                                                onChange={handleChange}
-                                                checked={categories.Proyecto_de_Sentencia}
-                                            />
-                                        </div>
-                                        
-                                    </div>
-                                </form>
-                                */}
+            
             <div className="flex gap-2">
               <button
                 onClick={changeViewList}
@@ -360,19 +262,7 @@ export default function Folder(asuntos: any) {
 
           {viewType ? (
             <div className="flex flex-wrap gap-3 mt-4">
-              {filteredSubjects.length !== 0
-                ? filteredSubjects.map((subject) => (
-                    <SubjectGrid
-                      key={subject.id_proceso}
-                      id={subject.id_proceso}
-                      title={subject.proceso}
-                      urlSum={`/dashboard/${folderId}/summary/${subject.id_proceso}`}
-                      urlRel={`/dashboard/${folderId}/relevant-points/${subject.id_proceso}`}
-                      urlNotas={`/dashboard/${folderId}/notas/${subject.id_proceso}`}
-                      thefolder={folderName}
-                    />
-                  ))
-                : subjects.map((subject) => (
+              {subjects.map((subject) => (
                     <SubjectGrid
                       key={subject.id_proceso}
                       id={subject.id_proceso}
@@ -417,19 +307,7 @@ export default function Folder(asuntos: any) {
                   Estado
                 </a>
               </div>
-              {filteredSubjects.length !== 0
-                ? filteredSubjects.map((subject) => (
-                    <SubjectList
-                      key={subject.id_proceso}
-                      id={subject.id_proceso}
-                      title={subject.proceso}
-                      urlSum={`/dashboard/${folderId}/summary/${subject.id_proceso}`}
-                      urlRel={`/dashboard/${folderId}/relevant-points/${subject.id_proceso}`}
-                      urlNotas={`/dashboard/${folderId}/notas/${subject.id_proceso}`}
-                      thefolder={folderName}
-                    />
-                  ))
-                : filterSort.map((subject) => (
+              {subjects.map((subject) => (
                     <SubjectList
                       key={subject.id_proceso}
                       id={subject.id_proceso}
