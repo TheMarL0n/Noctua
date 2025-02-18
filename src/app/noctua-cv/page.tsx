@@ -22,6 +22,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(false);
   const [enableBtn, setEnableBtn] = useState(true);
   const [isAdded, setIsAdded] = useState(false);
+  const [formHidden, setFormHidden] = useState(false);
   const user = localStorage.getItem("current-user");
 
   //tomar la info de los input
@@ -122,7 +123,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="breadcumb mt-3">
+      <div className="breadcumb mt-3 flex justify-between">
         <Link
           className="flex items-center text-custom-regular text-gray-seven dark:text-white-one gap-2"
           href="/dashboard"
@@ -132,61 +133,104 @@ export default function Dashboard() {
           </span>{" "}
           Noctua CVs
         </Link>
+
+        <button
+          className="rounded-lg h-[37px] text-[14px] p-2 flex items-center justify-center bg-blue-one text-main-c"
+          onClick={() => setFormHidden(!formHidden)}
+        >
+          {formHidden ? (
+            <>
+            <span className="material-symbols-outlined text-[18px] text-main-c">
+              add
+            </span>
+            Mostrar formulario
+            </>
+          ) : (
+            <>
+              <span className="material-symbols-outlined text-[18px] text-main-c">
+                remove
+              </span>
+              Ocultar formulario
+            </>
+          )}
+        </button>
       </div>
 
       <hr className="h-[1px] border-0 w-full bg-gray-three my-3" />
 
       <div className="w-full flex items-center gap-2">
-        <form className="w-full flex flex-col items-center" action="">
-          <div className="flex mb-2 rounded-lg w-full">
-            <textarea
-              rows={6}
-              className="w-full bg-main-text-color dark:bg-gray-three text-[17px] rounded-lg text-gray-one py-[17px] px-[10px] leading-[18px] focus:outline-0"
-              placeholder="Descripción de la vacante"
-              onChange={getTheDescription}
-              value={description}
-            />
+        <form
+          //className="w-full flex gap-2 items-end"
+          className={`w-full flex gap-2 items-end overflow-hidden transition-all ${
+            formHidden ? "h-0" : "h-[210px]"
+          }`}
+          action=""
+        >
+          <div className="flex-1">
+            <div className="flex rounded-lg gap-2 w-full">
+              <div className="flex pr-[10px] w-[70%] justify-between items-center border rounded-lg border-gray-three dark:border-gray-three">
+                <input
+                  type="text"
+                  className="text-[17px] bg-transparent rounded-lg text-gray-one py-[17px] px-[10px] leading-[18px] focus:outline-0"
+                  placeholder="Nombre del proceso"
+                  onChange={getTheProName}
+                  value={name}
+                />
+                <span className="material-symbols-outlined text-[25px] text-gray-four">
+                  settings_account_box
+                </span>
+              </div>
+
+              <div className="flex pr-[10px] w-[70%] justify-between items-center border rounded-lg border-gray-three dark:border-gray-three">
+                <input
+                  type="text"
+                  className="bg-transparent text-[17px] rounded-lg text-gray-one py-[17px] px-[10px] leading-[18px] focus:outline-0"
+                  placeholder="URL de Google drive"
+                  onChange={getTheUrl}
+                  value={driveUrl}
+                />
+                <span className="material-symbols-outlined text-[25px] text-gray-four">
+                  snippet_folder
+                </span>
+              </div>
+
+              <div className="flex pr-[10px] w-[30%] justify-between items-center border rounded-lg border-gray-three dark:border-gray-three">
+                <input
+                  type="number"
+                  className="bg-transparent text-[17px] rounded-lg text-gray-one py-[17px] px-[10px] leading-[18px] focus:outline-0"
+                  placeholder="Cantidad de candidatos"
+                  onChange={getTheNumber}
+                  value={amount}
+                />
+                <span className="material-symbols-outlined text-[25px] text-gray-four">
+                  speed
+                </span>
+              </div>
+            </div>
+
+            <div className="flex mt-2 rounded-lg w-full">
+              <textarea
+                rows={6}
+                className="w-full border bg-transparent border-gray-three dark:border-gray-three text-[17px] rounded-lg text-gray-one py-[17px] px-[10px] leading-[18px] focus:outline-0"
+                placeholder="Descripción de la vacante"
+                onChange={getTheDescription}
+                value={description}
+              />
+            </div>
           </div>
 
-          <div className="flex rounded-lg gap-2 w-full">
-            <input
-              type="text"
-              className="w-[70%] bg-main-text-color dark:bg-gray-three text-[17px] rounded-lg text-gray-one py-[17px] px-[10px] leading-[18px] focus:outline-0"
-              placeholder="URL de Google drive"
-              onChange={getTheUrl}
-              value={driveUrl}
-            />
-
-            <input
-              type="number"
-              className="w-[30%] bg-main-text-color dark:bg-gray-three text-[17px] rounded-lg text-gray-one py-[17px] px-[10px] leading-[18px] focus:outline-0"
-              placeholder="Cantidad de candidatos"
-              onChange={getTheNumber}
-              value={amount}
-            />
-
-            <input
-              type="text"
-              className="w-[70%] bg-main-text-color dark:bg-gray-three text-[17px] rounded-lg text-gray-one py-[17px] px-[10px] leading-[18px] focus:outline-0"
-              placeholder="Nombre del proceso"
-              onChange={getTheProName}
-              value={name}
-            />
-
-            <div className="bg-gray-one dark:bg-secundary-c border border-gray-one dark:border-gray-three rounded-lg h-[52px] p-2 flex items-center justify-center">
-              <button
-                className="flex items-center justify-center disabled:opacity-15"
-                onClick={sendTheInfo}
-                disabled={enableBtn}
-              >
-                <span className="material-symbols-outlined text-[32px] text-gray-four">
-                  chat
-                </span>
-              </button>
-            </div>
+          <div className="bg-gray-one dark:bg-secundary-c border border-gray-one dark:border-gray-three rounded-lg h-[52px] p-2 flex items-center justify-center">
+            <button
+              className="flex items-center justify-center disabled:opacity-15"
+              onClick={sendTheInfo}
+              disabled={enableBtn}
+            >
+              Agregar
+            </button>
           </div>
         </form>
       </div>
+
       {loading === true ? (
         <WorkingLoader />
       ) : answer.length > 0 ? (

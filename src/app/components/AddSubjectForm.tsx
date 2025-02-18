@@ -72,7 +72,6 @@ export default function AddSubjectForm({ param_folder }: any) {
     await axios.post("/api/auth/addSubject", formData).then((response) => {
       setIsLoading(false);
       setSuccess(true);
-      console.log("resultData", response);
       setTimeout(() => {
         window.location.reload();
       }, 1000);

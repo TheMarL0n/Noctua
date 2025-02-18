@@ -65,7 +65,6 @@ export default function Folder(asuntos: any) {
     const { data } = await axios.post("/api/auth/endpoint", folderDetailParam);
 
     setsubjects(data.procesos);
-    console.log(data.procesos);
     setFolderId(data.id);
     setFolderName(data.carpeta);
     setIsLoading(false);
