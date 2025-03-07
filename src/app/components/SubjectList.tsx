@@ -7,7 +7,7 @@ import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import { Modal } from "./Modal";
 import WorkingLoader from "./WorkingLoader";
 import ReactMarkdown from "react-markdown";
-import ComboBoxFolders from "./ComboBoxFolders";
+import remarkGfm from "remark-gfm";
 
 export default function SubjectList({
   title,
@@ -66,9 +66,36 @@ export default function SubjectList({
       const { data } = await axios.get("/api/auth/status", { params: { id } });
       setProcesando(data.procesando);
       setTheStatus(data.estatus);
-      setProgress((progress) => progress + 25);
 
-      if (data.procesando === false) {
+      console.log(data.estatus);
+      if (data.estatus === "Obteniendo texto") {
+        setProgress(16);
+      }
+
+      if (data.estatus === "Procesando...") {
+        setProgress(32);
+      }
+
+      if (data.estatus === "Archivos leídos") {
+        setProgress(48);
+      }
+
+      if (data.estatus === "Contenido almacenado") {
+        setProgress(64);
+      }
+
+      if (data.estatus === "Resumen generado") {
+        setProgress(80);
+      }
+
+      if (data.estatus === "Respuestas generadas") {
+        setProgress(90);
+      }
+
+      if (
+        data.procesando === false ||
+        data.procesando === "Error al procesar"
+      ) {
         clearInterval(interval);
       }
     }, 5000);
@@ -113,6 +140,7 @@ export default function SubjectList({
     };
     await axios.post("/api/auth/endpoint", comparaParam).then((response) => {
       setComparison(response.data.respuesta);
+      console.log(response.data.respuesta);
       setIsLoading(false);
     });
   };
@@ -162,7 +190,7 @@ export default function SubjectList({
     >
       <div className="flex gap-8 justify-between items-center">
         <Link
-          href={procesando === false ? urlRel : ""}
+          href={procesando === false || theStatus !== "Error al procesar" ? urlRel : ""}
           className="flex flex-1 justify-between items-center"
         >
           <div className="p-1 flex gap-2 items-center flex-1">
@@ -194,6 +222,12 @@ export default function SubjectList({
                   keep
                 </span>
               </div>
+            ) : theStatus === "Error al procesar" ? (
+              <div className="flex gap-3 items-center">
+                <span className="material-symbols-outlined text-error">
+                  keep
+                </span>
+              </div>
             ) : (
               <div className="flex flex-col gap-2 items-start">
                 <p className="text-[10px] text-gray-six font-extralight">
@@ -201,7 +235,7 @@ export default function SubjectList({
                 </p>
                 <div className="w-full bg-gray-one rounded-full h-2.5 dark:bg-gray-700 overflow-hidden">
                   <div
-                    className="bg-blue-one h-2.5 rounded-full"
+                    className="bg-blue-one h-2.5 rounded-full transition-all"
                     style={{ width: `${progress}%` }}
                   ></div>
                 </div>
@@ -282,7 +316,33 @@ export default function SubjectList({
               </div>
             </PopoverPanel>
           </Popover>
-        ) : (
+        ) : theStatus === "Error al procesar" ?
+        (
+          <Popover className="relative">
+            <PopoverButton className="ml-auto flex flex-col justify-center">
+              <span className="material-symbols-outlined text-gray-two text-[25px]">
+                more_vert
+              </span>
+            </PopoverButton>
+            <PopoverPanel
+              transition
+              className="absolute right-0 top-6 z-10 mt-1 flex max-w-max min-w-[240px] px-4 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"
+            >
+              <div className="max-w-md flex-auto overflow-hidden bg-main-text-color dark:bg-gray-two rounded-[3px] text-sm leading-6 shadow-lg">
+                <button
+                  onClick={() => setIsModalOpen(true)}
+                  className="w-full hover:bg-error hover:text-main-text-color px-4 py-2 flex items-center gap-1"
+                >
+                  <span className="material-symbols-outlined text-[16px]">
+                    delete
+                  </span>
+                  Eliminar
+                </button>
+              </div>
+            </PopoverPanel>
+          </Popover>
+        )
+        : (
           <span className="material-symbols-rounded animate-spin">
             progress_activity
           </span>
@@ -399,7 +459,9 @@ export default function SubjectList({
                 .map(function (item: any, idx: any) {
                   return (
                     <div key={idx} className="text-white-one">
-                      <ReactMarkdown>{item}</ReactMarkdown>
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        {item}
+                      </ReactMarkdown>
                       <br />
                     </div>
                   );

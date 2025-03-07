@@ -160,3 +160,13 @@
 .plus-on .ia-bg .ia-btn button span{
   color: #273834 !important;
 }
+
+table,
+tr,
+td,
+th {
+  border: 1px solid #555;
+}
+th, td {
+  padding: 5px;
+}

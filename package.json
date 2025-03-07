@@ -41,6 +41,7 @@
     "react-dom": "^18",
     "react-loading-skeleton": "^3.5.0",
     "react-markdown": "^9.0.1",
+    "remark-gfm": "^4.0.1",
     "resend": "^3.4.0",
     "sass": "^1.77.8",
     "shepherd.js": "^13.0.3"
