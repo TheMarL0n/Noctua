@@ -4,6 +4,7 @@ import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import WorkingLoader from "./WorkingLoader";
+import CopyToClipboard from "react-copy-to-clipboard";
 
 export default function RelevantPoints({ idProceso }: any) {
   const [isAdded, setIsAdded] = useState(false);
@@ -12,6 +13,7 @@ export default function RelevantPoints({ idProceso }: any) {
   const [selected, setSelected] = useState(null);
   const [loading, setLoading] = useState<boolean>(false);
   const modeplus = localStorage.getItem("modeplus");
+  const [isCopied, setIsCopied] = useState(false);
   //const [contenido, setContenido] = useState<any[]>([]);
 
   //para el drag and drop-------------------------------
@@ -30,6 +32,14 @@ export default function RelevantPoints({ idProceso }: any) {
   useEffect(() => {
     getProcess();
   }, []);
+
+  //Mostrar notificacion de cpiado
+  const showCopied = () => {
+    setIsCopied(true);
+    setTimeout(() => {
+      setIsCopied(false);
+    }, 1000);
+  };
 
   //get the pregunta from proceso-----------------------------------------------------------------------------------------------------
   const getProcess = async () => {
@@ -131,7 +141,6 @@ export default function RelevantPoints({ idProceso }: any) {
       {loading ? (
         <WorkingLoader />
       ) : (
-        
         items.toReversed().map((preg: any, index: any) => (
           <div
             key={index}
@@ -197,15 +206,11 @@ export default function RelevantPoints({ idProceso }: any) {
               }`}
             >
               <div className="flex gap-1 items-center justify-end my-3">
-                <span className="material-symbols-outlined text-[32px] text-gray-nine font-extralight">
-                  download
-                </span>
-                <span className="material-symbols-outlined text-[32px] text-gray-nine font-extralight">
-                  bookmark
-                </span>
-                <span className="material-symbols-outlined text-[32px] text-gray-nine font-extralight">
-                  print
-                </span>
+                <CopyToClipboard text={preg.respuesta} onCopy={() => showCopied()}>
+                  <span className="material-symbols-outlined text-[32px] text-gray-nine font-extralight cursor-pointer">
+                    download
+                  </span>
+                </CopyToClipboard>                
 
                 <Popover className="relative">
                   <PopoverButton className="ml-auto flex flex-col justify-center">
@@ -316,6 +321,16 @@ export default function RelevantPoints({ idProceso }: any) {
             done_all
           </span>
           <p className="text-main-text-color">Pregunta eliminada</p>
+        </div>
+      ) : (
+        ""
+      )}
+      {isCopied ? (
+        <div className="absolute bg-overlay rounded py-4 px-4 text-center w-[150px] top-[30%] left-[50%] mr-[-150px]">
+          <span className="material-symbols-outlined text-[25px] leading-[25px] text-blue-one text-center cursor-pointer">
+            done_all
+          </span>
+          <p>Copiado al portapapeles</p>
         </div>
       ) : (
         ""

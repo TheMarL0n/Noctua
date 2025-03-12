@@ -8,6 +8,7 @@ import { Modal } from "./Modal";
 import WorkingLoader from "./WorkingLoader";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import CopyToClipboard from "react-copy-to-clipboard";
 
 export default function SubjectList({
   title,
@@ -23,6 +24,7 @@ export default function SubjectList({
   const [tipoProceso, setTipoProceso] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalFormOpen, setIsModalFormOpen] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
   const [fileUrl, setFileUrl] = useState("");
   const [theStatus, setTheStatus] = useState("");
   const [procesando, setProcesando] = useState(false);
@@ -38,6 +40,14 @@ export default function SubjectList({
     getSubjectStatus();
     getSubjectFiles();
   }, []);
+
+  //Mostrar notificacion de cpiado
+  const showCopied = () => {
+    setIsCopied(true);
+    setTimeout(() => {
+      setIsCopied(false);
+    }, 1000);
+  };
 
   //get the subject info given the subject id
   const getSubjectInfo = async () => {
@@ -180,17 +190,31 @@ export default function SubjectList({
     });
   };
 
+  //descargar comparacion
+  const downloadTxtFile = (id: any, e: any) => {
+    const element = document.createElement("a");
+    const file = new Blob([e], { type: "text/plain" });
+    element.href = URL.createObjectURL(file);
+    element.download = `${id}.txt`;
+    document.body.appendChild(element); // Required for this to work in FireFox
+    element.click();
+  };
+
   return (
     <div
       className={
         procesando === false
-          ? `bg-main-text-color dark:bg-gray-five rounded-lg px-2 hover:bg-white-one hover:dark:bg-gray-three`
-          : "bg-main-text-color dark:bg-gray-five rounded-lg px-2 cursor-not-allowed"
+          ? `flex-1 bg-main-text-color dark:bg-gray-five rounded-lg px-2 hover:bg-white-one hover:dark:bg-gray-three`
+          : "flex-1 bg-main-text-color dark:bg-gray-five rounded-lg px-2 cursor-not-allowed"
       }
     >
       <div className="flex gap-8 justify-between items-center">
         <Link
-          href={procesando === false || theStatus !== "Error al procesar" ? urlRel : ""}
+          href={
+            procesando === false || theStatus !== "Error al procesar"
+              ? urlRel
+              : ""
+          }
           className="flex flex-1 justify-between items-center"
         >
           <div className="p-1 flex gap-2 items-center flex-1">
@@ -316,8 +340,7 @@ export default function SubjectList({
               </div>
             </PopoverPanel>
           </Popover>
-        ) : theStatus === "Error al procesar" ?
-        (
+        ) : theStatus === "Error al procesar" ? (
           <Popover className="relative">
             <PopoverButton className="ml-auto flex flex-col justify-center">
               <span className="material-symbols-outlined text-gray-two text-[25px]">
@@ -341,8 +364,7 @@ export default function SubjectList({
               </div>
             </PopoverPanel>
           </Popover>
-        )
-        : (
+        ) : (
           <span className="material-symbols-rounded animate-spin">
             progress_activity
           </span>
@@ -445,15 +467,32 @@ export default function SubjectList({
               key={comp.id_proceso}
               className="my-4 bg-gray-nine dark:bg-gray-nine rounded-lg p-6"
             >
-              <Link
-                href={`/${comp.id_proceso}`}
-                className="uppercase text-blue-one text-[12px] flex gap-2 items-center w-fit ml-auto"
-              >
-                Ir al proceso{" "}
-                <span className="material-symbols-outlined font-light">
-                  chevron_right
-                </span>
-              </Link>
+              <div className="flex justify-between border-b pb-3 mb-3">
+                <Link
+                  href={`${comp.id_carpeta}/relevant-points/${comp.id_proceso}`}
+                  className="uppercase text-blue-one text-[12px] flex gap-2 items-center w-fit"
+                >
+                  Ir al proceso{" "}
+                  <span className="material-symbols-outlined font-light">
+                    chevron_right
+                  </span>
+                </Link>
+
+                <div className="flex gap-4">
+                  <span
+                    onClick={() => downloadTxtFile(comp.id_proceso, comp.comparacion)}
+                    className="cursor-pointer material-symbols-outlined text-[25px] leading-[25px] text-gray-six text-center hover:text-white"
+                  >
+                    download
+                  </span>
+                  <CopyToClipboard text={comp.comparacion} onCopy={() => showCopied()}>
+                    <span className="material-symbols-outlined text-[25px] leading-[25px] text-gray-six text-center cursor-pointer hover:text-white">
+                      file_copy
+                    </span>
+                  </CopyToClipboard>
+                </div>
+              </div>
+
               {comp.comparacion
                 .split("\n\n")
                 .map(function (item: any, idx: any) {
@@ -470,6 +509,16 @@ export default function SubjectList({
           ))
         )
       }
+       {isCopied ? (
+        <div className="absolute bg-overlay rounded py-4 px-4 text-center w-[150px] top-[30%] left-[50%] mr-[-150px]">
+          <span className="material-symbols-outlined text-[25px] leading-[25px] text-blue-one text-center cursor-pointer">
+            done_all
+          </span>
+          <p>Copiado al portapapeles</p>
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 }

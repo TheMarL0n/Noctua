@@ -59,8 +59,8 @@ export default function Dashboard() {
       paramPregunta: driveUrl,
       keyThird: "numCandidatos",
       paramThird: amount,
-      keyFourd: "nombre_consulta",
-      paramFour: name,
+      keyFourth: "nombre_consulta",
+      paramFourth: name,
       urlSlug: "api/procesaCVS",
     };
 
@@ -72,6 +72,8 @@ export default function Dashboard() {
         setDescription("");
         setDriveUrl("");
         setAmount("");
+
+        console.log(response.data.respuesta)
       })
       .catch((err) => {
         setIsModalOpen(true);

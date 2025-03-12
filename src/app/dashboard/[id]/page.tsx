@@ -27,6 +27,7 @@ export default function Folder(asuntos: any) {
   const [enableBtn, setEnableBtn] = useState(true);
   const [answer, setAnswer] = useState<any[]>([]);
   const [isLoadingAi, setIsLoadingAi] = useState<boolean>(false);
+  const [chbx_enabled, setChbx_enabled] = useState(true);
 
   const [showQuestion, setShowQuestion] = useState(false);
 
@@ -75,7 +76,6 @@ export default function Folder(asuntos: any) {
       ? (a, b) => (a.proceso < b.proceso ? 1 : -1)
       : (a, b) => (a.proceso > b.proceso ? 1 : -1)
   );
-
 
   //AI QUESTION////////////////////////////////////////////////////////////////////
   //tomar la pregunta del input
@@ -166,6 +166,21 @@ export default function Folder(asuntos: any) {
             value={question}
           />
 
+          <div className="plus-toggler toggle mr-2 bg-gray-one dark:bg-secundary-c rounded-lg px-4 py-3 h-[52px] flex items-center gap-1">
+            <label className="inline-flex gap-5 items-center cursor-pointer">
+              <input
+                type="checkbox"
+                value=""
+                className="sr-only peer"
+                onClick={() => setChbx_enabled(!chbx_enabled)}
+              />
+              <div className="plus-toggler-btn relative w-11 h-[14px] bg-white-one peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer dark:bg-gray-700 peer-checked:after:border-white after:content-[''] after:absolute after:top-[-3px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+              <span className="text-[12px] uppercase text-white">
+                Por asunto
+              </span>
+            </label>
+          </div>
+
           <div className="bg-gray-one dark:bg-secundary-c rounded-lg h-[52px] p-2 flex items-center justify-center">
             <button
               className="flex items-center justify-center disabled:opacity-15"
@@ -210,10 +225,9 @@ export default function Folder(asuntos: any) {
           {showQuestion ? (
             isLoadingAi ? (
               <WorkingLoader />
+            ) : answer === undefined ? (
+              <ErrorScreen />
             ) : (
-              answer === undefined ?
-              <ErrorScreen/>
-              :
               answer.map((res) => (
                 <AiQuestion
                   key={res.id_proceso}
@@ -230,7 +244,6 @@ export default function Folder(asuntos: any) {
           )}
 
           <div className="flex w-full justify-end">
-            
             <div className="flex gap-2">
               <button
                 onClick={changeViewList}
@@ -262,16 +275,16 @@ export default function Folder(asuntos: any) {
           {viewType ? (
             <div className="flex flex-wrap gap-3 mt-4">
               {subjects.map((subject) => (
-                    <SubjectGrid
-                      key={subject.id_proceso}
-                      id={subject.id_proceso}
-                      title={subject.proceso}
-                      urlSum={`/dashboard/${folderId}/summary/${subject.id_proceso}`}
-                      urlRel={`/dashboard/${folderId}/relevant-points/${subject.id_proceso}`}
-                      urlNotas={`/dashboard/${folderId}/notas/${subject.id_proceso}`}
-                      thefolder={folderName}
-                    />
-                  ))}
+                <SubjectGrid
+                  key={subject.id_proceso}
+                  id={subject.id_proceso}
+                  title={subject.proceso}
+                  urlSum={`/dashboard/${folderId}/summary/${subject.id_proceso}`}
+                  urlRel={`/dashboard/${folderId}/relevant-points/${subject.id_proceso}`}
+                  urlNotas={`/dashboard/${folderId}/notas/${subject.id_proceso}`}
+                  thefolder={folderName}
+                />
+              ))}
               <a
                 onClick={() => setIsModalOpen(true)}
                 className="flex items-center justify-center w-[72px] h-[72px] bg-blue-one rounded-full ml-3 my-auto cursor-pointer"
@@ -307,16 +320,26 @@ export default function Folder(asuntos: any) {
                 </a>
               </div>
               {subjects.map((subject) => (
-                    <SubjectList
-                      key={subject.id_proceso}
-                      id={subject.id_proceso}
-                      title={subject.proceso}
-                      urlSum={`/dashboard/${folderId}/summary/${subject.id_proceso}`}
-                      urlRel={`/dashboard/${folderId}/relevant-points/${subject.id_proceso}`}
-                      urlNotas={`/dashboard/${folderId}/notas/${subject.id_proceso}`}
-                      thefolder={folderName}
-                    />
-                  ))}
+                <div key={subject.id_proceso} className="flex w-full">
+                  <input
+                    type="checkbox"
+                    value={subject.id_proceso}
+                    className={` 
+                      
+                      ${!chbx_enabled ? "" : "hidden"}
+                      `}
+                  />
+                  <SubjectList
+                    key={subject.id_proceso}
+                    id={subject.id_proceso}
+                    title={subject.proceso}
+                    urlSum={`/dashboard/${folderId}/summary/${subject.id_proceso}`}
+                    urlRel={`/dashboard/${folderId}/relevant-points/${subject.id_proceso}`}
+                    urlNotas={`/dashboard/${folderId}/notas/${subject.id_proceso}`}
+                    thefolder={folderName}
+                  />
+                </div>
+              ))}
               <a
                 onClick={() => setIsModalOpen(true)}
                 className="flex items-center justify-center w-[72px] h-[72px] bg-blue-one rounded-full ml-3 my-auto cursor-pointer"
