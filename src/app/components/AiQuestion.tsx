@@ -77,8 +77,8 @@ export default function AiQuestion({
           <span className="material-symbols-outlined text-[32px] text-bg-gray-five dark:text-white font-extralight">
             mark_chat_read
           </span>
-          {proceso !== "" ? proceso : ""}
-          {proceso !== "" ? ": " : ""}
+          {proceso !== "" ? proceso : " "}
+          {proceso !== "" ? ": " : " "}
           {pregunta}
         </h2>
         <div className="flex gap-1 items-center">
@@ -93,12 +93,6 @@ export default function AiQuestion({
               file_copy
             </span>
           </CopyToClipboard>
-          <span className="material-symbols-outlined text-[32px] text-gray-nine font-extralight">
-            bookmark
-          </span>
-          <span className="material-symbols-outlined text-[32px] text-gray-nine font-extralight">
-            print
-          </span>
           <Popover className="relative">
             <PopoverButton className="ml-auto flex flex-col justify-center">
               <span className="material-symbols-outlined text-gray-two text-[25px]">

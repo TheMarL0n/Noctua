@@ -27,8 +27,8 @@ export default function Folder(asuntos: any) {
   const [enableBtn, setEnableBtn] = useState(true);
   const [answer, setAnswer] = useState<any[]>([]);
   const [isLoadingAi, setIsLoadingAi] = useState<boolean>(false);
-  const [chbx_enabled, setChbx_enabled] = useState(true);
-
+  const [chbx_enabled, setChbx_enabled] = useState(false);
+  const [radioValues, setRadioValues] = useState([]);
   const [showQuestion, setShowQuestion] = useState(false);
 
   const [categories, setCategories] = useState({
@@ -93,20 +93,43 @@ export default function Folder(asuntos: any) {
     getAnswer();
   };
 
+  //get the checkbox values
+  const onChangeCheckBox = (e: any) => {
+    const { value, checked } = e.target;
+    setRadioValues(prev => [...prev, value]);
+  };
+
   //Obtener las preguntas de la API
   const getAnswer = async () => {
-    const resumeParam = {
-      key: "carpeta",
-      keyQuestion: "pregunta",
-      paramId: folderName,
-      paramPregunta: question,
-      urlSlug: "ai/preguntaCarpeta",
-    };
-    await axios.post("/api/auth/endpoint", resumeParam).then((response) => {
-      setAnswer(response.data.respuesta);
-      setQuestion("");
-      setIsLoadingAi(false);
-    });
+    if (chbx_enabled === true) {
+      const resumeParam = {
+        key: "ids_procesos",
+        keyQuestion: "pregunta",
+        paramId: radioValues.toString(),
+        paramPregunta: question,
+        urlSlug: "ai/preguntaIAProcesos",
+      };
+      await axios.post("/api/auth/endpoint", resumeParam).then((response) => {
+        setAnswer(response.data.respuesta);
+        setQuestion("");
+        setIsLoadingAi(false);
+      });
+    }
+
+    else {
+      const resumeParam = {
+        key: "carpeta",
+        keyQuestion: "pregunta",
+        paramId: folderName,
+        paramPregunta: question,
+        urlSlug: "ai/preguntaCarpeta",
+      };
+      await axios.post("/api/auth/endpoint", resumeParam).then((response) => {
+        setAnswer(response.data.respuesta);
+        setQuestion("");
+        setIsLoadingAi(false);
+      });
+    }
   };
   /////////////////////////////////////////////////////////////////////////////////
 
@@ -153,33 +176,18 @@ export default function Folder(asuntos: any) {
 
       <hr className="h-[1px] border-0 w-full bg-gray-three my-[15px]" />
 
-      <div className="search-bar bg-main-text-color dark:bg-gray-three rounded-lg w-full ia-bg">
+      <div className="search-bar bg-main-text-color dark:bg-gray-three rounded-lg w-full">
         <form
-          className="w-full flex items-center mb-3 border border-gray-three ia-border rounded-lg"
+          className="w-full flex items-center mb-3 border border-gray-three rounded-lg"
           action=""
         >
           <input
             type="text"
-            className="ia-bg w-full plus-on:bg-gray-three bg-main-text-color dark:bg-gray-three text-[17px] rounded-lg text-gray-one py-[17px] px-[10px] leading-[18px] focus:outline-0"
+            className="w-full bg-main-text-color dark:bg-gray-three text-[17px] rounded-lg text-gray-one py-[17px] px-[10px] leading-[18px] focus:outline-0"
             placeholder="Pregunta o da una instrucción a Noctua&reg;, En relación al contenido de carpetas"
             onChange={getTheQuestion}
             value={question}
           />
-
-          <div className="plus-toggler toggle mr-2 bg-gray-one dark:bg-secundary-c rounded-lg px-4 py-3 h-[52px] flex items-center gap-1">
-            <label className="inline-flex gap-5 items-center cursor-pointer">
-              <input
-                type="checkbox"
-                value=""
-                className="sr-only peer"
-                onClick={() => setChbx_enabled(!chbx_enabled)}
-              />
-              <div className="plus-toggler-btn relative w-11 h-[14px] bg-white-one peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer dark:bg-gray-700 peer-checked:after:border-white after:content-[''] after:absolute after:top-[-3px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-              <span className="text-[12px] uppercase text-white">
-                Por asunto
-              </span>
-            </label>
-          </div>
 
           <div className="bg-gray-one dark:bg-secundary-c rounded-lg h-[52px] p-2 flex items-center justify-center">
             <button
@@ -191,6 +199,14 @@ export default function Folder(asuntos: any) {
                 chat
               </span>
             </button>
+          </div>
+          <div className="toggle bg-gray-one dark:bg-secundary-c rounded-md py-3 px-2 ml-1 h-full uppercase">
+            <label className="inline-flex gap-5 items-center cursor-pointer">
+              <input type="checkbox" value="" className="sr-only peer" onClick={() => setChbx_enabled(!chbx_enabled)} />
+              <div
+                className="relative w-11 h-[14px] bg-white-one peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[-3px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+              <p className="text-[12px] leading-[14px] text-white">Por asunto</p>
+            </label>
           </div>
         </form>
       </div>
@@ -227,7 +243,7 @@ export default function Folder(asuntos: any) {
               <WorkingLoader />
             ) : answer === undefined ? (
               <ErrorScreen />
-            ) : (
+            ) : !chbx_enabled ? (
               answer.map((res) => (
                 <AiQuestion
                   key={res.id_proceso}
@@ -238,7 +254,10 @@ export default function Folder(asuntos: any) {
                   fromFolder={true}
                 />
               ))
-            )
+            ) : <AiQuestion
+              pregunta={questionTitle}
+              respuesta={answer}
+            />
           ) : (
             ""
           )}
@@ -321,14 +340,15 @@ export default function Folder(asuntos: any) {
               </div>
               {subjects.map((subject) => (
                 <div key={subject.id_proceso} className="flex w-full">
-                  <input
-                    type="checkbox"
-                    value={subject.id_proceso}
-                    className={` 
-                      
-                      ${!chbx_enabled ? "" : "hidden"}
-                      `}
-                  />
+                  <div className={`flex px-2 bg-main-text-color dark:bg-gray-five rounded-lg
+                      ${chbx_enabled ? "" : "hidden"}
+                      `}>
+                    <input
+                      type="checkbox"
+                      onChange={onChangeCheckBox}
+                      value={subject.id_proceso}
+                    />
+                  </div>
                   <SubjectList
                     key={subject.id_proceso}
                     id={subject.id_proceso}

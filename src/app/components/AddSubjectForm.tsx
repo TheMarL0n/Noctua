@@ -101,7 +101,7 @@ export default function AddSubjectForm({ param_folder }: any) {
           </p>
         </div>
       ) : (
-        <form onSubmit={handleSubmit}>
+        <form role="dialog" onSubmit={handleSubmit}>
           <div className="mb-6 flex bg-main-text-color dark:bg-main-c items-center pr-4 rounded max-w-full">
             <input
               id="name"

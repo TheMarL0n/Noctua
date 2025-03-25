@@ -3,7 +3,6 @@ import { ModalIcon } from "./ModalIcon";
 
 export default function PlusToggler({ idProceso }: any) {
   const [modeplus, setModeplus] = useState<any>(null);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     if (localStorage.getItem("modeplus") === "plus-on") {
@@ -14,11 +13,8 @@ export default function PlusToggler({ idProceso }: any) {
 
   const togglePlus = () => {
     if (document.documentElement.classList.contains("plus-on")) {
-      document.documentElement.classList.remove("plus-on");
-      localStorage.setItem("modeplus", "plus-of");
-      setModeplus("plus-of");
-      window.location.reload();
-    } else setIsModalOpen(true);
+      togglePlusOf();
+    } else togglePlusOn();
   };
 
   //activar modo plus
@@ -26,21 +22,40 @@ export default function PlusToggler({ idProceso }: any) {
     document.documentElement.classList.add("plus-on");
     localStorage.setItem("modeplus", "plus-on");
     setModeplus("plus-on");
-    window.location.reload();
+    //window.location.reload();
   };
 
   //desactivar modo plus
   const togglePlusOf = () => {
-    if (document.documentElement.classList.contains("plus-on")) {
-      document.documentElement.classList.remove("plus-on");
-      localStorage.setItem("modeplus", "plus-of");
-      setModeplus("plus-of");
-    }
-    window.location.reload();
+    document.documentElement.classList.remove("plus-on");
+    localStorage.setItem("modeplus", "plus-of");
+    setModeplus("plus-of");
+    //window.location.reload();
   };
 
   return (
-    <>
+    <div className="flex justify-between">
+      <div className="p-2 flex gap-2 items-center">
+        <span className="material-symbols-outlined text-[30px] font-extralight">
+          quickreply
+        </span>
+        {modeplus === "plus-of" ? 
+        <div>
+          <p className="text-[17px] leading-[17px] font-light text-gray-five dark:text-main-text-color">
+            Esta operación incrementará el poder cognitivo.
+          </p>
+          <p className="text-[14px] mt-1 leading-[14px] font-light text-[#9399A3] dark:text-[#9399A3]">
+            El consumo de créditos aumentará.
+          </p>
+        </div>
+        :
+        <div>
+          <p className="text-[17px] leading-[17px] font-light text-gray-five dark:text-main-text-color">
+            Está trabajando en modo Plus
+          </p>
+        </div>
+        }
+      </div>
       <div className="plus-toggler toggle bg-gray-one dark:bg-secundary-c rounded-lg px-4 py-3 h-[52px] flex items-center gap-1">
         <label className="inline-flex gap-5 items-center cursor-pointer">
           <input
@@ -53,35 +68,6 @@ export default function PlusToggler({ idProceso }: any) {
           <span className="text-[12px] uppercase text-white">Modo plus</span>
         </label>
       </div>
-      <ModalIcon
-        title="Estas apunto de iniciar el Modo Plus"
-        icon="quickreply"
-        isOpen={isModalOpen}
-        onClose={() => {
-          setIsModalOpen(false);
-        }}
-      >
-        <p className="text-[17px] leading-[17px] font-light text-gray-five dark:text-main-text-color">
-          Esta operación incrementará el poder cognitivo.
-        </p>
-        <p className="text-[14px] leading-[14px] font-light text-[#9399A3] dark:text-[#9399A3]">
-          El consumo de créditos aumentará.
-        </p>
-       <div className="flex gap-1 justify-end">
-       <button
-          onClick={togglePlusOf}
-          className="text-secundary-c mt-12 flex justify-center bg-gray-two py-3 px-14 text-[15px] ease-in-out duration-300 hover:bg-main-c hover:text-blue-one"
-        >
-          Cancelar
-        </button>
-       <button
-          onClick={togglePlusOn}
-          className="text-secundary-c mt-12 flex justify-center bg-blue-one py-3 px-14 text-[15px] ease-in-out duration-300 hover:bg-main-c hover:text-blue-one"
-        >
-          Aceptar
-        </button>
-       </div>
-      </ModalIcon>
-    </>
+    </div>
   );
 }

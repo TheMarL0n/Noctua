@@ -86,7 +86,7 @@ export default function Subject(resumen: any) {
     e.preventDefault();
     setLoading(true);
 
-    if (modeplus === "plus-on") {
+    if (localStorage.getItem("modeplus") === "plus-on") {
       getAnswerPlus();
     } else getAnswer();
   };
@@ -105,7 +105,7 @@ export default function Subject(resumen: any) {
     await axios.post("/api/auth/endpoint", resumeParam).then((response) => {
       setAnswer(response.data.respuesta);
       setLoading(false);
-      setQuestion("");
+      window.location.reload();
     });
   };
 
@@ -123,7 +123,7 @@ export default function Subject(resumen: any) {
     await axios.post("/api/auth/endpoint", resumeParam).then((response) => {
       setAnswer(response.data.respuesta);
       setLoading(false);
-      setQuestion("");
+      window.location.reload();
     });
   };
 
@@ -142,7 +142,7 @@ export default function Subject(resumen: any) {
       const { data } = await axios.post("/api/auth/endpoint", resumeParam);
     }
     setLoading(false);
-  };  
+  };
 
   return (
     <div className="page-body py-2 px-4 w-full min-h-full">
@@ -213,7 +213,7 @@ export default function Subject(resumen: any) {
             onChange={getQuestionFromInput}
             value={question}
           />
-          <div className="ia-btn bg-gray-one dark:bg-secundary-c rounded-lg h-[52px] p-2 flex items-center justify-center mr-1">
+          <div className="ia-btn bg-gray-one dark:bg-secundary-c rounded-lg h-[52px] p-2 flex items-center justify-center">
             <button
               className="flex items-center justify-center"
               onClick={sendTheQuestion}
@@ -223,8 +223,10 @@ export default function Subject(resumen: any) {
               </span>
             </button>
           </div>
-          <PlusToggler idProceso={resumen.params.id_proceso} />
         </form>
+      </div>
+      <div className="search-bar bg-main-text-color dark:bg-gray-three rounded-lg w-full ia-bg">
+        <PlusToggler idProceso={resumen.params.id_proceso} />
       </div>
       {/*******************************************************************************************************************************************************/}
 
@@ -238,15 +240,14 @@ export default function Subject(resumen: any) {
 
           <div className="flex items-center">
             <button
-              className={`sheen ia-border text-gray-seven dark:text-white-one text-[12px] relative overflow-hidden uppercase flex items-center gap-2 bg-white dark:bg-secundary-c rounded-lg px-4 py-3 ${
-                modeplus === "plus-on"
-                  ? ""
-                  : "hidden"
-              }`}
+              className={`sheen ia-border text-gray-seven dark:text-white-one text-[12px] relative overflow-hidden uppercase flex items-center gap-2 bg-white dark:bg-secundary-c rounded-lg px-4 py-3 ${modeplus === "plus-on"
+                ? ""
+                : "hidden"
+                }`}
               onClick={getPoints}
             >
               <span className="material-symbols-outlined text-[14px] text-blue-one">
-              quickreply
+                quickreply
               </span>{" "}
               Respuestas modo plus
             </button>
@@ -255,10 +256,13 @@ export default function Subject(resumen: any) {
       </div>
 
       {loading ? (
-        <WorkingLoader />
+        <>
+          <WorkingLoader />
+        </>
       ) : (
-        <RelevantPoints idProceso={resumen.params.id_proceso} />
+        <></>
       )}
+      <RelevantPoints idProceso={resumen.params.id_proceso} />
     </div>
   );
 }
