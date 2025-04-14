@@ -15,9 +15,9 @@ export default function Dashboard() {
   const [folders, setFolders] = useState<any[]>([]);
   const [viewType, setViewType] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [order, setOrder] = useState(false);
   const [user, setUser] = useState("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [criteria, setCriteria] = useState("");
 
   useEffect(() => {
     setIsLoading(true);
@@ -51,14 +51,20 @@ export default function Dashboard() {
   };
 
   //Cambiar el orden del listado (Sort)--------------------------------------------------------------------------------------------------
-  const changeOrder = () => {
-    setOrder((prevCheck) => !prevCheck);
+  const setCriteriaName = () => {
+    setCriteria('name');
   };
 
-  const nameSort = folders.sort(
-    order === false
-      ? (a, b) => (a.carpeta < b.carpeta ? 1 : -1)
-      : (a, b) => (a.carpeta > b.carpeta ? 1 : -1)
+  const setCriteriaDate = () => {
+    setCriteria('date');
+  }
+
+  const folderSorted = folders.sort(
+    criteria === 'date'
+      ? (a, b) => (a.fecha_creacion < b.fecha_creacion ? 1 : -1)
+      : criteria === 'name'
+        ? (a, b) => (a.carpeta > b.carpeta ? 1 : -1)
+        : (a, b) => (a.carpeta < b.carpeta ? 1 : -1)
   );
 
   return (
@@ -174,7 +180,7 @@ export default function Dashboard() {
             <div className="flex flex-col gap-3 w-full mt-3">
               <div className="py-2 pl-2 pr-8 flex justify-between">
                 <a
-                  onClick={() => changeOrder()}
+                  onClick={() => setCriteriaName()}
                   className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-center leading-[12px] gap-4 cursor-pointer"
                 >
                   Nombre
@@ -184,18 +190,22 @@ export default function Dashboard() {
                 </a>
                 <p className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-center leading-[12px] gap-4 cursor-pointer">
                   Asuntos
-                  
+
                 </p>
                 <p className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-center leading-[12px] gap-4 cursor-pointer">
                   Notas
-                  
+
                 </p>
-                <p className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-center leading-[12px] gap-4 cursor-pointer">
+                <p
+                  onClick={() => setCriteriaDate()}
+                  className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-center leading-[12px] gap-4 cursor-pointer">
                   Fecha
-                  
+                  <span className="material-symbols-outlined text-[16px] text-gray-seven dark:text-white-one">
+                    sort_by_alpha
+                  </span>
                 </p>
               </div>
-              {nameSort.map((folder) => (
+              {folderSorted.map((folder) => (
                 <FolderList
                   key={folder.id}
                   id={folder.id}

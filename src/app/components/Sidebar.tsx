@@ -29,6 +29,12 @@ const menuItems = [
     icon: "overview",
     link: "/procesos-cv",
   },
+  {
+    id: "menu-item-8",
+    label: "Bitácora",
+    icon: "contract_edit",
+    link: "/bitacora",
+  },
 ];
 
 const Sidebar = ({ collapsed, notCollapsed }: any) => {
