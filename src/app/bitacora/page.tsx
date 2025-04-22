@@ -57,12 +57,32 @@ export default function Dashboard() {
         setYear("");
         setMonth("");
 
-        console.log(response.data)
+        console.log(response.data);
       })
       .catch((err) => {
         setIsModalOpen(true);
         //console.log(`ERROR: ${err.message}`);
       });
+  };
+
+  const Total = (e: any) => {
+    let sum = 0;
+    answer.map((awr) => {
+      if (e === "abono") {
+        sum += awr.abono;
+      }else if (e === "cargo") {
+        sum += awr.cargo;
+      }else if (e === "abono_consultas") {
+        sum += awr.abono_consultas;
+      }else if (e === "cargo_consultas") {
+        sum += awr.cargo_consultas;
+      }else if (e === "abono_minutos") {
+        sum += awr.abono_minutos;
+      }else if (e === "cargo_minutos") {
+        sum += awr.cargo_minutos;
+      }
+    });
+    return sum;
   };
 
   return (
@@ -114,8 +134,9 @@ export default function Dashboard() {
       <div className="w-full flex items-center gap-2">
         <form
           //className="w-full flex gap-2 items-end"
-          className={`w-full flex gap-2 items-end overflow-hidden transition-all ${formHidden ? "h-0" : "h-[90px]"
-            }`}
+          className={`w-full flex gap-2 items-end overflow-hidden transition-all ${
+            formHidden ? "h-0" : "h-[90px]"
+          }`}
           action=""
         >
           <div className="flex-1">
@@ -145,14 +166,39 @@ export default function Dashboard() {
                   <option value="2">Febrero</option>
                   <option value="3">Marzo</option>
                   <option value="4">Abril</option>
-                  <option value="5" className={year === '2025' ? 'hidden' : ''}>Mayo</option>
-                  <option value="6" className={year === '2025' ? 'hidden' : ''}>Junio</option>
-                  <option value="7" className={year === '2025' ? 'hidden' : ''}>Julio</option>
-                  <option value="8" className={year === '2025' ? 'hidden' : ''}>Agosto</option>
-                  <option value="9" className={year === '2025' ? 'hidden' : ''}>Septiembre</option>
-                  <option value="10" className={year === '2025' ? 'hidden' : ''}>Octubre</option>
-                  <option value="11" className={year === '2025' ? 'hidden' : ''}>Noviembre</option>
-                  <option value="12" className={year === '2025' ? 'hidden' : ''}>Diciembre</option>
+                  <option value="5" className={year === "2025" ? "hidden" : ""}>
+                    Mayo
+                  </option>
+                  <option value="6" className={year === "2025" ? "hidden" : ""}>
+                    Junio
+                  </option>
+                  <option value="7" className={year === "2025" ? "hidden" : ""}>
+                    Julio
+                  </option>
+                  <option value="8" className={year === "2025" ? "hidden" : ""}>
+                    Agosto
+                  </option>
+                  <option value="9" className={year === "2025" ? "hidden" : ""}>
+                    Septiembre
+                  </option>
+                  <option
+                    value="10"
+                    className={year === "2025" ? "hidden" : ""}
+                  >
+                    Octubre
+                  </option>
+                  <option
+                    value="11"
+                    className={year === "2025" ? "hidden" : ""}
+                  >
+                    Noviembre
+                  </option>
+                  <option
+                    value="12"
+                    className={year === "2025" ? "hidden" : ""}
+                  >
+                    Diciembre
+                  </option>
                 </select>
                 <span className="material-symbols-outlined text-[25px] text-gray-four">
                   calendar_today
@@ -192,9 +238,21 @@ export default function Dashboard() {
                 <td>Pregunta</td>
                 <td>Abono</td>
                 <td>Cargo</td>
+                <td>Abono de consultas</td>
+                <td>Cargo de consultas</td>
                 <td>Abono en minutos</td>
                 <td>Cargo en minutos</td>
                 <td>Fecha</td>
+              </tr>
+
+              <tr>
+                <td colSpan={2}>Totales:</td>
+                <td>{Total("abono")}</td>
+                <td>{Total("cargo")}</td>
+                <td>{Total("abono_consultas")}</td>
+                <td>{Total("cargo_consultas")}</td>
+                <td>{Total("abono_minutos")}</td>
+                <td>{Total("cargo_minutos")}</td>
               </tr>
 
               {answer.map((resp, idx) => (
@@ -203,9 +261,13 @@ export default function Dashboard() {
                   <td>{resp.pregunta}</td>
                   <td>{resp.abono}</td>
                   <td>{resp.cargo}</td>
+                  <td>{resp.abono_consultas}</td>
+                  <td>{resp.cargo_consultas}</td>
                   <td>{resp.abono_minutos}</td>
                   <td>{resp.cargo_minutos} </td>
-                  <td>{resp.dia}/{resp.mes}/{resp.anio}</td>
+                  <td>
+                    {resp.dia}/{resp.mes}/{resp.anio}
+                  </td>
                 </tr>
               ))}
             </tbody>
