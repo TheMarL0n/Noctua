@@ -4,23 +4,23 @@ import LoginForm from "../components/LoginForm";
 import RecoverPassForm from "../components/RecoverPassForm";
 import { Modal } from "../components/Modal";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import ResetPassForm from "../components/ResetPassForm";
+import { useSearchParams } from "next/navigation";
 
 export default function LoginPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  
   const searchParams = useSearchParams();
   const urlParam = searchParams.get("reset");
 
   useEffect(() => {
-    console.log(urlParam)
     if (urlParam !== null) {
       setIsModalOpen(true);
     }
   }, []);
 
   return (
-    <div className="xl:flex lg:flex h-screen relative">
+      <div className="xl:flex lg:flex h-screen relative">
       <div className="absolute top-2 right-2 z-10">
         <img
           src="./imgs/black.png"
