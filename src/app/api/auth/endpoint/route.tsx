@@ -26,8 +26,7 @@ export async function POST(request: Request) {
     body.append(key, paramId);
     body.append(keyQuestion, paramPregunta);
     body.append(keyThird, paramThird);
-    body.append(keyFourth, paramFourth);
- 
+    body.append(keyFourth, paramFourth); 
 
     const options: RequestInit = {
         method: "POST",

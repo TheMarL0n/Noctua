@@ -2,17 +2,30 @@ import axios from "axios";
 import { useState } from "react";
 import Image from "next/image";
 
-export default function RecoverPassForm() {
+export default function UpdateUserForm({usuario}:any) {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [enabler, setEnabler] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [credentials, setCredentials] = useState("");
+  const [name, setName] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [mail, setMail] = useState("");
+
 
   //SOLICITUD DE REESTABLECER CONTRASEÑA-----------------------------------
-  const handleChange = (e: any) => {
-    setCredentials(e.target.value);
+  const handleName = (e: any) => {
+    setName(e.target.value);
+    setError('')
+  };
+
+  const handleLastname = (e: any) => {
+    setLastname(e.target.value);
+    setError('')
+  };
+
+  const handleEmail = (e: any) => {
+    setMail(e.target.value);
     setEnabler(true);
     setError('')
   };
@@ -23,17 +36,27 @@ export default function RecoverPassForm() {
 
     const resumeParam = {
       key: "username",
-      paramId: credentials,
-      urlSlug: "resetPassword",
+      paramId: usuario,
+
+      keyQuestion: "first_name",
+      paramPregunta: name,
+
+      keyThird: "last_name",
+      paramThird: lastname,
+
+      keyFourth: "email",
+      paramFourth: mail,
+
+      urlSlug: "actualizaUsuario",
     };
 
     await axios
-      .post("/api/auth/recoverpass", resumeParam)
+      .post("/api/auth/endpoint", resumeParam)
       .then((response) => {
         setSuccess(true);
         setError('')
         setSuccessMessage(
-          "Te hemos enviado un correo, sigue las instrucciones para reestablecer la contraseña."
+          "Los datos de tu perfil han sido actualizados"
         );
         setLoading(false);
         setTimeout(() => {
@@ -55,7 +78,7 @@ export default function RecoverPassForm() {
             check
           </span>
           <p className="text-center text-main-c dark:text-main-text-color text-custom-regular">
-            <span className="capitalize">{credentials}</span>, {successMessage}
+            <span className="capitalize">{usuario}</span>, {successMessage}
           </p>
         </div>
       ) : (
@@ -68,22 +91,76 @@ export default function RecoverPassForm() {
             }
           >
             <input
-              id="username"
-              name="username"
+              id="name"
+              name="name"
               type="text"
               required
-              autoComplete="username"
-              placeholder="Escribe tu nombre de usuario"
-              value={credentials}
+              autoComplete="name"
+              placeholder="Escribe tu nombre"
+              value={name}
               className={
                 error === ""
                   ? "block w-full border-0 rounded px-3 py-4 text-main-c dark:text-main-text-color shadow-sm bg-main-text-color dark:bg-main-c placeholder:text-main-c placeholder:dark:text-main-text-color sm:text-sm sm:leading-6 focus:outline-0"
                   : "block w-full border-0 rounded px-3 py-4 text-main-c dark:text-main-text-color shadow-sm bg-error placeholder:text-white sm:text-sm sm:leading-6 focus:outline-0"
               }
-              onChange={handleChange}
+              onChange={handleName}
             />
             <span className="material-symbols-outlined text-main-c dark:text-main-text-color text-[25px]">
               person
+            </span>
+          </div>
+
+          <div
+            className={
+              error === ""
+                ? "mt-2 flex bg-main-text-color dark:bg-main-c items-center pr-4 rounded max-w-full"
+                : "mt-2 flex bg-error items-center pr-4 rounded max-w-full"
+            }
+          >
+            <input
+              id="lastname"
+              name="lastname"
+              type="text"
+              required
+              autoComplete="lastname"
+              placeholder="Escribe tu apellido"
+              value={lastname}
+              className={
+                error === ""
+                  ? "block w-full border-0 rounded px-3 py-4 text-main-c dark:text-main-text-color shadow-sm bg-main-text-color dark:bg-main-c placeholder:text-main-c placeholder:dark:text-main-text-color sm:text-sm sm:leading-6 focus:outline-0"
+                  : "block w-full border-0 rounded px-3 py-4 text-main-c dark:text-main-text-color shadow-sm bg-error placeholder:text-white sm:text-sm sm:leading-6 focus:outline-0"
+              }
+              onChange={handleLastname}
+            />
+            <span className="material-symbols-outlined text-main-c dark:text-main-text-color text-[25px]">
+              person
+            </span>
+          </div>
+
+          <div
+            className={
+              error === ""
+                ? "mt-2 flex bg-main-text-color dark:bg-main-c items-center pr-4 rounded max-w-full"
+                : "mt-2 flex bg-error items-center pr-4 rounded max-w-full"
+            }
+          >
+            <input
+              id="email"
+              name="email"
+              type="email"
+              required
+              autoComplete="email"
+              placeholder="Escribe tu correo"
+              value={mail}
+              className={
+                error === ""
+                  ? "block w-full border-0 rounded px-3 py-4 text-main-c dark:text-main-text-color shadow-sm bg-main-text-color dark:bg-main-c placeholder:text-main-c placeholder:dark:text-main-text-color sm:text-sm sm:leading-6 focus:outline-0"
+                  : "block w-full border-0 rounded px-3 py-4 text-main-c dark:text-main-text-color shadow-sm bg-error placeholder:text-white sm:text-sm sm:leading-6 focus:outline-0"
+              }
+              onChange={handleEmail}
+            />
+            <span className="material-symbols-outlined text-main-c dark:text-main-text-color text-[25px]">
+              email
             </span>
           </div>
 

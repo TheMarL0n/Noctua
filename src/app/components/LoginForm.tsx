@@ -42,10 +42,6 @@ export default function LoginForm() {
             deleteCookies();
             setError('Credenciales incorrectas'); //mostrar el error de credenciales en el formulario
             setLoading(false);
-            setCredentials({
-                username: '',
-                password: ''
-            })
         }
     };
 
@@ -70,7 +66,7 @@ export default function LoginForm() {
                             (error === '') ?
                                 "block w-full border-0 rounded px-3 py-4 text-main-c dark:text-main-text-color bg-main-text-color dark:bg-main-c  placeholder:text-main-c placeholder:dark:text-main-text-color sm:text-sm sm:leading-6 focus:outline-0 focus:ring-0"
                                 :
-                                "block w-full border-0 rounded px-3 py-4 text-main-c dark:text-main-text-color bg-error placeholder:text-secundary-c sm:text-sm sm:leading-6 focus:outline-0"
+                                "block w-full border-0 rounded px-3 py-4 text-main-text-color bg-error placeholder:text-white sm:text-sm sm:leading-6 focus:outline-0"
                         }
                         onChange={handleChange}
                     />
@@ -85,7 +81,7 @@ export default function LoginForm() {
                     (error === '') ?
                         "mt-2 flex bg-main-text-color dark:bg-main-c items-center pr-4 rounded max-w-full text-main-c dark:text-main-text-color"
                         :
-                        "mt-2 flex bg-error items-center pr-4 rounded max-w-full"
+                        "mt-2 flex bg-error items-center pr-4 rounded max-w-full text-main-text-color"
                 }
                 >
                     <input
@@ -100,7 +96,7 @@ export default function LoginForm() {
                             (error === '') ?
                                 "block w-full border-0 rounded px-3 py-4 text-main-c dark:text-main-text-color shadow-sm bg-main-text-color dark:bg-main-c placeholder:text-main-c placeholder:dark:text-main-text-color sm:text-sm sm:leading-6 focus:outline-0"
                                 :
-                                "block w-full border-0 rounded px-3 py-4 text-main-c dark:text-main-text-color shadow-sm bg-error placeholder:text-secundary-c sm:text-sm sm:leading-6 focus:outline-0"
+                                "block w-full border-0 rounded px-3 py-4 text-main-c dark:text-main-text-color shadow-sm bg-error placeholder:text-white sm:text-sm sm:leading-6 focus:outline-0"
                         }
                         onChange={handleChange}
                     />
@@ -113,7 +109,7 @@ export default function LoginForm() {
 
             {
                 error && (
-                    <p className="flex gap-1 text-main-c dark:text-white items-center">
+                    <p className="flex gap-1 text-main-c dark:text-white items-center text-[12.5px] ">
                         <span>
                             <svg width="16" height="13" viewBox="0 0 16 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M0.8 12.6L8 0.599999L15.2 12.6H0.8ZM2.91667 11.4H13.0833L8 2.93333L2.91667 11.4ZM8 10.6C8.16667 10.6 8.30556 10.5444 8.41667 10.4333C8.53889 10.3111 8.6 10.1667 8.6 10C8.6 9.83333 8.53889 9.69444 8.41667 9.58333C8.30556 9.46111 8.16667 9.4 8 9.4C7.83333 9.4 7.68889 9.46111 7.56667 9.58333C7.45556 9.69444 7.4 9.83333 7.4 10C7.4 10.1667 7.45556 10.3111 7.56667 10.4333C7.68889 10.5444 7.83333 10.6 8 10.6ZM7.4 8.6H8.6V5.4H7.4V8.6Z" fill="#FF0000" />

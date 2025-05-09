@@ -4,9 +4,14 @@ import axios from "axios";
 import Moment from "moment";
 import { useEffect, useState } from "react";
 import { dashboardTour } from "../components/TheTour";
+import { Modal } from "../components/Modal";
 import Link from "next/link";
+import UpdateUserForm from "../components/UpdateUserForm";
+import RegisterUserForm from "../components/RegisterUserForm";
 
 export default function Dashboard() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState('')
   const [folders, setFolders] = useState<any[]>([]);
   const [user, setUser] = useState("");
   const firstimer = window.localStorage.getItem("firstimer");
@@ -51,12 +56,23 @@ export default function Dashboard() {
     a.fecha_creacion > b.fecha_creacion ? 1 : -1
   );
 
+  const openUpdate =()=>{
+    setIsModalOpen(true)
+    setModalType('update')
+  }
+
+  const openRegister =()=>{
+    setIsModalOpen(true)
+    setModalType('register')
+  }
+
   return (
     <div className="page-body py-2 px-4 w-full min-h-full">
       <div className="w-full mt-4">
         <div className="flex justify-between items-center">
           <h3 className="text-gray-seven dark:text-white-one text-[22px]">
-            <span className="capitalize">{user}</span>, Bienvenido a Noctua<sup>&reg;</sup> Ai
+            <span className="capitalize">{user}</span>, Bienvenido a Noctua
+            <sup>&reg;</sup> Ai
           </h3>
         </div>
         <h3 className="text-gray-seven dark:text-white-one text-[20px]">
@@ -66,8 +82,8 @@ export default function Dashboard() {
           Consulta el estatus de tu cuenta y actualizaciones de la misma.
         </p>
 
-        <div className="flex flex-wrap gap-3">
-          <div className="h-full">
+        <div className="grid grid-cols-3 gap-3">
+          <div className="flex flex-col">
             <div className="p-4 rounded-t-md flex gap-4 bg-blue-one">
               <span className="material-symbols-outlined text-[40px] leading-[40px] text-gray-ten text-center">
                 folder
@@ -94,7 +110,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="h-full">
+          <div className="flex flex-col">
             <div className="p-4 rounded-t-md flex gap-4 bg-blue-one">
               <span className="material-symbols-outlined text-[40px] leading-[40px] text-gray-ten text-center">
                 draft
@@ -115,6 +131,30 @@ export default function Dashboard() {
                   {folders.reduce((a, v) => (a = a + v.procesos.length), 0)}
                 </strong>
               </p>
+            </div>
+          </div>
+
+          <div className="flex flex-col">
+            <div className="p-4 rounded-t-md flex gap-4 bg-blue-one">
+              <span className="material-symbols-outlined text-[40px] leading-[40px] text-gray-ten text-center">
+                engineering
+              </span>
+              <div>
+                <h3 className="text-secundary-c text-[20px] font-bold">
+                  Administración
+                </h3>
+                <p className="text-secundary-c text-custom-regular">
+                  En este apartado podras actualizar tus datos de usuario
+                </p>
+              </div>
+            </div>
+            <div className="p-4 rounded-b-md flex justify-between items-start bg-main-text-color dark:bg-gray-ten gap-4">
+              <button onClick={openUpdate} className="underline text-gray-seven dark:text-white-one text-custom-regular">
+                Actualizar peril
+              </button>
+              <button onClick={openRegister} className="underline text-gray-seven dark:text-white-one text-custom-regular">
+                Registrar usuario
+              </button>
             </div>
           </div>
         </div>
@@ -196,6 +236,16 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+
+      <Modal
+        title={modalType === 'update' ? `Actualizar perfil de ${user}` : "Registrar nuevo usuario"}
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+        }}
+      >
+        {modalType === 'update' ? <UpdateUserForm usuario={user} /> : <RegisterUserForm/>}
+      </Modal>
     </div>
   );
 }

@@ -247,24 +247,24 @@ export default function Dashboard() {
 
               <tr>
                 <td colSpan={2}>Totales:</td>
-                <td>{Total("abono")}</td>
-                <td>{Total("cargo")}</td>
-                <td>{Total("abono_consultas")}</td>
-                <td>{Total("cargo_consultas")}</td>
-                <td>{Total("abono_minutos")}</td>
-                <td>{Total("cargo_minutos")}</td>
+                <td className="text-right">{Total("abono")}</td>
+                <td className="text-right">{Total("cargo")}</td>
+                <td className="text-right">{Total("abono_consultas")}</td>
+                <td className="text-right">{Total("cargo_consultas")}</td>
+                <td className="text-right">{Total("abono_minutos")}</td>
+                <td className="text-right">{Total("cargo_minutos")}</td>
               </tr>
 
               {answer.map((resp, idx) => (
                 <tr key={idx}>
                   <td>{resp.id_proceso}</td>
                   <td>{resp.pregunta}</td>
-                  <td>{resp.abono}</td>
-                  <td>{resp.cargo}</td>
-                  <td>{resp.abono_consultas}</td>
-                  <td>{resp.cargo_consultas}</td>
-                  <td>{resp.abono_minutos}</td>
-                  <td>{resp.cargo_minutos} </td>
+                  <td className="text-right">{resp.abono}</td>
+                  <td className="text-right">{resp.cargo}</td>
+                  <td className="text-right">{resp.abono_consultas}</td>
+                  <td className="text-right">{resp.cargo_consultas}</td>
+                  <td className="text-right">{resp.abono_minutos}</td>
+                  <td className="text-right">{resp.cargo_minutos} </td>
                   <td>
                     {resp.dia}/{resp.mes}/{resp.anio}
                   </td>
