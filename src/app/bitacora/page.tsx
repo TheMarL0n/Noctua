@@ -70,15 +70,15 @@ export default function Dashboard() {
     answer.map((awr) => {
       if (e === "abono") {
         sum += awr.abono;
-      }else if (e === "cargo") {
+      } else if (e === "cargo") {
         sum += awr.cargo;
-      }else if (e === "abono_consultas") {
+      } else if (e === "abono_consultas") {
         sum += awr.abono_consultas;
-      }else if (e === "cargo_consultas") {
+      } else if (e === "cargo_consultas") {
         sum += awr.cargo_consultas;
-      }else if (e === "abono_minutos") {
+      } else if (e === "abono_minutos") {
         sum += awr.abono_minutos;
-      }else if (e === "cargo_minutos") {
+      } else if (e === "cargo_minutos") {
         sum += awr.cargo_minutos;
       }
     });
@@ -222,50 +222,129 @@ export default function Dashboard() {
       {loading === true ? (
         <WorkingLoader />
       ) : answer.length > 0 ? (
-        <div className="loading my-5 bg-main-text-color dark:bg-gray-five rounded-md p-8">
-          <div className="header flex justify-between items-center px-4 py-2">
-            <h2 className="text-[25px] text-bg-gray-five dark:text-main-text-color flex gap-2 items-center mb-8">
-              <span className="material-symbols-outlined text-[32px] text-bg-gray-five dark:text-white font-extralight">
-                mark_chat_read
-              </span>
-              Respuesta
-            </h2>
-          </div>
-          <table className="body px-12 pt-2 pb-6 w-full">
+        <div className="loading my-5 py-8 flex items-end">
+          <table className="body px-12 pt-2 pb-6 w-[40%] border-0">
             <tbody>
-              <tr>
-                <td>Id</td>
-                <td>Pregunta</td>
-                <td>Abono</td>
-                <td>Cargo</td>
-                <td>Abono de consultas</td>
-                <td>Cargo de consultas</td>
-                <td>Abono en minutos</td>
-                <td>Cargo en minutos</td>
-                <td>Fecha</td>
+              <tr className="border-0">
+                <td className="border-0 border-b border-b-[#313139] uppercase text-[12px] text-[#BCC1CC] font-[600]">
+                  id
+                </td>
+                <td className="border-0 border-b border-b-[#313139] uppercase text-[12px] text-[#BCC1CC] font-[600]">
+                  pregunta
+                </td>
+              </tr>
+              {answer.map((resp, idx) => (
+                <tr className="border-0" key={idx}>
+                  <td className=" border-0 border-b border-b-[#313139] text-[12px] text-[#676767] font-[200]">
+                    {resp.id_proceso}
+                  </td>
+                  <td className=" border-0 border-b border-b-[#313139] text-[12px] text-[#BCC1CC] font-[200]">
+                    {resp.pregunta}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          <table className="body px-12 pt-2 pb-6 w-[50%] border-0">
+            <tbody>
+              <tr className="border-0">
+                <td className="border-0" colSpan={2}></td>
+                <td className="bg-[#201F28] border-0 text-center border-b border-b-[#313139] uppercase text-[12px] text-[#BCC1CC] font-[600]">
+                  Abono
+                </td>
+                <td className="bg-[#201F28] border-0 text-center border-b border-b-[#313139] uppercase text-[12px] text-[#BCC1CC] font-[200]">
+                  A. consultas
+                </td>
+                <td className="bg-[#201F28] border-0 text-center border-b border-b-[#313139] uppercase text-[12px] text-[#BCC1CC] font-[200]">
+                  A. minutos
+                </td>
+                <td className="bg-[#201F28] border-0 text-center border-b border-b-[#313139] uppercase text-[12px] text-[#BCC1CC] font-[600]">
+                  Cargo
+                </td>
+                <td className="bg-[#201F28] border-0 text-center border-b border-b-[#313139] uppercase text-[12px] text-[#BCC1CC] font-[200]">
+                  C. consultas
+                </td>
+                <td className="bg-[#201F28] border-0 text-center border-b border-b-[#313139] uppercase text-[12px] text-[#BCC1CC] font-[200]">
+                  C. minutos
+                </td>
               </tr>
 
-              <tr>
-                <td colSpan={2}>Totales:</td>
-                <td className="text-right">{Total("abono")}</td>
-                <td className="text-right">{Total("cargo")}</td>
-                <td className="text-right">{Total("abono_consultas")}</td>
-                <td className="text-right">{Total("cargo_consultas")}</td>
-                <td className="text-right">{Total("abono_minutos")}</td>
-                <td className="text-right">{Total("cargo_minutos")}</td>
+              <tr className="border-0">
+                <td className=" border-0 border-b border-b-[#313139] py-6" colSpan={2}>
+                  Totales:
+                </td>
+                <td className="text-center bg-[#201F28] border-0 border-b border-b-[#313139] py-6 text-[#BCC1CC] font-[600] text-[12px]">
+                  {Total("abono")}.00
+                </td>
+
+                <td className="text-center bg-[#201F28] border-0 border-b border-b-[#313139] py-6 text-[12px] text-[#BCC1CC] font-[200]">
+                  {Total("abono_consultas")}.00
+                </td>
+
+                <td className="text-center bg-[#201F28] border-0 border-b border-b-[#313139] py-6 text-[12px] text-[#BCC1CC] font-[200]">
+                  {Total("abono_minutos")}:00
+                </td>
+
+                <td className="text-center bg-[#201F28] border-0 border-b border-b-[#313139] py-6 text-[#BCC1CC] font-[600] text-[12px]">
+                  {Total("cargo")}.00
+                </td>
+                <td className="text-center bg-[#201F28] border-0 border-b border-b-[#313139] py-6 text-[12px] text-[#BCC1CC] font-[200]">
+                  {Total("cargo_consultas")}.00
+                </td>
+                <td className="text-center bg-[#201F28] border-0 border-b border-b-[#313139] py-6 text-[12px] text-[#BCC1CC] font-[200]">
+                  {Total("cargo_minutos")}:00
+                </td>
               </tr>
 
               {answer.map((resp, idx) => (
-                <tr key={idx}>
+                <tr className="border-0" key={idx}>
+                  {/*
                   <td>{resp.id_proceso}</td>
                   <td>{resp.pregunta}</td>
-                  <td className="text-right">{resp.abono}</td>
-                  <td className="text-right">{resp.cargo}</td>
-                  <td className="text-right">{resp.abono_consultas}</td>
-                  <td className="text-right">{resp.cargo_consultas}</td>
-                  <td className="text-right">{resp.abono_minutos}</td>
-                  <td className="text-right">{resp.cargo_minutos} </td>
+                  */}
+                  <td
+                    className="text-center border-0 border-b border-b-[#313139]"
+                    colSpan={2}
+                  ></td>
+                  <td className="text-center bg-[#201F28] border-0 border-b border-b-[#313139] text-[#BCC1CC] font-[600] text-[12px]">
+                    {resp.abono}.00
+                  </td>
+                  <td className="text-center bg-[#201F28] border-0 border-b border-b-[#313139] text-[12px] text-[#BCC1CC] font-[200]">
+                    {resp.abono_consultas}.00
+                  </td>
+                  <td className="text-center bg-[#201F28] border-0 border-b border-b-[#313139] text-[12px] text-[#BCC1CC] font-[200]">
+                    {resp.abono_minutos}:00
+                  </td>
+                  <td className="text-center bg-[#201F28] border-0 border-b border-b-[#313139] text-[#BCC1CC] font-[600] text-[12px]">
+                    {resp.cargo}.00
+                  </td>
+                  <td className="text-center bg-[#201F28] border-0 border-b border-b-[#313139] text-[12px] text-[#BCC1CC] font-[200]">
+                    {resp.cargo_consultas}.00
+                  </td>
+                  <td className="text-center bg-[#201F28] border-0 border-b border-b-[#313139] text-[12px] text-[#BCC1CC] font-[200]">
+                    {resp.cargo_minutos}:00{" "}
+                  </td>
+                  {/*
                   <td>
+                    {resp.dia}/{resp.mes}/{resp.anio}
+                  </td>
+                  */}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          <table className="body px-12 pt-2 pb-6 w-[10%] border-0">
+            <tbody>
+              <tr className="border-0">
+                <td className="border-0 text-center border-b border-b-[#313139] uppercase text-[12px] text-[#BCC1CC] font-[600]">
+                  Fecha
+                </td>
+              </tr>
+              {answer.map((resp, idx) => (
+                <tr className="border-0" key={idx}>
+                  <td className="text-center border-0 border-b border-b-[#313139] text-[12px] text-[#BCC1CC] font-[200]">
                     {resp.dia}/{resp.mes}/{resp.anio}
                   </td>
                 </tr>

@@ -17,7 +17,7 @@ export default function Dashboard() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [user, setUser] = useState("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [criteria, setCriteria] = useState("");
+  const [criteria, setCriteria] = useState("date");
 
   useEffect(() => {
     setIsLoading(true);

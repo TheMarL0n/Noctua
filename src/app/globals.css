@@ -56,6 +56,11 @@
   z-index: -1;
 }
 
+.left-login-panel{
+  background: #060000;
+background: linear-gradient(90deg, rgba(6, 0, 0, 1) 0%, rgba(24, 16, 84, 1) 50%, rgba(58, 89, 146, 1) 100%);
+}
+
 .shepherd-modal-is-visible.shepherd-modal-overlay-container:first-of-type {
   display: none;
 }

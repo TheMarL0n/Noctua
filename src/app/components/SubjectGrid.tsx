@@ -10,13 +10,13 @@ import { Modal } from "./Modal";
 
 export default function SubjectGrid({
   title,
+  fecha,
   id,
   urlSum,
   urlRel,
   urlNotas,
   thefolder,
 }: any) {
-  const [fecha, setFecha] = useState("");
   const [notas, setNotas] = useState<any[]>([]);
   const [isDeleted, setIsDeleted] = useState(false);
   const [tipoProceso, setTipoProceso] = useState("");
@@ -40,7 +40,6 @@ export default function SubjectGrid({
       urlSlug: "api/consultaProceso",
     };
     const { data } = await axios.post("/api/auth/endpoint", folderDetailParam);
-    setFecha(data.fecha_creacion);
     if (data.notas) {
       setNotas(data.notas);
       setTipoProceso(data.tipo_proceso);

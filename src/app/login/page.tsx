@@ -32,8 +32,7 @@ export default function LoginPage() {
       </div>
 
       <div
-        className="bg-no-repeat bg-cover flex flex-col justify-center items-center p-24 xl:w-3/5 w-full"
-        style={{ background: "url(./imgs/left-hero-pattern.png)" }}
+        className="left-login-panel flex flex-col justify-center items-center p-24 xl:w-3/5 w-full"
       >
         <div>
           <h1 className="text-main-text-color text-custom-large/[60px]">

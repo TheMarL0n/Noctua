@@ -30,6 +30,9 @@ export default function Folder(asuntos: any) {
   const [chbx_enabled, setChbx_enabled] = useState(false);
   const [radioValues, setRadioValues] = useState([]);
   const [showQuestion, setShowQuestion] = useState(false);
+  const [toggleDate, setToggleDate] = useState(false);
+  const [toggleName, setToggleName] = useState(false);
+  const [criteria, setCriteria] = useState("dateUp");
 
   const [categories, setCategories] = useState({
     EIDM: false,
@@ -47,8 +50,15 @@ export default function Folder(asuntos: any) {
   const changeViewGrid = () => {
     setViewType(true);
   };
-  const changeOrder = () => {
-    setOrder(!order);
+  //Cambiar el orden del listado (Sort)--------------------------------------------------------------------------------------------------
+  const setCriteriaName = () => {
+    setToggleName(!toggleName);
+    setCriteria(toggleName ? "nameUp" : "nameDown");
+  };
+
+  const setCriteriaDate = () => {
+    setToggleDate(!toggleDate);
+    setCriteria(toggleDate ? "dateUp" : "dateDown");
   };
 
   useEffect(() => {
@@ -71,10 +81,14 @@ export default function Folder(asuntos: any) {
     setIsLoading(false);
   };
 
-  const filterSort = subjects.sort(
-    order === false
-      ? (a, b) => (a.proceso < b.proceso ? 1 : -1)
-      : (a, b) => (a.proceso > b.proceso ? 1 : -1)
+  const subjectSorted = subjects.sort(
+    criteria === "dateUp"
+      ? (a, b) => (a.created_at < b.created_at ? 1 : -1)
+      : criteria === "dateDown"
+      ? (a, b) => (a.created_at > b.created_at ? 1 : -1)
+      : criteria === "nameUp"
+      ? (a, b) => (a.proceso > b.proceso ? 1 : -1)
+      : (a, b) => (a.proceso < b.proceso ? 1 : -1)
   );
 
   //AI QUESTION////////////////////////////////////////////////////////////////////
@@ -96,7 +110,7 @@ export default function Folder(asuntos: any) {
   //get the checkbox values
   const onChangeCheckBox = (e: any) => {
     const { value, checked } = e.target;
-    setRadioValues(prev => [...prev, value]);
+    setRadioValues((prev) => [...prev, value]);
   };
 
   //Obtener las preguntas de la API
@@ -114,9 +128,7 @@ export default function Folder(asuntos: any) {
         setQuestion("");
         setIsLoadingAi(false);
       });
-    }
-
-    else {
+    } else {
       const resumeParam = {
         key: "carpeta",
         keyQuestion: "pregunta",
@@ -202,10 +214,16 @@ export default function Folder(asuntos: any) {
           </div>
           <div className="toggle bg-gray-one dark:bg-secundary-c rounded-md py-3 px-2 ml-1 h-full uppercase">
             <label className="inline-flex gap-5 items-center cursor-pointer">
-              <input type="checkbox" value="" className="sr-only peer" onClick={() => setChbx_enabled(!chbx_enabled)} />
-              <div
-                className="relative w-11 h-[14px] bg-white-one peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[-3px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-              <p className="text-[12px] leading-[14px] text-white">Por asunto</p>
+              <input
+                type="checkbox"
+                value=""
+                className="sr-only peer"
+                onClick={() => setChbx_enabled(!chbx_enabled)}
+              />
+              <div className="relative w-11 h-[14px] bg-white-one peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[-3px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+              <p className="text-[12px] leading-[14px] text-white">
+                Por asunto
+              </p>
             </label>
           </div>
         </form>
@@ -254,10 +272,9 @@ export default function Folder(asuntos: any) {
                   fromFolder={true}
                 />
               ))
-            ) : <AiQuestion
-              pregunta={questionTitle}
-              respuesta={answer}
-            />
+            ) : (
+              <AiQuestion pregunta={questionTitle} respuesta={answer} />
+            )
           ) : (
             ""
           )}
@@ -298,6 +315,7 @@ export default function Folder(asuntos: any) {
                   key={subject.id_proceso}
                   id={subject.id_proceso}
                   title={subject.proceso}
+                  fecha={subject.created_at}
                   urlSum={`/dashboard/${folderId}/summary/${subject.id_proceso}`}
                   urlRel={`/dashboard/${folderId}/relevant-points/${subject.id_proceso}`}
                   urlNotas={`/dashboard/${folderId}/notas/${subject.id_proceso}`}
@@ -317,7 +335,7 @@ export default function Folder(asuntos: any) {
             <div className="flex flex-col gap-3 w-full mt-3">
               <div className="py-2 pl-2 pr-14 flex justify-between">
                 <a
-                  onClick={() => changeOrder()}
+                  onClick={() => setCriteriaName()}
                   className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-center leading-[12px] gap-4 cursor-pointer"
                 >
                   Nombre
@@ -331,18 +349,26 @@ export default function Folder(asuntos: any) {
                 <a className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-start leading-[12px] gap-12 cursor-pointer">
                   Notas
                 </a>
-                <a className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-start leading-[12px] gap-12 cursor-pointer">
+                <a
+                  onClick={() => setCriteriaDate()}
+                  className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-start leading-[12px] gap-12 cursor-pointer"
+                >
                   Fecha
+                  <span className="material-symbols-outlined text-[16px] text-gray-seven dark:text-white-one">
+                    sort_by_alpha
+                  </span>
                 </a>
                 <a className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-start leading-[12px] gap-12 cursor-pointer">
                   Estado
                 </a>
               </div>
-              {subjects.map((subject) => (
+              {subjectSorted.map((subject) => (
                 <div key={subject.id_proceso} className="flex w-full">
-                  <div className={`flex px-2 bg-main-text-color dark:bg-gray-five rounded-lg
+                  <div
+                    className={`flex px-2 bg-main-text-color dark:bg-gray-five rounded-lg
                       ${chbx_enabled ? "" : "hidden"}
-                      `}>
+                      `}
+                  >
                     <input
                       type="checkbox"
                       onChange={onChangeCheckBox}
@@ -353,6 +379,7 @@ export default function Folder(asuntos: any) {
                     key={subject.id_proceso}
                     id={subject.id_proceso}
                     title={subject.proceso}
+                    fecha={subject.created_at}
                     urlSum={`/dashboard/${folderId}/summary/${subject.id_proceso}`}
                     urlRel={`/dashboard/${folderId}/relevant-points/${subject.id_proceso}`}
                     urlNotas={`/dashboard/${folderId}/notas/${subject.id_proceso}`}
