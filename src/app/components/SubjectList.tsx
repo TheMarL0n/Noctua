@@ -17,6 +17,7 @@ export default function SubjectList({
   urlRel,
   urlNotas,
   thefolder,
+  actualizado
 }: any) {
   const [fecha, setFecha] = useState("");
   const [notas, setNotas] = useState<any[]>([]);
@@ -234,6 +235,11 @@ export default function SubjectList({
           <p className="p-1 text-gray-six text-[14px] leading-[16px] flex-1">
             <span>
               {fecha !== "" ? Moment(fecha).format("DD/MM/yy hh:mm") : ""}
+            </span>
+          </p>
+          <p className="p-1 text-gray-six text-[14px] leading-[16px] flex-1">
+            <span>
+              {actualizado !== "" ? Moment(actualizado).format("DD/MM/yy hh:mm") : ""}
             </span>
           </p>
 

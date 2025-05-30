@@ -5,37 +5,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { deleteCookies } from "../api/auth/logout/route";
 import { usePathname } from "next/navigation";
-
-const menuItems = [
-  { id: "menu-item-1", label: "Inicio", icon: "home", link: "/desktop" },
-  {
-    id: "menu-item-2",
-    label: "Archivo",
-    icon: "hard_drive",
-    link: "/dashboard",
-  },
-  { id: "menu-item-3", label: "AI", icon: "auto_awesome", link: "/noctua-ai" },
-  { id: "menu-item-4", label: "Historial", icon: "pace", link: "/history" },
-  { id: "menu-item-5", label: "Notas", icon: "content_paste", link: "/notes" },
-  {
-    id: "menu-item-6",
-    label: "CVs",
-    icon: "clinical_notes",
-    link: "/noctua-cv",
-  },
-  {
-    id: "menu-item-7",
-    label: "Histórico de CVs",
-    icon: "overview",
-    link: "/procesos-cv",
-  },
-  {
-    id: "menu-item-8",
-    label: "Bitácora",
-    icon: "contract_edit",
-    link: "/bitacora",
-  },
-];
+import axios from "axios";
 
 const Sidebar = ({ collapsed, notCollapsed }: any) => {
   const [toggleCollapse, setToggleCollapse] = useState(false);
@@ -46,6 +16,18 @@ const Sidebar = ({ collapsed, notCollapsed }: any) => {
     deleteCookies();
     router.push("/login"); //redireccionar al dashboard
   };
+
+  const [menuItems, setMenuItems] = useState([]);
+
+  const getMenuItems = async () => {
+    const { data } = await axios.get("/api/auth/menu");
+    setMenuItems(data);
+    console.log(data);
+  };
+
+  useEffect(() => {
+    getMenuItems();
+  }, []);
 
   return (
     <div className="flex flex-col justify-between h-full">
@@ -82,38 +64,43 @@ const Sidebar = ({ collapsed, notCollapsed }: any) => {
         </div>
 
         <div className="flex flex-col items-start">
-          {menuItems.map(({ ...menu }) => {
-            const isActive = pathName.startsWith(menu.link);
-            return (
-              <div
-                id={menu.id}
-                key={menu.id}
-                className="flex items-center cursor-pointer hover:bg-light-lighter rounded w-full overflow-hidden whitespace-nowrap"
-              >
-                <Link
-                  className={`sidebar-links flex gap-2 py-4 px-3 items-center w-full h-full ${
-                    isActive
-                      ? "text-blue-one"
-                      : "text-gray-seven hover:text-blue-one"
-                  }`}
-                  href={menu.link}
-                >
-                  <div style={{ width: "4rem" }} className="flex items-center">
-                    <span
-                      className={`material-symbols-outlined text-[32px] font-light leading-[30px]`}
-                    >
-                      {menu.icon}
-                    </span>
-                  </div>
-                  <span
-                    className={`text-md font-medium text-text ${notCollapsed}`}
+          {menuItems
+            ? menuItems.map(({ ...menu }) => {
+                const isActive = pathName.startsWith(menu.link);
+                return (
+                  <div
+                    id={menu.id}
+                    key={menu.id}
+                    className="flex items-center cursor-pointer hover:bg-light-lighter rounded w-full overflow-hidden whitespace-nowrap"
                   >
-                    {menu.label}
-                  </span>
-                </Link>
-              </div>
-            );
-          })}
+                    <Link
+                      className={`sidebar-links flex gap-2 py-4 px-3 items-center w-full h-full ${
+                        isActive
+                          ? "text-blue-one"
+                          : "text-gray-seven hover:text-blue-one"
+                      }`}
+                      href={menu.link}
+                    >
+                      <div
+                        style={{ width: "4rem" }}
+                        className="flex items-center"
+                      >
+                        <span
+                          className={`material-symbols-outlined text-[32px] font-light leading-[30px]`}
+                        >
+                          {menu.icon}
+                        </span>
+                      </div>
+                      <span
+                        className={`text-md font-medium text-text ${notCollapsed}`}
+                      >
+                        {menu.label}
+                      </span>
+                    </Link>
+                  </div>
+                );
+              })
+            : ""}
         </div>
       </div>
 

@@ -107,6 +107,7 @@ export default function AddSubjectForm({ param_folder }: any) {
               id="name"
               name="name"
               type="text"
+              pattern="[a-zA-Z0-9 ]*"
               required
               autoComplete="name"
               placeholder="Escribe el nombre de tu asunto"

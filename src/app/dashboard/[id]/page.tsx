@@ -83,9 +83,9 @@ export default function Folder(asuntos: any) {
 
   const subjectSorted = subjects.sort(
     criteria === "dateUp"
-      ? (a, b) => (a.created_at < b.created_at ? 1 : -1)
+      ? (a, b) => (a.updated_at < b.updated_at ? 1 : -1)
       : criteria === "dateDown"
-      ? (a, b) => (a.created_at > b.created_at ? 1 : -1)
+      ? (a, b) => (a.updated_at > b.updated_at ? 1 : -1)
       : criteria === "nameUp"
       ? (a, b) => (a.proceso > b.proceso ? 1 : -1)
       : (a, b) => (a.proceso < b.proceso ? 1 : -1)
@@ -196,7 +196,7 @@ export default function Folder(asuntos: any) {
           <input
             type="text"
             className="w-full bg-main-text-color dark:bg-gray-three text-[17px] rounded-lg text-gray-one py-[17px] px-[10px] leading-[18px] focus:outline-0"
-            placeholder="Pregunta o da una instrucción a Noctua&reg;, En relación al contenido de carpetas"
+            placeholder="Pregunta a Noctua&reg; sobre el contenido de las carpetas"
             onChange={getTheQuestion}
             value={question}
           />
@@ -349,11 +349,14 @@ export default function Folder(asuntos: any) {
                 <a className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-start leading-[12px] gap-12 cursor-pointer">
                   Notas
                 </a>
+                <a className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-start leading-[12px] gap-12 cursor-pointer">
+                  Fecha de creación
+                </a>
                 <a
                   onClick={() => setCriteriaDate()}
-                  className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-start leading-[12px] gap-12 cursor-pointer"
+                  className="flex-1 justify-start text-[12px] text-gray-seven dark:text-white-one flex items-center leading-[12px] gap-4 cursor-pointer"
                 >
-                  Fecha
+                  Última actualizadión
                   <span className="material-symbols-outlined text-[16px] text-gray-seven dark:text-white-one">
                     sort_by_alpha
                   </span>
@@ -380,6 +383,7 @@ export default function Folder(asuntos: any) {
                     id={subject.id_proceso}
                     title={subject.proceso}
                     fecha={subject.created_at}
+                    actualizado={subject.updated_at}
                     urlSum={`/dashboard/${folderId}/summary/${subject.id_proceso}`}
                     urlRel={`/dashboard/${folderId}/relevant-points/${subject.id_proceso}`}
                     urlNotas={`/dashboard/${folderId}/notas/${subject.id_proceso}`}

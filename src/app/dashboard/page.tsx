@@ -17,7 +17,10 @@ export default function Dashboard() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [user, setUser] = useState("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [criteria, setCriteria] = useState("date");
+
+  const [toggleDate, setToggleDate] = useState(false);
+  const [toggleName, setToggleName] = useState(false);
+  const [criteria, setCriteria] = useState("dateUp");
 
   useEffect(() => {
     setIsLoading(true);
@@ -52,17 +55,21 @@ export default function Dashboard() {
 
   //Cambiar el orden del listado (Sort)--------------------------------------------------------------------------------------------------
   const setCriteriaName = () => {
-    setCriteria('name');
+    setToggleName(!toggleName);
+    setCriteria(toggleName ? "nameUp" : "nameDown");
   };
 
   const setCriteriaDate = () => {
-    setCriteria('date');
-  }
+    setToggleDate(!toggleDate);
+    setCriteria(toggleDate ? "dateUp" : "dateDown");
+  };
 
   const folderSorted = folders.sort(
-    criteria === 'date'
+    criteria === "dateUp"
       ? (a, b) => (a.fecha_creacion < b.fecha_creacion ? 1 : -1)
-      : criteria === 'name'
+      : criteria === "dateDown"
+      ? (a, b) => (a.fecha_creacion > b.fecha_creacion ? 1 : -1)
+      : criteria === "nameUp"
         ? (a, b) => (a.carpeta > b.carpeta ? 1 : -1)
         : (a, b) => (a.carpeta < b.carpeta ? 1 : -1)
   );
