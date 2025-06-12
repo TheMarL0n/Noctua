@@ -64,7 +64,7 @@ const Sidebar = ({ collapsed, notCollapsed }: any) => {
         </div>
 
         <div className="flex flex-col items-start">
-          {menuItems
+          {menuItems.length > 0
             ? menuItems.map(({ ...menu }) => {
                 const isActive = pathName.startsWith(menu.link);
                 return (

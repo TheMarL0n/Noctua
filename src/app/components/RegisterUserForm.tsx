@@ -203,13 +203,13 @@ export default function RegisterUserForm() {
               />
             )
           ) : (
-            <div className="flex justify-between items-end">
-              <button className="text-secundary-c mt-12 flex justify-center bg-blue-one py-3 px-14 text-[15px] ease-in-out duration-300 hover:bg-main-c hover:text-blue-one">
+            <div className="flex flex-col sm:flex-row md:flex-row lg:flex-row justify-between items-end">
+              <button className="text-secundary-c mt-12 flex justify-center bg-blue-one py-3 px-14 text-[15px] ease-in-out duration-300 hover:bg-main-c hover:text-blue-one w-full sm:w-fit md:w-fit lg:w-fit">
                 Cancelar
               </button>
               <button
                 disabled
-                className="text-gray-one mt-12 ml-auto flex justify-center bg-gray-two py-3 px-14 text-[15px]"
+                className="text-gray-one mt-12 ml-auto flex justify-center bg-gray-two py-3 px-14 text-[15px] w-full sm:w-fit md:w-fit lg:w-fit"
               >
                 Enviar
               </button>

@@ -13,7 +13,7 @@ export default function Dashboard() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState('')
   const [folders, setFolders] = useState<any[]>([]);
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState<any[]>([]);
   const firstimer = window.localStorage.getItem("firstimer");
   const { tour } = dashboardTour();
   const historySS: [] = JSON.parse(
@@ -23,7 +23,7 @@ export default function Dashboard() {
   const getUser = async () => {
     const { data } = await axios.get("/api/auth/user");
     localStorage.setItem("current-user", data.nombre_usuario); //crear el firstimer en localstorage
-    setUser(data.nombre_usuario);
+    setUser(data);
   };
 
   useEffect(() => {
@@ -71,7 +71,7 @@ export default function Dashboard() {
       <div className="w-full mt-4">
         <div className="flex justify-between items-center">
           <h3 className="text-gray-seven dark:text-white-one text-[22px]">
-            <span className="capitalize">{user}</span>, Bienvenido a Noctua
+            <span className="capitalize">{user ? user.nombre : 'usuario'}</span>, Bienvenido a Noctua
             <sup>&reg;</sup> Ai
           </h3>
         </div>
@@ -82,7 +82,7 @@ export default function Dashboard() {
           Consulta el estatus de tu cuenta y actualizaciones de la misma.
         </p>
 
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-3">
           <div className="flex flex-col">
             <div className="p-4 rounded-t-md flex gap-4 bg-blue-one">
               <span className="material-symbols-outlined text-[40px] leading-[40px] text-gray-ten text-center">
@@ -141,10 +141,10 @@ export default function Dashboard() {
               </span>
               <div>
                 <h3 className="text-secundary-c text-[20px] font-bold">
-                  Administración
+                  {user ? user.nombre : 'usuario'} {user ? user.apellido : ''}
                 </h3>
                 <p className="text-secundary-c text-custom-regular">
-                  En este apartado podras actualizar tus datos de usuario
+                  {user ? user.email : ''}
                 </p>
               </div>
             </div>
@@ -167,8 +167,8 @@ export default function Dashboard() {
           comparativa de actividades en Noctua<sup>&reg;</sup>.
         </p>
 
-        <div className="flex flex-wrap gap-3">
-          <div className="p-4 rounded-md bg-main-text-color dark:bg-gray-five gap-4 lg: min-w-[476px]">
+        <div className="flex flex-col sm:flex-row md:flex-row lg:flex-row flex-wrap gap-3">
+          <div className="p-4 rounded-md bg-main-text-color dark:bg-gray-five gap-4 sm:min-w-[476px] md:min-w-[476px] lg:min-w-[476px]">
             <div className="flex justify-between mb-4">
               <p className="text-gray-seven dark:text-white-one text-[18px]">
                 Resumen de actividades
@@ -203,7 +203,7 @@ export default function Dashboard() {
             ))}
           </div>
 
-          <div className="p-4 rounded-md bg-main-text-color dark:bg-gray-five gap-4 lg: min-w-[476px]">
+          <div className="p-4 rounded-md bg-main-text-color dark:bg-gray-five gap-4 sm:min-w-[476px] md:min-w-[476px] lg:min-w-[476px]">
             <div className="flex justify-between mb-4">
               <p className="text-gray-seven dark:text-white-one text-[18px]">
                 Resumen de consultas a la IA
@@ -238,13 +238,13 @@ export default function Dashboard() {
       </div>
 
       <Modal
-        title={modalType === 'update' ? `Actualizar perfil de ${user}` : "Registrar nuevo usuario"}
+        title={modalType === 'update' ? `Actualizar perfil de ${user.nombre}` : "Registrar nuevo usuario"}
         isOpen={isModalOpen}
         onClose={() => {
           setIsModalOpen(false);
         }}
       >
-        {modalType === 'update' ? <UpdateUserForm usuario={user} /> : <RegisterUserForm/>}
+        {modalType === 'update' ? <UpdateUserForm usuario={user.nombre_usuario} /> : <RegisterUserForm/>}
       </Modal>
     </div>
   );

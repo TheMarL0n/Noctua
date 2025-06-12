@@ -35,11 +35,11 @@ export default function FolderList({ id, title, asuntos, notas, fecha }: any) {
 
                 <div className='p-1 flex gap-2 items-center flex-1'>
                     <span className="material-symbols-outlined text-[25px] leading-[20px] text-gray-two text-center">folder</span>
-                    <p className='text-[17px] text-gray-seven dark:text-white-one'>{title}</p>
+                    <p className='text-[12px] sm:text-[17px] md:text-[17px] lg:text-[17px] text-gray-seven dark:text-white-one'>{title}</p>
                 </div>
-                <p className='text-gray-six text-[17px] leading-[16px] flex-1'><span>{asuntos.length}</span></p>
-                <p className='text-gray-six text-[17px] leading-[16px] flex-1'><span>{notas}</span></p>
-                <p className='text-gray-six text-[17px] leading-[16px] flex-1'><span>{Moment(fecha).format('DD/MM/yy hh:mm')}</span></p>
+                <p className='text-gray-six text-[12px] sm:text-[17px] md:text-[17px] lg:text-[17px] leading-[16px] flex-1'><span>{asuntos.length}</span></p>
+                <p className='text-gray-six text-[12px] sm:text-[17px] md:text-[17px] lg:text-[17px] leading-[16px] flex-1'><span>{notas}</span></p>
+                <p className='text-gray-six text-[12px] sm:text-[17px] md:text-[17px] lg:text-[17px] leading-[16px] flex-1'><span>{Moment(fecha).format('DD/MM/yy hh:mm')}</span></p>
 
             </Link>
 

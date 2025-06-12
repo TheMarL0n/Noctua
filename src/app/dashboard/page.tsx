@@ -10,6 +10,7 @@ import AddFolderForm from "../components/AddFolderForm";
 import { Modal } from "../components/Modal";
 import UserInfo from "../components/UserInfo";
 import MyLoader from "../components/SkeletonLoader";
+import { useIsMobile } from "../components/useIsMobile";
 
 export default function Dashboard() {
   const [folders, setFolders] = useState<any[]>([]);
@@ -21,8 +22,11 @@ export default function Dashboard() {
   const [toggleDate, setToggleDate] = useState(false);
   const [toggleName, setToggleName] = useState(false);
   const [criteria, setCriteria] = useState("dateUp");
+  const isMobileDevice = useIsMobile();
 
   useEffect(() => {
+    setViewType(isMobileDevice);
+    console.log("TEST: " + isMobileDevice)
     setIsLoading(true);
     getFolders();
   }, []);
@@ -70,8 +74,8 @@ export default function Dashboard() {
       : criteria === "dateDown"
       ? (a, b) => (a.fecha_creacion > b.fecha_creacion ? 1 : -1)
       : criteria === "nameUp"
-        ? (a, b) => (a.carpeta > b.carpeta ? 1 : -1)
-        : (a, b) => (a.carpeta < b.carpeta ? 1 : -1)
+      ? (a, b) => (a.carpeta > b.carpeta ? 1 : -1)
+      : (a, b) => (a.carpeta < b.carpeta ? 1 : -1)
   );
 
   return (
@@ -83,13 +87,15 @@ export default function Dashboard() {
             <UserInfo />
           </h3>
           <a
-            className="flex items-center text-custom-regular text-gray-seven dark:text-white-one bg-main-text-color dark:bg-secundary-c rounded-lg py-2 pl-1 pr-6 leading-[16px] cursor-pointer"
+            className="flex items-center text-custom-regular text-gray-seven dark:text-white-one bg-main-text-color dark:bg-secundary-c rounded-lg py-2 pl-1 pr-1 sm:pr-6 md:pr-6 lg:pr-6 leading-[16px] cursor-pointer"
             onClick={() => setIsModalOpen(true)}
           >
             <span className="material-symbols-outlined text-[30px] font-extralight">
               add
             </span>{" "}
-            Agregar carpeta
+            <span className="hidden sm:block md:block lg:block">
+              Agregar carpeta
+            </span>
           </a>
         </div>
       </div>
@@ -195,17 +201,16 @@ export default function Dashboard() {
                     sort_by_alpha
                   </span>
                 </a>
-                <p className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-center leading-[12px] gap-4 cursor-pointer">
+                <p className="hidden sm:flex md:flex lg:flex flex-1 text-[12px] text-gray-seven dark:text-white-one items-center leading-[12px] gap-4 cursor-pointer">
                   Asuntos
-
                 </p>
-                <p className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-center leading-[12px] gap-4 cursor-pointer">
+                <p className="hidden sm:flex md:flex lg:flex flex-1 text-[12px] text-gray-seven dark:text-white-one items-center leading-[12px] gap-4 cursor-pointer">
                   Notas
-
                 </p>
                 <p
                   onClick={() => setCriteriaDate()}
-                  className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-center leading-[12px] gap-4 cursor-pointer">
+                  className="flex-1 text-[12px] text-gray-seven dark:text-white-one flex items-center leading-[12px] gap-4 cursor-pointer justify-end sm:justify-start md:justify-start lg:justify-start"
+                >
                   Fecha
                   <span className="material-symbols-outlined text-[16px] text-gray-seven dark:text-white-one">
                     sort_by_alpha
@@ -224,7 +229,7 @@ export default function Dashboard() {
               ))}
               <a
                 onClick={() => setIsModalOpen(true)}
-                className="flex items-center justify-center w-[72px] h-[72px] bg-blue-one rounded-full ml-3 my-auto cursor-pointer"
+                className="flex items-center justify-center w-[42px] h-[42px] sm:w-[72px] sm:h-[72px] md:w-[72px] md:h-[72px] lg:w-[72px] lg:h-[72px] bg-blue-one rounded-full ml-3 my-auto cursor-pointer"
               >
                 <span className="material-symbols-outlined text-[30px] text-secundary-c font-light">
                   add
